@@ -66,7 +66,7 @@ const config = createTamagui({
   },
   media: {
     sm: { maxWidth: 860 },
-    gtSm: { minWidth: 860 + 1 },
+    gtSm: { minWidth: 861 },
     short: { maxHeight: 820 },
     hoverNone: { hover: 'none' },
     pointerCoarse: { pointer: 'coarse' },
