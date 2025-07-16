@@ -8,16 +8,15 @@ import { RootStackParamList } from '../types/navigation'; // Importação corret
 type SignUpScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>;
 
 const SignUp = () => {
-  const navigation = useNavigation<SignUpScreenNavigationProp>(); // Obtenha o objeto de navegação com tipos
+  const navigation = useNavigation<SignUpScreenNavigationProp>(); 
 
   const handleSignIn = () => {
-    console.log("Tentativa de login"); // Log para depuração
-    // Aqui você pode implementar a lógica de login diretamente ou redirecionar
-    navigation.replace('Home'); // Navega para a tela inicial após o login
+    console.log("Tentativa de login"); 
+    navigation.replace('Home');
   };
 
   const handleBack = () => {
-    navigation.navigate('SignIn'); // Navega de volta para a tela de SignIn
+    navigation.navigate('SignIn'); 
   };
 
   return (
@@ -90,7 +89,7 @@ const SignUp = () => {
       
       {/* Botão de Voltar */}
       <TouchableOpacity 
-        onPress={handleBack} // Chama a função de navegação para a tela de SignIn
+        onPress={handleBack} 
         style={{
           backgroundColor: "transparent", 
           padding: 15,

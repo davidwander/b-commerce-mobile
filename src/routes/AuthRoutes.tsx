@@ -1,8 +1,7 @@
-// src/routes/AuthRoutes.tsx
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import SignIn from '../screens/SignIn';
-import SignUp from '../screens/SignUp'; // Se você tiver uma tela de registro
+import SignUp from '../screens/SignUp'; 
 
 const Stack = createStackNavigator();
 
@@ -12,12 +11,12 @@ const AuthRoutes = () => {
       <Stack.Screen 
         name="SignIn" 
         component={SignIn} 
-        options={{ headerShown: false }} // Oculta o cabeçalho
+        options={{ headerShown: false }} 
       />
       <Stack.Screen 
         name="SignUp" 
         component={SignUp} 
-        options={{ headerShown: false }} // Oculta o cabeçalho
+        options={{ headerShown: false }} 
       />
     </Stack.Navigator>
   );

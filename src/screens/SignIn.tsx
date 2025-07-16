@@ -1,17 +1,15 @@
-// src/types/navigation.ts
 export type RootStackParamList = {
-  SignIn: undefined; // ou qualquer tipo de parâmetro que você espera
-  SignUp: undefined; // ou qualquer tipo de parâmetro que você espera
-  Home: undefined; // ou qualquer tipo de parâmetro que você espera
+  SignIn: undefined; 
+  SignUp: undefined; 
+  Home: undefined; 
 };
 
-// src/screens/SignIn.tsx
 import React from 'react';
 import { YStack, Input, Text } from 'tamagui';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList as NavigationParamList } from '../types/navigation'; // Importação correta
+import { RootStackParamList as NavigationParamList } from '../types/navigation'; 
 
 type SignInScreenNavigationProp = StackNavigationProp<NavigationParamList, 'SignIn'>;
 
@@ -19,13 +17,13 @@ const SignIn = () => {
   const navigation = useNavigation<SignInScreenNavigationProp>(); // Obtenha o objeto de navegação com tipos
 
   const handleSignIn = () => {
-    console.log("Tentativa de login"); // Log para depuração
-    navigation.navigate('Home'); // Navega para a tela inicial após o login
+    console.log("Tentativa de login"); 
+    navigation.navigate('Home'); 
   };
 
   const handleSignUp = () => {
     console.log("Navegando para a tela de registro");
-    navigation.navigate('SignUp'); // Navega para a tela de registro
+    navigation.navigate('SignUp'); 
   };
 
   return (
