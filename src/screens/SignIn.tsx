@@ -1,13 +1,31 @@
+// src/types/navigation.ts
+export type RootStackParamList = {
+  SignIn: undefined; // ou qualquer tipo de parâmetro que você espera
+  SignUp: undefined; // ou qualquer tipo de parâmetro que você espera
+  Home: undefined; // ou qualquer tipo de parâmetro que você espera
+};
+
 // src/screens/SignIn.tsx
 import React from 'react';
 import { YStack, Input, Text } from 'tamagui';
 import { TouchableOpacity } from 'react-native';
-import { router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList as NavigationParamList } from '../types/navigation'; // Importação correta
+
+type SignInScreenNavigationProp = StackNavigationProp<NavigationParamList, 'SignIn'>;
 
 const SignIn = () => {
+  const navigation = useNavigation<SignInScreenNavigationProp>(); // Obtenha o objeto de navegação com tipos
+
   const handleSignIn = () => {
     console.log("Tentativa de login"); // Log para depuração
-    router.replace('/'); // Navega para a tela inicial após o login
+    navigation.navigate('Home'); // Navega para a tela inicial após o login
+  };
+
+  const handleSignUp = () => {
+    console.log("Navegando para a tela de registro");
+    navigation.navigate('SignUp'); // Navega para a tela de registro
   };
 
   return (
@@ -69,7 +87,7 @@ const SignIn = () => {
 
       {/* Botão de Registro */}
       <TouchableOpacity 
-        onPress={() => { /* Lógica de registro */ }} 
+        onPress={handleSignUp} // Chama a função de navegação para a tela de registro
         style={{
           backgroundColor: "#662249", 
           padding: 15,
@@ -87,6 +105,7 @@ const SignIn = () => {
           Criar 
         </Text>
       </TouchableOpacity>
+
       <TouchableOpacity 
         onPress={() => { /* Lógica de redefinir a senha */ }} 
         style={{
