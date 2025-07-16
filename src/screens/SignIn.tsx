@@ -29,14 +29,19 @@ const SignIn = () => {
   };
 
   return (
-    <YStack f={1} padding={68} backgroundColor="#ed9e59">
+    <YStack 
+      f={1} 
+      padding={30}
+      paddingTop={68} 
+      backgroundColor="#ed9e59"
+    >
       {/* Cabeçalho */}
       <YStack>
         <Text 
           fontSize={32} 
           fontWeight="bold" 
           textAlign="center" 
-          marginBottom={18}
+          marginBottom={20}
         >
           Brecho Vitoriano
         </Text>
@@ -69,7 +74,7 @@ const SignIn = () => {
         onPress={handleSignIn} 
         style={{
           backgroundColor: "#a34054", 
-          padding: 15,
+          padding: 18,
           borderRadius: 5,
           marginBottom: 15,
           alignItems: 'center',
@@ -87,10 +92,10 @@ const SignIn = () => {
 
       {/* Botão de Registro */}
       <TouchableOpacity 
-        onPress={handleSignUp} // Chama a função de navegação para a tela de registro
+        onPress={handleSignUp} 
         style={{
           backgroundColor: "#662249", 
-          padding: 15,
+          padding: 18,
           borderRadius: 5,
           marginBottom: 15,
           alignItems: 'center', 
