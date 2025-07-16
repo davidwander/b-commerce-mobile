@@ -2,13 +2,15 @@ import React from "react";
 import { TamaguiProvider } from "tamagui";
 import config from "./tamagui.config"; 
 import { Text, View } from "react-native";
+import { NavigationContainer } from '@react-navigation/native';
+import AuthRoutes from './src/routes/AuthRoutes'; // Ajuste o caminho conforme necessário
 
 export default function App() {
   return (
     <TamaguiProvider config={config}>
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "white" }}>
-        <Text>Olá, Tamagui configurado!</Text>
-      </View>
+      <NavigationContainer>
+        <AuthRoutes />
+      </NavigationContainer>
     </TamaguiProvider>
   );
 }
