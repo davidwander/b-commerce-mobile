@@ -25,7 +25,7 @@ const size = {
   0: 0,
   1: 5,
   2: 10,
-  true: 10, // Define o tamanho padrão
+  true: 10, 
   3: 15,
   4: 20,
   5: 25,
@@ -47,7 +47,6 @@ export const tokens = createTokens({
   },
 });
 
-// Definindo o tipo de config
 const config = createTamagui({
   fonts: {
     heading: systemFont,
@@ -79,10 +78,7 @@ const config = createTamagui({
   } as const,
 });
 
-// Definindo o tipo de AppConfig
 type AppConfig = typeof config;
-
-// Declaração do módulo para Tamagui
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends AppConfig {}
   interface TypeOverride {
