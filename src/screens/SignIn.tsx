@@ -5,11 +5,13 @@ export type RootStackParamList = {
 };
 
 import React from 'react';
-import { YStack, Input, Text } from 'tamagui';
+import { YStack, Text } from 'tamagui';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList as NavigationParamList } from '../types/navigation'; 
+
+import CustomInput from '../components/CustomInput'; 
 
 type SignInScreenNavigationProp = StackNavigationProp<NavigationParamList, 'SignIn'>;
 
@@ -53,16 +55,20 @@ const SignIn = () => {
       >
         App gerenciador e-commerce
       </Text>
-      <Input 
+      
+      <CustomInput 
+        label="E-mail"
         placeholder="E-mail"
-        marginBottom={15} 
+        marginBottom={15}
         padding={22}
-        style={{ width: "100%" }} 
+        style={{ width: "100%" }}
       />
-      <Input 
-        placeholder="Senha" 
-        secureTextEntry 
-        marginBottom={15} 
+      
+      <CustomInput 
+        label="Senha"
+        placeholder="Senha"
+        secureTextEntry
+        marginBottom={15}
         padding={22}
         style={{ width: "100%" }}
       />

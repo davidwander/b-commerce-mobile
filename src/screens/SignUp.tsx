@@ -1,111 +1,65 @@
 import React from 'react';
-import { YStack, Input, Text } from 'tamagui';
+import { YStack, Text } from 'tamagui';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../types/navigation'; // Importação correta
+import { RootStackParamList } from '../types/navigation';
+import CustomInput from '../components/CustomInput'; // Importando o novo componente
 
 type SignUpScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>;
 
 const SignUp = () => {
-  const navigation = useNavigation<SignUpScreenNavigationProp>(); 
+  const navigation = useNavigation<SignUpScreenNavigationProp>();
 
   const handleSignIn = () => {
-    console.log("Tentativa de login"); 
+    console.log("Tentativa de login");
     navigation.replace('Home');
   };
 
   const handleBack = () => {
-    navigation.navigate('SignIn'); 
+    navigation.navigate('SignIn');
   };
 
   return (
-    <YStack 
-      f={1} 
-      padding={30}
-      backgroundColor="#ed9e59"
-    >
-      {/* Cabeçalho */}
+    <YStack f={1} padding={30} backgroundColor="#ed9e59">
       <YStack paddingTop={68}>
-        <Text 
-          fontSize={32} 
-          fontWeight="bold" 
-          textAlign="center" 
-          marginBottom={38}
-        >
-          Cadastrar novo usuario
+        <Text fontSize={32} fontWeight="bold" textAlign="center" marginBottom={38}>
+          Cadastrar novo usuário
         </Text>
       </YStack>
       
-      {/* Conteúdo principal */}
-      <Input 
+      <CustomInput 
+        label="E-mail"
         placeholder="E-mail"
-        marginBottom={15} 
+        marginBottom={15}
         padding={22}
-        style={{ width: "100%" }} 
+        style={{ width: "100%" }}
       />
 
-      <Text>
-        Criar uma senha
-      </Text>
-      <Input 
-        placeholder="Senha" 
-        secureTextEntry 
-        marginBottom={15} 
-        padding={22}
-        style={{ width: "100%" }}
-      />
-      <Text>
-        Repita a senha
-      </Text>
-      <Input 
-        placeholder="Senha" 
-        secureTextEntry 
-        marginBottom={15} 
+      <CustomInput 
+        label="Crie uma senha"
+        placeholder="Senha"
+        secureTextEntry
+        marginBottom={15}
         padding={22}
         style={{ width: "100%" }}
       />
       
-      {/* Botão de Login */}
-      <TouchableOpacity 
-        onPress={handleSignIn} 
-        style={{
-          backgroundColor: "#a34054", 
-          padding: 18,
-          borderRadius: 5,
-          marginBottom: 15,
-          alignItems: 'center',
-        }}
-      >
-        <Text 
-          style={{ 
-            color: 'white', 
-            fontWeight: 'bold' 
-          }}
-        >
-          Confirmar
-        </Text>
+      <CustomInput 
+        label="Confirme a senha"
+        placeholder="Senha"
+        secureTextEntry
+        marginBottom={15}
+        padding={22}
+        style={{ width: "100%" }}
+      />
+      
+      <TouchableOpacity onPress={handleSignIn} style={{ backgroundColor: "#a34054", padding: 18, borderRadius: 5, marginBottom: 15, alignItems: 'center' }}>
+        <Text style={{ color: 'white', fontWeight: 'bold' }}>Confirmar</Text>
       </TouchableOpacity>
       
-      {/* Botão de Voltar */}
-      <TouchableOpacity 
-        onPress={handleBack} 
-        style={{
-          backgroundColor: "transparent", 
-          padding: 15,
-          borderRadius: 5,
-          marginBottom: 15,
-          alignItems: 'center', 
-        }}
-      >
-        <Text 
-          style={{ 
-            color: 'black', 
-            fontWeight: 'bold' 
-          }}
-        >
-          Voltar
-        </Text>
+      <TouchableOpacity onPress={handleBack} style={{ backgroundColor: "transparent", padding: 15, borderRadius: 5, marginBottom: 15, alignItems: 'center' }}>
+        <Text style={{ color: 'black', fontWeight: 'bold' }}>Voltar</Text>
       </TouchableOpacity>
     </YStack>
   );
