@@ -6,12 +6,11 @@ export type RootStackParamList = {
 
 import React from 'react';
 import { YStack, Text } from 'tamagui';
-import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useForm, Controller } from 'react-hook-form';
 import CustomInput from '../components/CustomInput'; 
-
+import CustomButton from '../components/CustomButton'; 
 
 type SignInScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;
 
@@ -85,46 +84,17 @@ const SignIn = () => {
         )}
       />
       
-      <TouchableOpacity 
-        onPress={handleSubmit(onSubmit)} // Envia os dados do formulário
-        style={{
-          backgroundColor: "#a34054", 
-          padding: 18,
-          borderRadius: 5,
-          marginBottom: 15,
-          alignItems: 'center',
-        }}
-      >
-        <Text 
-          style={{ 
-            color: 'white', 
-            fontWeight: 'bold' 
-          }}
-        >
-          Confirmar
-        </Text>
-      </TouchableOpacity>
+      <CustomButton 
+        label="Confirmar" 
+        onPress={handleSubmit(onSubmit)} 
+        theme='primary'
+      />
 
-      <TouchableOpacity 
+      <CustomButton 
+        label="Criar" 
         onPress={handleSignUp} 
-        style={{
-          backgroundColor: "#662249", 
-          padding: 18,
-          borderRadius: 5,
-          marginBottom: 15,
-          alignItems: 'center', 
-        }}
-      >
-        <Text 
-          style={{ 
-            color: 'white', 
-            fontWeight: 'bold',
-           
-          }}
-        >
-          Criar 
-        </Text>
-      </TouchableOpacity>
+        theme='secondary'
+      />
     </YStack>
   );
 };

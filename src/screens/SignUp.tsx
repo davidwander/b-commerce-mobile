@@ -1,10 +1,10 @@
 import React from 'react';
 import { YStack, Text } from 'tamagui';
-import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useForm, Controller } from 'react-hook-form';
 import CustomInput from '../components/CustomInput';
+import CustomButton from '../components/CustomButton'; 
 import { RootStackParamList } from '../types/navigation';
  
 
@@ -42,6 +42,7 @@ const SignUp = () => {
             onChangeText={onChange}
             onBlur={onBlur}
             value={value}
+            keyboardType='email-address'
           />
         )}
       />
@@ -54,6 +55,7 @@ const SignUp = () => {
             label="Crie uma senha"
             placeholder="Senha"
             secureTextEntry
+            keyboardType='numeric'
             marginBottom={15}
             onChangeText={onChange}
             onBlur={onBlur}
@@ -70,6 +72,7 @@ const SignUp = () => {
             label="Confirme a senha"
             placeholder="Senha"
             secureTextEntry
+            keyboardType='numeric'
             marginBottom={15}
             onChangeText={onChange}
             onBlur={onBlur}
@@ -78,13 +81,16 @@ const SignUp = () => {
         )}
       />
       
-      <TouchableOpacity onPress={handleSubmit(onSubmit)} style={{ backgroundColor: "#a34054", padding: 18, borderRadius: 5, marginBottom: 15, alignItems: 'center' }}>
-        <Text style={{ color: 'white', fontWeight: 'bold' }}>Confirmar</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity onPress={handleBack} style={{ backgroundColor: "transparent", padding: 15, borderRadius: 5, marginBottom: 15, alignItems: 'center' }}>
-        <Text style={{ color: 'black', fontWeight: 'bold' }}>Voltar</Text>
-      </TouchableOpacity>
+      <CustomButton 
+        label="Confirmar" 
+        onPress={handleSubmit(onSubmit)} 
+      />
+
+      <CustomButton 
+        label="Voltar" 
+        onPress={handleBack} 
+        theme='quaternary'
+      />
     </YStack>
   );
 };
