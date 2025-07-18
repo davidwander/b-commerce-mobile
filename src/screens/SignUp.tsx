@@ -3,17 +3,20 @@ import { YStack, Text } from 'tamagui';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useForm, Controller } from 'react-hook-form';
+import CustomInput from '../components/CustomInput';
 import { RootStackParamList } from '../types/navigation';
-import CustomInput from '../components/CustomInput'; // Importando o novo componente
+ 
 
 type SignUpScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignUp'>;
 
 const SignUp = () => {
   const navigation = useNavigation<SignUpScreenNavigationProp>();
+  const { control, handleSubmit } = useForm();
 
-  const handleSignIn = () => {
-    console.log("Tentativa de login");
-    navigation.replace('Home');
+  const onSubmit = (data: any) => {
+    console.log(data);
+    navigation.navigate('Home');
   };
 
   const handleBack = () => {
@@ -28,33 +31,54 @@ const SignUp = () => {
         </Text>
       </YStack>
       
-      <CustomInput 
-        label="E-mail"
-        placeholder="E-mail"
-        marginBottom={15}
-        padding={22}
-        style={{ width: "100%" }}
+      <Controller
+        control={control}
+        name="email"
+        render={({ field: { onChange, onBlur, value } }) => (
+          <CustomInput 
+            label="E-mail"
+            placeholder="E-mail"
+            marginBottom={15}
+            onChangeText={onChange}
+            onBlur={onBlur}
+            value={value}
+          />
+        )}
       />
 
-      <CustomInput 
-        label="Crie uma senha"
-        placeholder="Senha"
-        secureTextEntry
-        marginBottom={15}
-        padding={22}
-        style={{ width: "100%" }}
+      <Controller
+        control={control}
+        name="password"
+        render={({ field: { onChange, onBlur, value } }) => (
+          <CustomInput 
+            label="Crie uma senha"
+            placeholder="Senha"
+            secureTextEntry
+            marginBottom={15}
+            onChangeText={onChange}
+            onBlur={onBlur}
+            value={value}
+          />
+        )}
       />
       
-      <CustomInput 
-        label="Confirme a senha"
-        placeholder="Senha"
-        secureTextEntry
-        marginBottom={15}
-        padding={22}
-        style={{ width: "100%" }}
+      <Controller
+        control={control}
+        name="confirmPassword"
+        render={({ field: { onChange, onBlur, value } }) => (
+          <CustomInput 
+            label="Confirme a senha"
+            placeholder="Senha"
+            secureTextEntry
+            marginBottom={15}
+            onChangeText={onChange}
+            onBlur={onBlur}
+            value={value}
+          />
+        )}
       />
       
-      <TouchableOpacity onPress={handleSignIn} style={{ backgroundColor: "#a34054", padding: 18, borderRadius: 5, marginBottom: 15, alignItems: 'center' }}>
+      <TouchableOpacity onPress={handleSubmit(onSubmit)} style={{ backgroundColor: "#a34054", padding: 18, borderRadius: 5, marginBottom: 15, alignItems: 'center' }}>
         <Text style={{ color: 'white', fontWeight: 'bold' }}>Confirmar</Text>
       </TouchableOpacity>
       

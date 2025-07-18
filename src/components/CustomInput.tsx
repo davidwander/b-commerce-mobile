@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
-import { Input, InputProps, Text } from 'tamagui';
+import React, { forwardRef, useState } from 'react';
+import { Input, InputProps, Text, YStack, useTheme } from 'tamagui';
 
 type CustomInputProps = InputProps & {
   label?: string;
-  value?: string; // Adicione esta linha se quiser permitir que o valor seja controlado externamente
-  onChangeText?: (text: string) => void; // Adicione esta linha para permitir callback externo
+  errorMessage?: string | null;
 };
 
-const CustomInput: React.FC<CustomInputProps> = ({ 
-  label, 
-  value: propValue, 
+const CustomInput = forwardRef<any, CustomInputProps>(({
+  label,
+  value: propValue,
   onChangeText: propOnChangeText,
-  ...props 
-}) => {
+  errorMessage = null,
+  ...props
+}, ref) => {
   const [internalValue, setInternalValue] = useState('');
+  const invalid = !!errorMessage;
+  const theme = useTheme(); // Obtendo o tema completo
 
-  // Decide se usa o valor controlado externamente ou o estado interno
   const value = propValue !== undefined ? propValue : internalValue;
-  
+
   const handleChangeText = (text: string) => {
     if (propOnChangeText) {
       propOnChangeText(text);
@@ -27,21 +28,41 @@ const CustomInput: React.FC<CustomInputProps> = ({
   };
 
   return (
-    <>
-      {label && <Text>{label}</Text>}
-      <Input 
-        {...props}
+    <YStack 
+      gap="$1" 
+      width="100%"
+      paddingBottom={10}
+      marginBottom={20}
+    >
+      {label && <Text fontSize={18} color={invalid ? "$red10" : "$gray10"}>{label}</Text>}
+      
+      <Input
+        ref={ref}
         value={value}
         onChangeText={handleChangeText}
-        style={{
-          color: '#000',
-          borderColor: '#000',
-          backgroundColor: '#ed9e59',
-        }}
-        placeholderTextColor="#666"
+        borderWidth={1}
+        borderColor={invalid ? "$red10" : "$gray7"}
+        backgroundColor={theme.background?.val || 'transparent'} 
+        color="#000" 
+        placeholderTextColor="#999" 
+        selectionColor="#FF0000" 
+        cursorColor="#000" 
+        keyboardType="default" 
+        fontSize={16} 
+        paddingVertical={10} 
+        paddingHorizontal={10}
+        marginBottom={20} 
+        style={{ minHeight: 50 }} 
+        {...props}
       />
-    </>
+
+      {invalid && (
+        <Text color="$red10" fontSize="$3">
+          {errorMessage}
+        </Text>
+      )}
+    </YStack>
   );
-};
+});
 
 export default CustomInput;
