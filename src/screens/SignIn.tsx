@@ -5,97 +5,38 @@ export type RootStackParamList = {
 };
 
 import React from 'react';
-import { YStack, Text } from 'tamagui';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { useForm, Controller } from 'react-hook-form';
-import CustomInput from '../components/CustomInput'; 
-import CustomButton from '../components/CustomButton'; 
-
-type SignInScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;
+import { createUser } from '../api'; // Importar a função de login
+import CustomInput from '../components/CustomInput';
+import CustomButton from '../components/CustomButton';
 
 const SignIn = () => {
-  const navigation = useNavigation<SignInScreenNavigationProp>();
   const { control, handleSubmit } = useForm();
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-    navigation.navigate('Home');
-  };
-
-  const handleSignUp = () => {
-    navigation.navigate('SignUp'); 
+  const onSubmit = async (data) => {
+    try {
+      const response = await createUser(data); // Chamar a função de login
+      console.log('Login bem-sucedido:', response);
+      // Navegar para a tela inicial ou fazer outra ação
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+    }
   };
 
   return (
-    <YStack 
-      f={1} 
-      padding={30}
-      paddingTop={68} 
-      backgroundColor="#ed9e59"
-    >
-      <YStack>
-        <Text 
-          fontSize={32} 
-          fontWeight="bold" 
-          textAlign="center" 
-          marginBottom={20}
-        >
-          Brecho Vitoriano
-        </Text>
-      </YStack>
-      
-      <Text 
-        textAlign="center" 
-        marginBottom={52}
-        fontSize={18}
-      >
-        App gerenciador e-commerce
-      </Text>
-      
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Controller
         control={control}
         name="email"
-        render={({ field: { onChange, onBlur, value } }) => (
-          <CustomInput 
-            label="E-mail"
-            placeholder="E-mail"
-            marginBottom={10}
-            onChangeText={onChange} 
-            onBlur={onBlur} 
-            value={value} 
-          />
-        )}
+        render={({ field }) => <CustomInput {...field} label="E-mail" />}
       />
-      
       <Controller
         control={control}
         name="password"
-        render={({ field: { onChange, onBlur, value } }) => (
-          <CustomInput 
-            label="Senha"
-            placeholder="Senha"
-            secureTextEntry
-            marginBottom={28}
-            onChangeText={onChange} 
-            onBlur={onBlur} 
-            value={value} 
-          />
-        )}
+        render={({ field }) => <CustomInput {...field} label="Senha" secureTextEntry />}
       />
-      
-      <CustomButton 
-        label="Confirmar" 
-        onPress={handleSubmit(onSubmit)} 
-        theme='primary'
-      />
-
-      <CustomButton 
-        label="Criar" 
-        onPress={handleSignUp} 
-        theme='secondary'
-      />
-    </YStack>
+      <CustomButton label="Login" onPress={handleSubmit(onSubmit)} />
+    </form>
   );
 };
 
