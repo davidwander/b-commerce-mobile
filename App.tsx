@@ -1,20 +1,25 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { TamaguiProvider } from 'tamagui';
+import config from './tamagui.config';
+import { YStack, Text } from 'tamagui';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <TamaguiProvider config={config}>
+      <YStack
+        flex={1}
+        justifyContent='center'
+        alignItems='center'
+        backgroundColor="$background"
+      >
+        <Text
+          fontSize="$4"
+          color="$color"
+        >
+          Bem-vindo ao meu APP com Tamagui!
+        </Text>
+      </YStack>
+    </TamaguiProvider>
+    
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
