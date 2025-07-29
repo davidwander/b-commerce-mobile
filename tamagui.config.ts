@@ -58,27 +58,25 @@ const interFont = createFont({
 });
 
 const animations = createAnimations({
-  // Defina suas animações aqui
-  // Exemplo:
-  // quick: {
-  //   type: 'spring',
-  //   damping: 20,
-  //   mass: 1,
-  //   stiffness: 100,
-  // },
-  // medium: {
-  //   type: 'spring',
-  //   damping: 15,
-  //   mass: 1,
-  //   stiffness: 120,
-  // },
-  // slow: {
-  //   type: 'spring',
-  //   damping: 10,
-  //   mass: 2,
-  //   stiffness: 130,
-  // },
-})
+  quick: {
+    type: 'spring',
+    damping: 20,
+    mass: 1,
+    stiffness: 100,
+  },
+  medium: {
+    type: 'spring',
+    damping: 15,
+    mass: 1,
+    stiffness: 120,
+  },
+  slow: {
+    type: 'spring',
+    damping: 10,
+    mass: 2,
+    stiffness: 130,
+  },
+});
 
 const appConfig = createTamagui({
   animations,

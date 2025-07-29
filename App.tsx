@@ -1,7 +1,7 @@
 import { TamaguiProvider, YStack, Text } from 'tamagui';
 import config from './tamagui.config';
-import { 
-  useFonts, 
+import {
+  useFonts,
   Inter_400Regular,
   Inter_400Regular_Italic,
   Inter_700Bold,
@@ -11,21 +11,16 @@ export default function App() {
   const [loaded] = useFonts({
     Inter_400Regular,
     Inter_400Regular_Italic,
-    Inter_700Bold
+    Inter_700Bold,
   });
 
   if (!loaded) {
-    return null
+    return null;
   }
 
   return (
     <TamaguiProvider config={config}>
-      <YStack
-        flex={1}
-        justifyContent='center'
-        alignItems='center'
-        backgroundColor="$background"
-      >
+      <YStack flex={1} justifyContent="center" alignItems="center" backgroundColor="$background">
         <Text
           fontSize="$4"
           color="$color"
@@ -37,8 +32,5 @@ export default function App() {
         </Text>
       </YStack>
     </TamaguiProvider>
-    
   );
 }
-
-
