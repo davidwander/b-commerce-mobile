@@ -1,6 +1,8 @@
 import { Drawer } from 'expo-router/drawer';
 import CustomDrawerContent from '@/components/CustomDrawerContent';
 
+import { colors } from '@/styles/colors';
+
 export default function DrawerLayout() {
   return (
     <Drawer 
@@ -9,10 +11,13 @@ export default function DrawerLayout() {
         headerShown: false,
         drawerType: 'permanent',
         drawerStyle: {
-          backgroundColor: "#f0f0f0",
-          width: 40,
-        }
+          backgroundColor: colors.black,
+          width: 45, 
+          borderRightWidth: 0,
+          elevation: 0,
+          shadowColor: 'transparent'
+        },
       }}
     />
-  )
+  );
 }
