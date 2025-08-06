@@ -8,10 +8,10 @@ export default function RegisterParts() {
       flex: 1, 
       alignItems: "center", 
       justifyContent: "center",
-      backgroundColor: colors.white 
+      backgroundColor: colors.page.lavender 
       }}
     >
-      <Text>RegisterParts</Text>
+      <Text>Registrar peças</Text>
     </View>
   )
 }

@@ -7,7 +7,7 @@ export default function Dashboard() {
       flex: 1, 
       alignItems: "center", 
       justifyContent: "center",
-      backgroundColor: colors.white
+      backgroundColor: colors.page.meadow
       }}
     >
       <Text>Dashboard</Text>

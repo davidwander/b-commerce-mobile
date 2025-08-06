@@ -8,7 +8,7 @@ export default function Notifications() {
       flex: 1, 
       alignItems: "center", 
       justifyContent: "center",
-      backgroundColor: "#fff" 
+      backgroundColor: colors.page.tulips 
       }}
     >
       <Text>Notificações</Text>

@@ -8,7 +8,7 @@ export default function Inventory() {
       flex: 1, 
       alignItems: "center", 
       justifyContent: "center",
-      backgroundColor: "#fff" 
+      backgroundColor: colors.page.clearSky 
       }}
     >
       <Text>Estoque</Text>

@@ -8,7 +8,7 @@ export default function Sales() {
       flex: 1, 
       alignItems: "center", 
       justifyContent: "center",
-      backgroundColor: colors.white 
+      backgroundColor: colors.page.daffodils
       }}
     >
       <Text>Vendas</Text>

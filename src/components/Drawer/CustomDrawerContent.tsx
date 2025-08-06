@@ -1,6 +1,7 @@
 import React from 'react';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { colors } from '@/styles/colors';
 
 import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 
@@ -12,11 +13,20 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 
   const routeLabels: Record<string, string> = {
     dashboard: 'Visão geral',
-    sales: 'Nova venda',
+    sales: 'Vendas',
     inventory: 'Estoque',
     notifications: 'Notificações',
     registerParts: 'Adicionar',
   };
+
+  const routeBackgroundColors: Record<string, string> = {
+    dashboard: colors.page.meadow,
+    sales: colors.page.daffodils,
+    inventory: colors.page.clearSky,
+    notifications: colors.page.tulips,
+    registerParts: colors.page.lavender
+
+  }
 
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
@@ -36,7 +46,10 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
             <View
               style={[
                 styles.labelContainer,
-                isFocused && styles.labelActiveContainer,
+                isFocused && {
+                  ...styles.labelActiveContainer,
+                  backgroundColor: routeBackgroundColors[name] || '#fff',
+                },
               ]}
             >
               <Text
