@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { colors } from '@/styles/colors';
+import { fonts } from '@/styles/fonts';
 
 export const styles = StyleSheet.create({
   container: {
@@ -36,13 +37,14 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5,
-    borderTopRightRadius: 12,
-    borderTopLeftRadius: 12,
+    borderTopRightRadius: 28,
+    borderTopLeftRadius: 28,
     borderBottomRightRadius: 0,
     borderBottomLeftRadius: 0,
   },
   labelText: {
-    fontWeight: '600',
+    fontFamily: fonts.bold,
+    fontWeight: '300',
     textAlign: 'center',
   },
   activeText: {

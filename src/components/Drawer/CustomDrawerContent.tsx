@@ -17,6 +17,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
     inventory: 'Estoque',
     notifications: 'Notificações',
     registerParts: 'Adicionar',
+    otherExpenses: 'Outros'
   };
 
   const routeBackgroundColors: Record<string, string> = {
@@ -24,8 +25,8 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
     sales: colors.page.daffodils,
     inventory: colors.page.clearSky,
     notifications: colors.page.tulips,
-    registerParts: colors.page.lavender
-
+    registerParts: colors.page.lavender,
+    otherExpenses: colors.page.dragonFruit,
   }
 
   return (
@@ -39,7 +40,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
             onPress={() => navigation.navigate(name as never)}
             style={[
               styles.itemWrapper,
-              { zIndex: isFocused ? 2 : 1 }, // ← AQUI: zIndex dinâmico
+              { zIndex: isFocused ? 2 : 1 },
             ]}
             accessibilityState={isFocused ? { selected: true } : {}}
           >

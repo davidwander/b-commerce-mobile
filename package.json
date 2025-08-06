@@ -13,6 +13,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo-google-fonts/poppins": "^0.4.0",
     "@expo/vector-icons": "^14.1.0",
     "@react-native-masked-view/masked-view": "0.3.2",
     "@react-navigation/drawer": "^7.5.6",
