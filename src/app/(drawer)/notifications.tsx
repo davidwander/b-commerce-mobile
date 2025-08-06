@@ -11,7 +11,7 @@ export default function Notifications() {
       backgroundColor: "#fff" 
       }}
     >
-      <Text>Notifications</Text>
+      <Text>Notificações</Text>
     </View>
   )
 }

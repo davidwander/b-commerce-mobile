@@ -1,16 +1,17 @@
 import { View, Text } from "react-native";
 import { colors } from '@/styles/colors';
 
-export default function Home() {
+
+export default function Sales() {
   return (
     <View style={{ 
       flex: 1, 
       alignItems: "center", 
       justifyContent: "center",
-      backgroundColor: "#f3f3f3" 
+      backgroundColor: colors.white 
       }}
     >
-      <Text>Home</Text>
+      <Text>Vendas</Text>
     </View>
   )
 }

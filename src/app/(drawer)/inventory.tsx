@@ -11,7 +11,7 @@ export default function Inventory() {
       backgroundColor: "#fff" 
       }}
     >
-      <Text>Inventory</Text>
+      <Text>Estoque</Text>
     </View>
   )
 }

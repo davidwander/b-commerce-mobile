@@ -8,7 +8,7 @@ export default function RegisterParts() {
       flex: 1, 
       alignItems: "center", 
       justifyContent: "center",
-      backgroundColor: "#fff" 
+      backgroundColor: colors.white 
       }}
     >
       <Text>RegisterParts</Text>
