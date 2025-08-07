@@ -10,6 +10,7 @@ export default function DrawerLayout() {
       screenOptions={{
         headerShown: false,
         drawerType: 'slide',
+        overlayColor: 'transparent',
         drawerStyle: {
           backgroundColor: colors.black,
           width: 45, 
