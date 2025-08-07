@@ -9,7 +9,7 @@ export default function DrawerLayout() {
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: false,
-        drawerType: 'permanent',
+        drawerType: 'slide',
         drawerStyle: {
           backgroundColor: colors.black,
           width: 45, 
