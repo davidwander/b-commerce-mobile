@@ -1,8 +1,11 @@
 import { View, Text, Dimensions, ScrollView } from 'react-native';
-import { colors } from '@/styles/colors';
 import { LineChart, PieChart } from 'react-native-chart-kit';
+
+import { Header } from '@/components/Header';
+import { FloatingCard } from '@/components/FloatingCard';
+
+import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
-import { Header } from '@/components/Header'; // ✅ Importação do Header
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -36,15 +39,13 @@ const pieChartData = [
 export default function Dashboard() {
   return (
     <View style={{ flex: 1, paddingTop: 30, backgroundColor: colors.page.meadow }}>
-      {/* ✅ Header fixo no topo */}
       <Header />
 
-      {/* Conteúdo rolável */}
       <ScrollView
         contentContainerStyle={{
           paddingHorizontal: 16,
           paddingBottom: 40,
-          paddingTop: 16, // Espaço entre Header e conteúdo
+          paddingTop: 16,
         }}
         showsVerticalScrollIndicator={false}
       >
@@ -70,71 +71,49 @@ export default function Dashboard() {
           style={{ marginBottom: 24 }}
         />
 
-        {/* Métricas */}
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginBottom: 24,
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: '#ffffff33',
-              padding: 16,
-              borderRadius: 12,
-              flex: 1,
-              marginRight: 10,
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: fonts.regular,
-                fontSize: 18,
-                color: '#fff',
+        {/* Métricas com FloatingCard */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
+          <FloatingCard style={{ flex: 1, marginRight: 10 }}>
+            <Text 
+              style={{ 
+                fontFamily: fonts.italic,
+                fontSize: 18, 
+                color: colors.black 
               }}
             >
               Lucro Total
             </Text>
-            <Text
-              style={{
-                fontFamily: fonts.bold,
-                color: '#fff',
-                fontSize: 18,
+            <Text 
+              style={{ 
+                fontFamily: fonts.bold, 
+                color: colors.black, 
+                fontSize: 18 
               }}
             >
               R$ 6.000
             </Text>
-          </View>
+          </FloatingCard>
 
-          <View
-            style={{
-              backgroundColor: '#ffffff33',
-              padding: 16,
-              borderRadius: 12,
-              flex: 1,
-              marginLeft: 10,
-            }}
-          >
-            <Text
-              style={{
-                fontFamily: fonts.regular,
-                fontSize: 18,
-                color: '#fff',
+          <FloatingCard style={{ flex: 1, marginLeft: 10 }}>
+            <Text 
+              style={{ 
+                fontFamily: fonts.italic, 
+                fontSize: 18, 
+                color: colors.black 
               }}
             >
               Gastos Totais
             </Text>
-            <Text
-              style={{
-                fontFamily: fonts.bold,
-                color: '#fff',
-                fontSize: 18,
+            <Text 
+              style={{ 
+                fontFamily: fonts.bold, 
+                color: '#F44336', 
+                fontSize: 18 
               }}
             >
               R$ 3.000
             </Text>
-          </View>
+          </FloatingCard>
         </View>
 
         {/* Gráfico de Pizza */}
