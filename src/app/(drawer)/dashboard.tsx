@@ -1,8 +1,10 @@
+// src/app/dashboard.tsx
 import { View, Text, Dimensions, ScrollView } from 'react-native';
-import { LineChart, PieChart } from 'react-native-chart-kit';
+import { LineChart } from 'react-native-chart-kit';
 
 import { Header } from '@/components/Header';
 import { FloatingCard } from '@/components/FloatingCard';
+import { CustomPieChart } from '@/components/CustomPieChart';
 
 import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
@@ -19,21 +21,10 @@ const lineChartData = {
   ],
 };
 
+// dados no formato esperado pelo CustomPieChart
 const pieChartData = [
-  {
-    name: 'Lucros',
-    population: 6000,
-    color: '#4CAF50',
-    legendFontColor: '#333',
-    legendFontSize: 16,
-  },
-  {
-    name: 'Gastos',
-    population: 3000,
-    color: '#F44336',
-    legendFontColor: '#333',
-    legendFontSize: 16,
-  },
+  { value: 6000, color: '#4CAF50', label: 'Lucros' },
+  { value: 3000, color: '#F44336', label: 'Gastos' },
 ];
 
 export default function Dashboard() {
@@ -73,21 +64,21 @@ export default function Dashboard() {
 
         {/* Métricas com FloatingCard */}
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
-          <FloatingCard style={{ flex: 1, marginRight: 10 }}>
-            <Text 
-              style={{ 
+          <FloatingCard style={{ flex: 1, marginRight: 10, backgroundColor: colors.page.daffodils }}>
+            <Text
+              style={{
                 fontFamily: fonts.italic,
-                fontSize: 18, 
-                color: colors.black 
+                fontSize: 18,
+                color: colors.black,
               }}
             >
               Lucro Total
             </Text>
-            <Text 
-              style={{ 
-                fontFamily: fonts.bold, 
-                color: colors.black, 
-                fontSize: 18 
+            <Text
+              style={{
+                fontFamily: fonts.bold,
+                color: colors.black,
+                fontSize: 18,
               }}
             >
               R$ 6.000
@@ -95,20 +86,20 @@ export default function Dashboard() {
           </FloatingCard>
 
           <FloatingCard style={{ flex: 1, marginLeft: 10 }}>
-            <Text 
-              style={{ 
-                fontFamily: fonts.italic, 
-                fontSize: 18, 
-                color: colors.black 
+            <Text
+              style={{
+                fontFamily: fonts.italic,
+                fontSize: 18,
+                color: colors.black,
               }}
             >
               Gastos Totais
             </Text>
-            <Text 
-              style={{ 
-                fontFamily: fonts.bold, 
-                color: '#F44336', 
-                fontSize: 18 
+            <Text
+              style={{
+                fontFamily: fonts.bold,
+                color: '#F44336',
+                fontSize: 18,
               }}
             >
               R$ 3.000
@@ -128,19 +119,30 @@ export default function Dashboard() {
           Proporção de Lucros e Gastos
         </Text>
 
-        <PieChart
-          data={pieChartData}
-          width={screenWidth - 32}
-          height={200}
-          chartConfig={{
-            color: () => `#fff`,
-          }}
-          accessor="population"
-          backgroundColor="transparent"
-          paddingLeft="2"
-          center={[8, 5]}
-          absolute
+        {/* Componente Pie Chart reutilizável */}
+        <CustomPieChart
+          data={[
+            {
+              value: 7000,
+              color: '#4CAF50',
+              label: 'Lucro',
+              icon: 'dollar',
+            },
+            {
+              value: 3500,
+              color: '#F44336',
+              label: 'Despesas',
+              icon: 'credit-card',
+            },
+            {
+              value: 1500,
+              color: '#2196F3',
+              label: 'Investimentos',
+              icon: 'line-chart',
+            },
+          ]}
         />
+
       </ScrollView>
     </View>
   );
