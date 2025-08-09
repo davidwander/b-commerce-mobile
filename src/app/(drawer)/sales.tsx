@@ -1,9 +1,12 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { colors } from '@/styles/colors';
-import { Header } from '@/components/Header';
 import { FontAwesome } from '@expo/vector-icons';
+import { router } from 'expo-router';
+
+import { Header } from '@/components/Header';
+import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
+
 
 const openSales = [
   { id: '1', client: 'João', total: 280.50, date: '2025-08-06' },
@@ -78,9 +81,7 @@ export default function Sales() {
 
       {/* Botão flutuante: Nova Venda */}
       <TouchableOpacity
-        onPress={() => {
-          // ação futura: ir para tela de nova venda
-        }}
+        onPress={() => router.push("/sales/new")}
         style={{
           position: 'absolute',
           bottom: 24,
