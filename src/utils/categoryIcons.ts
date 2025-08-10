@@ -2,27 +2,40 @@
 
 const categoryIcons: Record<string, string> = {
   // Categorias principais
-  Camisa: "👕",
+  Camisas: "👕",
+  Blusa: "👚",
   Calça: "👖",
   Saia: "👗",
   Vestido: "👗",
   Shorts: "🩳",
-  Sapatos: "👟",
-  Acessórios: "👜",
+  Sapatos: "👞",
+  Acessórios: "👒",
+  Bequine: "👙",
+  Casacos: "🧥",
 
   // Subcategorias de Camisa
-  Camiseta: "👚",
+  "Camiseta": "👚",
   "Social": "👔",
-  Masculina: "👨",
-  Feminina: "👩",
 
   // Subcategorias de Calça
   "Jeans": "👖",
   "Calça social": "👖",
 
-  // Subcategorias específicas de gênero (opcional, já acima)
-  // Masculina: "👨",
-  // Feminina: "👩",
+  // Subcategorias de sapatos
+  "Tennis": "👟",
+  "Botas": "👢",
+  "Salto alto": "👠",
+  "Sapatilha": "🥿",
+
+  // Subcategorias de acessórios
+  "Óculos": "🕶",
+  "Bolsas": "👜",
+  "Bijuteria": "💍",
+  "Chapéus": "👒",
+
+  // Subcategorias específicas de gênero 
+  "Masculina": "👨",
+  "Feminina": "👩",
 };
 
 export default categoryIcons;
