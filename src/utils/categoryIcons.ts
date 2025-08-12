@@ -1,5 +1,3 @@
-// src/utils/categoryIcons.ts
-
 const categoryIcons: Record<string, string> = {
   // Categorias principais
   Camisas: "👕",
@@ -39,3 +37,4 @@ const categoryIcons: Record<string, string> = {
 };
 
 export default categoryIcons;
+

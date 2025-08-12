@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from "react-native";
 
 import { Header } from '@/components/Header';
 import { CustomInput } from '@/components/CustomInput';
 import { ActionButton } from '@/components/ActionButton';
+import { CategorySelectorModal } from '@/components/CategorySelectorModal';
 
 import { CategoryList } from '@/components/CategoryList';
 import { colors } from '@/styles/colors';
@@ -13,23 +14,33 @@ import { partsTree, PartNode, PartLeaf } from "@/data/partsTree";
 
 export default function Inventory() {
   const [navigationStack, setNavigationStack] = React.useState<Array<(PartNode | PartLeaf)[]>>([partsTree]);
+  const [modalVisible, setModalVisible] = useState(false)
 
   const currentLevel = navigationStack[navigationStack.length - 1];
 
   function handleItemPress(item: PartNode) {
     setNavigationStack([...navigationStack, item.children ?? []]);
-  }
+  };
 
   function handleBack() {
     if (navigationStack.length > 1) {
       setNavigationStack(navigationStack.slice(0, -1));
-    }
-  }
+    };
+  };
 
   function handleAddPiece() {
-    // Aqui futuramente vamos abrir um modal ou navegação para adicionar a peça
+    setModalVisible(true);
     console.log("Adicionar nova peça");
-  }
+  };
+
+  function handleModalClose() {
+    setModalVisible(false);
+  };
+
+  function handleModalConfirm(selectedPath: PartNode[]) {
+    setModalVisible(false);
+    console.log("Selecionou:", selectedPath);
+  };
 
   return (
     <View style={{ flex: 1, paddingTop: 30, backgroundColor: colors.page.clearSky }}>
@@ -61,6 +72,13 @@ export default function Inventory() {
         onPress={handleAddPiece}
         color={colors.page.dragonFruit}
         style={{ marginHorizontal: 16, marginBottom: 46 }}
+      />
+
+      <CategorySelectorModal 
+        visible={modalVisible}
+        partsTree={partsTree}
+        onClose={handleModalClose}
+        onConfirm={handleModalConfirm}
       />
     </View>
   );
