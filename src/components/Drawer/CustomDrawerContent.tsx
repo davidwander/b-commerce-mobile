@@ -47,10 +47,10 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
             <View
               style={[
                 styles.labelContainer,
-                isFocused && {
-                  ...styles.labelActiveContainer,
-                  backgroundColor: routeBackgroundColors[name] || '#fff',
+                
+                 { backgroundColor: routeBackgroundColors[name] || '#fff',
                 },
+                  isFocused && styles.labelActiveContainer,
               ]}
             >
               <Text
@@ -58,7 +58,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
                 ellipsizeMode="tail"
                 style={[
                   styles.labelText,
-                  isFocused ? styles.activeText : styles.inactiveText,
+                  isFocused ? styles.activeText : styles.activeText,
                 ]}
               >
                 {routeLabels[name] ?? name}
