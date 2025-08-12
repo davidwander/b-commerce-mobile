@@ -30,7 +30,7 @@ export default function Inventory() {
 
   function handleAddPiece() {
     setModalVisible(true);
-    console.log("Adicionar nova peça");
+    console.log("Abrir modal");
   };
 
   function handleModalClose() {

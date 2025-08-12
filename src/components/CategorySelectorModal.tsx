@@ -1,6 +1,8 @@
-// src/components/CategorySelectorModal.tsx
 import React, { useState } from "react";
 import { Modal, View, Text, TouchableOpacity, FlatList, StyleSheet } from "react-native";
+import { FontAwesome } from '@expo/vector-icons';
+
+import { fonts } from '@/styles/fonts';
 import { colors } from "@/styles/colors";
 
 type PartLeaf = {
@@ -66,7 +68,7 @@ export function CategorySelectorModal({ visible, partsTree, onClose, onConfirm }
             )}
             <Text style={styles.title}>Selecione a categoria</Text>
             <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
-              <Text style={styles.closeText}>X</Text>
+              <FontAwesome name="close" style={styles.icon} />
             </TouchableOpacity>
           </View>
 
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 16,
+    paddingHorizontal: 14,
     marginBottom: 10,
   },
   backButton: {
@@ -126,22 +128,28 @@ const styles = StyleSheet.create({
   title: {
     flex: 1,
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 20,
+    fontFamily: fonts.bold,
     textAlign: "center",
   },
   item: {
     paddingVertical: 12,
     paddingHorizontal: 20,
-    borderBottomColor: "#eee",
     borderBottomWidth: 1,
+    borderBottomColor: colors.page.clearSky,
     flexDirection: "row",
     justifyContent: "space-between",
   },
   itemText: {
-    fontSize: 16,
+    fontSize: 18,
+    fontFamily: fonts.italic,
+  },
+  icon: {
+    fontSize: 20,
+    color: colors.black,
   },
   arrow: {
     fontSize: 18,
-    color: "#999",
+    color: colors.page.clearSky,
   },
 });
