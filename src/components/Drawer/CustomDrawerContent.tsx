@@ -1,11 +1,11 @@
 import React from 'react';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { View, Text, TouchableOpacity } from 'react-native';
+
 import { colors } from '@/styles/colors';
+import { styles } from './styles';
 
 import type { DrawerContentComponentProps } from '@react-navigation/drawer';
-
-import { styles } from './styles';
 
 export default function CustomDrawerContent(props: DrawerContentComponentProps) {
   const { state, navigation } = props;

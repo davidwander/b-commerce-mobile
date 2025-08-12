@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Modal, View, Text, TouchableOpacity, FlatList, StyleSheet } from "react-native";
+import { Modal, View, Text, TouchableOpacity, FlatList } from "react-native";
 import { FontAwesome } from '@expo/vector-icons';
 
-import { fonts } from '@/styles/fonts';
-import { colors } from "@/styles/colors";
+import { styles } from './styles';
 
 type PartLeaf = {
   id: string;
@@ -39,7 +38,7 @@ export function CategorySelectorModal({ visible, partsTree, onClose, onConfirm }
       onConfirm([...selectedPath, item]);
       handleClose();
     }
-  }
+  };
 
   function handleBack() {
     if (navigationStack.length > 1) {
@@ -48,13 +47,13 @@ export function CategorySelectorModal({ visible, partsTree, onClose, onConfirm }
     } else {
       handleClose();
     }
-  }
+  };
 
   function handleClose() {
     setNavigationStack([partsTree]);
     setSelectedPath([]);
     onClose();
-  }
+  };
 
   return (
     <Modal visible={visible} animationType="slide" transparent>
@@ -63,12 +62,18 @@ export function CategorySelectorModal({ visible, partsTree, onClose, onConfirm }
           <View style={styles.header}>
             {navigationStack.length > 1 && (
               <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-                <Text style={styles.backText}>Voltar</Text>
+                <FontAwesome 
+                  name="chevron-left"
+                  style={styles.icon} 
+                />
               </TouchableOpacity>
             )}
             <Text style={styles.title}>Selecione a categoria</Text>
             <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
-              <FontAwesome name="close" style={styles.icon} />
+              <FontAwesome 
+                name="close"
+                style={styles.icon} 
+              />
             </TouchableOpacity>
           </View>
 
@@ -78,7 +83,12 @@ export function CategorySelectorModal({ visible, partsTree, onClose, onConfirm }
             renderItem={({ item }) => (
               <TouchableOpacity style={styles.item} onPress={() => handleItemPress(item)}>
                 <Text style={styles.itemText}>{item.name}</Text>
-                {item.children && item.children.length > 0 && <Text style={styles.arrow}>›</Text>}
+                {item.children && item.children.length > 0 && 
+                  <FontAwesome 
+                    name="share" 
+                    style={styles.icon} 
+                  />
+                }
               </TouchableOpacity>
             )}
           />
@@ -87,69 +97,3 @@ export function CategorySelectorModal({ visible, partsTree, onClose, onConfirm }
     </Modal>
   );
 }
-
-const styles = StyleSheet.create({
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    justifyContent: "center",
-    paddingHorizontal: 24,
-  },
-  modalContent: {
-    backgroundColor: colors.white,
-    borderRadius: 12,
-    maxHeight: "80%",
-    paddingVertical: 16,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 14,
-    marginBottom: 10,
-  },
-  backButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-  },
-  backText: {
-    color: colors.page.tulips,
-    fontWeight: "bold",
-  },
-  closeButton: {
-    marginLeft: "auto",
-    paddingHorizontal: 10,
-    paddingVertical: 6,
-  },
-  closeText: {
-    fontWeight: "bold",
-    fontSize: 16,
-    color: colors.page.tulips,
-  },
-  title: {
-    flex: 1,
-    fontWeight: "bold",
-    fontSize: 20,
-    fontFamily: fonts.bold,
-    textAlign: "center",
-  },
-  item: {
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.page.clearSky,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  itemText: {
-    fontSize: 18,
-    fontFamily: fonts.italic,
-  },
-  icon: {
-    fontSize: 20,
-    color: colors.black,
-  },
-  arrow: {
-    fontSize: 18,
-    color: colors.page.clearSky,
-  },
-});

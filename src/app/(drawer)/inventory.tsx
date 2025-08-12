@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Header } from '@/components/Header';
 import { CustomInput } from '@/components/CustomInput';
 import { ActionButton } from '@/components/ActionButton';
-import { CategorySelectorModal } from '@/components/CategorySelectorModal';
+import  { CategorySelectorModal }  from '@/components/Modal/CategorySelectorModal';
 
 import { CategoryList } from '@/components/CategoryList';
 import { colors } from '@/styles/colors';
