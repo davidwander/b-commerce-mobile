@@ -24,6 +24,11 @@ export default function Inventory() {
     }
   }
 
+  function handleAddPiece() {
+    // Aqui futuramente vamos abrir um modal ou navegação para adicionar a peça
+    console.log("Adicionar nova peça");
+  }
+
   return (
     <View style={{ flex: 1, paddingTop: 30, backgroundColor: colors.page.clearSky }}>
       <Header />
@@ -48,6 +53,29 @@ export default function Inventory() {
       )}
 
       <CategoryList data={currentLevel} onItemPress={handleItemPress} />
+
+      {/* Botão flutuante para adicionar peça */}
+      <TouchableOpacity
+        onPress={handleAddPiece}
+        style={{
+          position: "absolute",
+          bottom: 20,
+          right: 20,
+          backgroundColor: colors.page.tulips,
+          width: 60,
+          height: 60,
+          borderRadius: 30,
+          justifyContent: "center",
+          alignItems: "center",
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.3,
+          shadowRadius: 3,
+          elevation: 5,
+        }}
+      >
+        <Text style={{ color: colors.white, fontSize: 30, lineHeight: 34 }}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 }
