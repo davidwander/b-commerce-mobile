@@ -1,10 +1,12 @@
-import React from "react";
+import React from 'react';
 import { View, Text, TouchableOpacity } from "react-native";
 
-import { Header } from "@/components/Header";
-import { CustomInput } from "@/components/CustomInput";
-import { CategoryList } from "@/components/CategoryList";
-import { colors } from "@/styles/colors";
+import { Header } from '@/components/Header';
+import { CustomInput } from '@/components/CustomInput';
+import { ActionButton } from '@/components/ActionButton';
+
+import { CategoryList } from '@/components/CategoryList';
+import { colors } from '@/styles/colors';
 
 // Importa tipos e dados do arquivo externo
 import { partsTree, PartNode, PartLeaf } from "@/data/partsTree";
@@ -54,28 +56,12 @@ export default function Inventory() {
 
       <CategoryList data={currentLevel} onItemPress={handleItemPress} />
 
-      {/* Botão flutuante para adicionar peça */}
-      <TouchableOpacity
+      <ActionButton 
+        label="Adicionar peça"
         onPress={handleAddPiece}
-        style={{
-          position: "absolute",
-          bottom: 20,
-          right: 20,
-          backgroundColor: colors.page.tulips,
-          width: 60,
-          height: 60,
-          borderRadius: 30,
-          justifyContent: "center",
-          alignItems: "center",
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.3,
-          shadowRadius: 3,
-          elevation: 5,
-        }}
-      >
-        <Text style={{ color: colors.white, fontSize: 30, lineHeight: 34 }}>+</Text>
-      </TouchableOpacity>
+        color={colors.page.dragonFruit}
+        style={{ marginHorizontal: 16, marginBottom: 46 }}
+      />
     </View>
   );
 }

@@ -4,6 +4,8 @@ import { FontAwesome } from '@expo/vector-icons';
 import { router } from 'expo-router';
 
 import { Header } from '@/components/Header';
+import { ActionButton } from '@/components/ActionButton';
+
 import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
 
@@ -80,27 +82,12 @@ export default function Sales() {
       </View>
 
       {/* Botão flutuante: Nova Venda */}
-      <TouchableOpacity
+      <ActionButton 
+        label="Nova venda"
         onPress={() => router.push("/sales/new")}
-        style={{
-          position: 'absolute',
-          bottom: 24,
-          right: 24,
-          backgroundColor: colors.page.dragonFruit,
-          borderRadius: 30,
-          width: 60,
-          height: 60,
-          justifyContent: 'center',
-          alignItems: 'center',
-          shadowColor: '#000',
-          shadowOffset: { width: 0, height: 4 },
-          shadowOpacity: 0.2,
-          shadowRadius: 6,
-          elevation: 8,
-        }}
-      >
-        <FontAwesome name="plus" size={24} color="#fff" />
-      </TouchableOpacity>
+        color={colors.page.dragonFruit}
+        style={{ marginHorizontal: 16, marginBottom: 46 }}
+      />
     </View>
   );
 }
