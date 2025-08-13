@@ -36,7 +36,17 @@ export function CustomInput({ label, value, onChangeText, error, ...rest }: Cust
         {...rest}
       />
       {error && (
-        <Text style={{ color: "red", marginTop: 4, fontSize: 12 }}>
+        <Text 
+          style={{
+            color: colors.white, 
+            marginTop: 4, 
+            fontSize: 14, 
+            backgroundColor: "red",
+            borderRadius: 10,
+            padding: 2,
+            textAlign: "center",
+          }}
+        >
           {error}
         </Text>
       )}

@@ -1,8 +1,10 @@
 import React from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+
 import { router } from "expo-router";
 import { colors } from "@/styles/colors";
 import { fonts } from "@/styles/fonts";
+
 import { CustomInput } from "@/components/CustomInput";
 import { useForm, Controller } from "react-hook-form";
 
