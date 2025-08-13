@@ -150,8 +150,8 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   expenseItem: {
-    flexDirection: "column",
-    justifyContent: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
     backgroundColor: "rgba(255,255,255,0.1)",
     padding: 14,
     borderRadius: 8,
