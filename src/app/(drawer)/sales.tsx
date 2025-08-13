@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { View, Text, FlatList } from 'react-native';
 import { router } from 'expo-router';
 
 import { Header } from '@/components/Header';
@@ -11,9 +10,9 @@ import { fonts } from '@/styles/fonts';
 
 
 const openSales = [
-  { id: '1', client: 'João', total: 280.50, date: '2025-08-06' },
+  { id: '1', client: 'Celia', total: 280.50, date: '2025-08-06' },
   { id: '2', client: 'Maria', total: 150.00, date: '2025-08-05' },
-  { id: '3', client: 'Carlos', total: 320.00, date: '2025-08-04' },
+  { id: '3', client: 'Marta', total: 320.00, date: '2025-08-04' },
 ];
 
 export default function Sales() {

@@ -7,6 +7,7 @@ import { fonts } from "@/styles/fonts";
 
 import { CustomInput } from "@/components/CustomInput";
 import { useForm, Controller } from "react-hook-form";
+import { ActionButton } from '@/components/ActionButton';
 
 type FormData = {
   clientName: string;
@@ -114,47 +115,19 @@ export default function NewSale() {
           }}
         />
 
-        <TouchableOpacity
-          style={{
-            backgroundColor: colors.page.tulips,
-            padding: 14,
-            borderRadius: 5,
-            marginTop: 10,
-          }}
+        <ActionButton 
+          label="Adicionar peças"
           onPress={handleSubmit(onSubmit)}
-        >
-          <Text
-            style={{
-              textAlign: "center",
-              color: colors.white,
-              fontSize: 18,
-              fontWeight: "bold",
-            }}
-          >
-            Adicionar peças
-          </Text>
-        </TouchableOpacity>
+          color={colors.page.tulips}
+        />
 
-        <TouchableOpacity
-          style={{
-            backgroundColor: colors.page.dragonFruit,
-            padding: 14,
-            borderRadius: 5,
-            marginTop: 10,
-          }}
+        <ActionButton 
+          label="Voltar"
           onPress={() => router.back()}
-        >
-          <Text
-            style={{
-              textAlign: "center",
-              color: colors.white,
-              fontSize: 18,
-              fontWeight: "bold",
-            }}
-          >
-            Voltar
-          </Text>
-        </TouchableOpacity>
+          color={colors.page.dragonFruit}
+          style={{ marginTop: 14}}
+        />
+
       </ScrollView>
     </View>
   );
