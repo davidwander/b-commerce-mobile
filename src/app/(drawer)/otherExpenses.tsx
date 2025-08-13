@@ -109,14 +109,15 @@ export default function OtherExpenses() {
               <Feather 
                 name="wind"
                 size={50}
-                color={colors.white}
-                style={{ marginRight: 10 }}
+                color={colors.page.clearSky}
+                style={{ marginRight: 10, opacity: 0.5 }}
               />
               <Text 
                 style={{ 
                   color: colors.white, 
                   textAlign: "center",
                   fontFamily: fonts.italic,
+                  fontSize: 18,
                   marginTop: 20 
                 }}
               >
