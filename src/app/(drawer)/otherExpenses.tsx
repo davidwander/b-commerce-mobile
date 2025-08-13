@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from "react-native";
+import { View, Text, FlatList, StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
+import  Feather  from "@expo/vector-icons/Feather";
 
 import { fonts } from "@/styles/fonts";
 import { colors } from "@/styles/colors";
@@ -104,16 +105,24 @@ export default function OtherExpenses() {
           data={expenses}
           keyExtractor={(item) => item.id}
           ListEmptyComponent={
-            <Text 
-              style={{ 
-                color: colors.white, 
-                textAlign: "center",
-                fontFamily: fonts.italic,
-                marginTop: 20 
-              }}
-            >
-              Nenhum gasto registrado.
-            </Text>
+            <View style={{ alignItems: "center", marginTop: 20 }}>
+              <Feather 
+                name="wind"
+                size={50}
+                color={colors.white}
+                style={{ marginRight: 10 }}
+              />
+              <Text 
+                style={{ 
+                  color: colors.white, 
+                  textAlign: "center",
+                  fontFamily: fonts.italic,
+                  marginTop: 20 
+                }}
+              >
+                Nenhum gasto registrado.
+              </Text>
+            </View>
           }
           renderItem={({ item }) => (
             <View style={styles.expenseItem}>
@@ -121,7 +130,7 @@ export default function OtherExpenses() {
               <Text style={styles.expenseValue}>{formatCurrency(item.amount)}</Text>
             </View>
           )}
-          style={{ marginTop: 20 }}
+          style={{ marginTop: 10 }}
         />
       </View>
     </View>
@@ -140,8 +149,8 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   expenseItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: "column",
+    justifyContent: "center",
     backgroundColor: "rgba(255,255,255,0.1)",
     padding: 14,
     borderRadius: 8,
