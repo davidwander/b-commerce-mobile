@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, ScrollView, Dimensions, Text } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
 
 import { Header } from '@/components/Header';
 import { SemiCircleProgress } from '@/components/SemiCircleProgress';
 import { FloatingCard } from '@/components/FloatingCard';
 import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
+import { AnimatedLineChart } from '@/components/AnimatedLineChart';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -16,6 +16,8 @@ const lineChartData = {
     { data: [5000, 7000, 4000, 8000, 7500, 9000], strokeWidth: 2 },
   ],
 };
+
+// Gráfico animado foi extraído para '@/components/AnimatedLineChart'
 
 // Linha com dois semicírculos animados internamente
 function SemiCirclesRow({ lucro, gastos }: { lucro: number; gastos: number }) {
@@ -41,21 +43,26 @@ export default function Dashboard() {
         showsVerticalScrollIndicator={false}
       >
         {/* Gráfico de Linha */}
-        <LineChart
-          data={lineChartData}
-          width={screenWidth - 32}
-          height={210}
+        <AnimatedLineChart
+          labels={lineChartData.labels}
+          target={lineChartData.datasets[0].data}
+          width={screenWidth - 0}
+          height={200}
           chartConfig={{
             backgroundColor: colors.page.meadow,
             backgroundGradientFrom: colors.page.meadow,
-            backgroundGradientTo: colors.page.meadow,
+            backgroundGradientTo: 'rgba(2,2,2,0.3)',
             decimalPlaces: 0,
-            color: () => '#fff',
+            color: () => '#ae4ec2',
             labelColor: () => '#fff',
             propsForDots: { r: '0', strokeWidth: '0', stroke: '#fff' },
+            propsForBackgroundLines: { stroke: 'transparent' },
           }}
-          bezier
-          style={{ marginBottom: 24 }}
+          paddingTopOverride={14}
+          paddingRightOverride={64}
+          mode="amplitude"
+          bleedHorizontal={16}
+          curveType="straight"  
         />
 
         {/* Semicírculo duplo (Lucro vs Gastos) centralizado e maior */}
