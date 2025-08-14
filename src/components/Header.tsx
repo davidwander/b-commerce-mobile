@@ -10,7 +10,7 @@ const routeTitles: Record<string, string> = {
   sales: 'Vendas',
   inventory: 'Estoque',
   notifications: 'Notificações',
-  registerParts: 'Adicionar peças',
+  prices: 'Registrar preços',
   otherExpenses: 'Outros gastos',
 };
 
@@ -19,7 +19,7 @@ const routeColors: Record<string, string> = {
   sales: colors.page.daffodils,
   inventory: colors.page.clearSky,
   notifications: colors.page.tulips,
-  registerParts: colors.page.lavender,
+  prices: colors.page.lavender,
   otherExpenses: colors.page.dragonFruit,
 };
 

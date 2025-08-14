@@ -16,7 +16,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
     sales: 'Vendas',
     inventory: 'Estoque',
     notifications: 'Notificações',
-    registerParts: 'Adicionar',
+    prices: 'Precificar',
     otherExpenses: 'Outros'
   };
 
@@ -25,7 +25,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
     sales: colors.page.daffodils,
     inventory: colors.page.clearSky,
     notifications: colors.page.tulips,
-    registerParts: colors.page.lavender,
+    prices: colors.page.lavender,
     otherExpenses: colors.page.dragonFruit,
   }
 

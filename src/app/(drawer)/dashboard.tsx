@@ -21,12 +21,6 @@ const lineChartData = {
   ],
 };
 
-// dados no formato esperado pelo CustomPieChart
-const pieChartData = [
-  { value: 6000, color: '#4CAF50', label: 'Lucros' },
-  { value: 3000, color: '#F44336', label: 'Gastos' },
-];
-
 export default function Dashboard() {
   return (
     <View style={{ flex: 1, paddingTop: 30, backgroundColor: colors.page.meadow }}>
@@ -50,12 +44,12 @@ export default function Dashboard() {
             backgroundGradientFrom: colors.page.meadow,
             backgroundGradientTo: colors.page.meadow,
             decimalPlaces: 0,
-            color: () => `#ffffff`,
-            labelColor: () => `#ffffff`,
+            color: () => `#ffff`,
+            labelColor: () => `#ffff`,
             propsForDots: {
-              r: '4',
-              strokeWidth: '2',
-              stroke: '#fff',
+              r: '0',
+              strokeWidth: '0',
+              stroke: '#ffff',
             },
           }}
           bezier

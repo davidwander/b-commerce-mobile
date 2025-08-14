@@ -3,7 +3,7 @@ import { colors } from '@/styles/colors';
 
 import { Header } from '@/components/Header';
 
-export default function RegisterParts() {
+export default function Prices() {
   return (
     <View style={{ 
       flex: 1, 
@@ -17,7 +17,7 @@ export default function RegisterParts() {
         alignItems: "center", 
         justifyContent: "center" 
       }}>
-        <Text>Registrar peças</Text>
+        <Text>Registrar preços</Text>
       </View>
     </View>
   );
