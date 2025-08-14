@@ -1,11 +1,10 @@
-// src/app/dashboard.tsx
-import { View, Text, Dimensions, ScrollView } from 'react-native';
+import React from 'react';
+import { View, ScrollView, Dimensions, Text } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
 import { Header } from '@/components/Header';
+import { SemiCircleProgress } from '@/components/SemiCircleProgress';
 import { FloatingCard } from '@/components/FloatingCard';
-import { CustomPieChart } from '@/components/CustomPieChart';
-
 import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
 
@@ -14,12 +13,23 @@ const screenWidth = Dimensions.get('window').width;
 const lineChartData = {
   labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
   datasets: [
-    {
-      data: [5000, 7000, 4000, 8000, 7500, 9000],
-      strokeWidth: 2,
-    },
+    { data: [5000, 7000, 4000, 8000, 7500, 9000], strokeWidth: 2 },
   ],
 };
+
+// Linha com dois semicírculos animados internamente
+function SemiCirclesRow({ lucro, gastos }: { lucro: number; gastos: number }) {
+  return (
+    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
+      <View style={{ flex: 1, alignItems: 'center', marginRight: 10 }}>
+        <SemiCircleProgress percentage={lucro} radius={60} strokeWidth={15} label="Lucro" />
+      </View>
+      <View style={{ flex: 1, alignItems: 'center', marginLeft: 10 }}>
+        <SemiCircleProgress percentage={gastos} radius={60} strokeWidth={15} label="Gastos" />
+      </View>
+    </View>
+  );
+}
 
 export default function Dashboard() {
   return (
@@ -27,11 +37,7 @@ export default function Dashboard() {
       <Header />
 
       <ScrollView
-        contentContainerStyle={{
-          paddingHorizontal: 16,
-          paddingBottom: 40,
-          paddingTop: 16,
-        }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 40, paddingTop: 16 }}
         showsVerticalScrollIndicator={false}
       >
         {/* Gráfico de Linha */}
@@ -44,100 +50,42 @@ export default function Dashboard() {
             backgroundGradientFrom: colors.page.meadow,
             backgroundGradientTo: colors.page.meadow,
             decimalPlaces: 0,
-            color: () => `#ffff`,
-            labelColor: () => `#ffff`,
-            propsForDots: {
-              r: '0',
-              strokeWidth: '0',
-              stroke: '#ffff',
-            },
+            color: () => '#fff',
+            labelColor: () => '#fff',
+            propsForDots: { r: '0', strokeWidth: '0', stroke: '#fff' },
           }}
           bezier
           style={{ marginBottom: 24 }}
         />
 
-        {/* Métricas com FloatingCard */}
+        {/* Semicírculo duplo (Lucro vs Gastos) centralizado e maior */}
+        <View style={{ alignItems: 'center', marginBottom: 26 }}>
+          <SemiCircleProgress
+            percentage={60}
+            secondaryPercentage={35}
+            radius={90}
+            strokeWidth={22}
+            secondaryStrokeWidth={22}
+            gapBetweenArcs={0}
+            label="Lucro"
+            secondaryLabel="Gastos"
+          />
+        </View>
+
+        {/* Floating Cards de resumo */}
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
           <FloatingCard style={{ flex: 1, marginRight: 10, backgroundColor: colors.page.daffodils }}>
-            <Text
-              style={{
-                fontFamily: fonts.italic,
-                fontSize: 18,
-                color: colors.black,
-              }}
-            >
+            <Text style={{ fontFamily: fonts.italic, fontSize: 18, color: colors.black }}>
               Lucro Total
             </Text>
-            <Text
-              style={{
-                fontFamily: fonts.bold,
-                color: colors.black,
-                fontSize: 18,
-              }}
-            >
+            <Text style={{ fontFamily: fonts.bold, fontSize: 18, color: colors.black }}>
               R$ 6.000
             </Text>
           </FloatingCard>
-
-          <FloatingCard style={{ flex: 1, marginLeft: 10 }}>
-            <Text
-              style={{
-                fontFamily: fonts.italic,
-                fontSize: 18,
-                color: colors.black,
-              }}
-            >
-              Gastos Totais
-            </Text>
-            <Text
-              style={{
-                fontFamily: fonts.bold,
-                color: '#F44336',
-                fontSize: 18,
-              }}
-            >
-              R$ 3.000
-            </Text>
-          </FloatingCard>
         </View>
-
-        {/* Gráfico de Pizza */}
-        <Text
-          style={{
-            fontSize: 22,
-            fontFamily: fonts.italic,
-            color: '#fff',
-            marginBottom: 12,
-          }}
-        >
-          Proporção de Lucros e Gastos
-        </Text>
-
-        {/* Componente Pie Chart reutilizável */}
-        <CustomPieChart
-          data={[
-            {
-              value: 7000,
-              color: '#4CAF50',
-              label: 'Lucro',
-              icon: 'dollar',
-            },
-            {
-              value: 3500,
-              color: '#F44336',
-              label: 'Despesas',
-              icon: 'credit-card',
-            },
-            {
-              value: 1500,
-              color: '#2196F3',
-              label: 'Investimentos',
-              icon: 'line-chart',
-            },
-          ]}
-        />
-
+        
       </ScrollView>
     </View>
   );
 }
+ 
