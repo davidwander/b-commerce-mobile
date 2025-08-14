@@ -1,9 +1,13 @@
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import { useEffect } from "react";
-import { colors } from '@/styles/colors';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from "react-native";
 import { Header } from '@/components/Header';
 import { fonts } from '@/styles/fonts';
-import { requestNotificationPermissions, scheduleNotification } from '@/utils/notifications';
+import { colors } from '@/styles/colors';
+import { 
+  requestNotificationPermissions, 
+  scheduleNotification 
+} from '@/utils/notifications';
+
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -101,7 +105,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 12,
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 18,
     elevation: 2,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -111,12 +115,17 @@ const styles = StyleSheet.create({
   testButtonText: {
     color: colors.white || '#fff',
     fontFamily: fonts.bold || 'bold',
-    fontSize: 16,
+    fontSize: 18,
   },
   card: {
-    padding: 16,
+    padding: 14,
     borderRadius: 12,
     marginBottom: 12,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 6, height: 8 },
+    shadowOpacity: 0.22,
+    shadowRadius: 6,
   },
   reminder: {
     backgroundColor: colors.page.lavender || '#FFF3CD',
@@ -125,18 +134,18 @@ const styles = StyleSheet.create({
     backgroundColor: colors.page.meadow || '#CCE5FF',
   },
   title: {
-    fontSize: 16,
-    fontFamily: fonts?.bold || 'bold',
+    fontSize: 18,
+    fontFamily: fonts.bold || 'bold',
   },
   description: {
-    fontSize: 14,
-    fontFamily: fonts?.regular || 'normal',
+    fontSize: 16,
+    fontFamily: fonts.italic || 'normal',
     marginTop: 4,
   },
   date: {
-    fontSize: 12,
+    fontSize: 16,
     fontFamily: fonts.regular || 'normal',
-    marginTop: 8,
+    marginTop: 9,
     color: colors.black || '#6c757d',
   },
   fab: {
@@ -151,8 +160,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 5,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: { width: 5, height: 8 },
     shadowOpacity: 0.25,
-    shadowRadius: 4,
+    shadowRadius: 5,
   },
 });

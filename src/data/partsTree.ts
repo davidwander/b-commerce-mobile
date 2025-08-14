@@ -3,7 +3,7 @@
 export type PartLeaf = {
   id: string;
   name: string;
-  quantity?: number;  // opcional para subcategorias que não possuem quantidade
+  quantity?: number;  
 };
 
 export type PartNode = {
@@ -109,7 +109,7 @@ export const partsTree: PartNode[] = [
     id: "cat-009",
     name: "Casacos",
     children: [
-      { id: "subcat-016", name: "feminina" },
+      { id: "subcat-016", name: "Feminina" },
       { id: "subcat-017", name: "Masculina" }
     ]
   }
