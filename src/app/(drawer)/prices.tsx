@@ -1,24 +1,235 @@
-import { View, Text } from "react-native";
-import { colors } from '@/styles/colors';
+import { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Modal,
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  Platform,
+  KeyboardAvoidingView,
+} from "react-native";
 
-import { Header } from '@/components/Header';
+import { useForm, Controller } from "react-hook-form";
+
+import { fonts } from "@/styles/fonts";
+import { colors } from "@/styles/colors";
+import { Header } from "@/components/Header";
+import { CustomInput } from "@/components/CustomInput";
+import { ActionButton } from "@/components/ActionButton";
+
+// Mock de peças não precificadas
+const mockParts = [
+  { id: "1", nome: "Filtro de Óleo", categoria: "Motor" },
+  { id: "2", nome: "Pastilha de Freio", categoria: "Freio" },
+  { id: "3", nome: "Correia Dentada", categoria: "Transmissão" },
+];
 
 export default function Prices() {
+  const [selectedPart, setSelectedPart] = useState<any>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [priceSale, setPriceSale] = useState("");
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: { cost: "", margin: "" },
+    mode: "onSubmit",
+  });
+
+  const watchCost = watch("cost");
+  const watchMargin = watch("margin");
+
+  useEffect(() => {
+    const costNum = parseFloat((watchCost || "").replace(",", ".")) || 0;
+    const marginNum = parseFloat((watchMargin || "").replace(",", ".")) || 0;
+    const sale = costNum + costNum * (marginNum / 100);
+    setPriceSale(sale ? sale.toFixed(2) : "");
+  }, [watchCost, watchMargin]);
+
+  function openModal(part: any) {
+    setSelectedPart(part);
+    setModalVisible(true);
+    reset({ cost: "", margin: "" });
+    setPriceSale("");
+  }
+
+  const onSubmit = (data: any) => {
+    setModalVisible(false);
+  };
+
+  const onError = (errors: any) => {
+    console.log("Erros do formulário:", errors);
+  };
+
   return (
-    <View style={{ 
-      flex: 1, 
-      paddingTop: 30,
-      backgroundColor: colors.page.lavender 
-    }}>
+    <View style={{ flex: 1, paddingTop: 30, backgroundColor: colors.page.lavender }}>
       <Header />
 
-      <View style={{ 
-        flex: 1, 
-        alignItems: "center", 
-        justifyContent: "center" 
-      }}>
-        <Text>Registrar preços</Text>
+      <View style={{ flex: 1, paddingHorizontal: 16, paddingTop: 10 }}>
+        <FlatList
+          data={mockParts}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity style={styles.card} onPress={() => openModal(item)}>
+              <Text style={styles.cardTitle}>{item.nome}</Text>
+              <Text style={styles.cardSubtitle}>{item.categoria}</Text>
+            </TouchableOpacity>
+          )}
+          contentContainerStyle={{ paddingBottom: 20 }}
+        />
       </View>
+
+      {/* Modal de precificação */}
+      <Modal
+        visible={modalVisible}
+        animationType="fade"
+        transparent
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+          style={styles.modalOverlay}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+        >
+          <View style={styles.modalContainer}>
+            <ScrollView
+              contentContainerStyle={styles.scrollContent}
+              keyboardShouldPersistTaps="handled"
+            >
+              <SafeAreaView style={{ width: "100%" }}>
+                <Text style={styles.modalTitle}>
+                  Precificar: {selectedPart?.nome}
+                </Text>
+
+                {/* Controller para Valor de Custo */}
+                <Controller
+                  control={control}
+                  name="cost"
+                  rules={{ required: "O valor de custo é obrigatório" }}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <CustomInput
+                      label="Valor de custo"
+                      placeholder="Digite o valor de custo"
+                      keyboardType="numeric"
+                      value={value}
+                      onChangeText={(text) => {
+                        // Mantém texto limpo durante digitação
+                        const numeric = text.replace(/[^\d,]/g, "");
+                        onChange(numeric);
+                      }}
+                      onBlur={() => {
+                        if (value) {
+                          const num = parseFloat(value.replace(",", ".")) || 0;
+                          onChange(num.toFixed(2).replace(".", ","));
+                        }
+                      }}
+                      error={errors.cost?.message}
+                    />
+                  )}
+                />
+
+                {/* Controller para Margem */}
+                <Controller
+                  control={control}
+                  name="margin"
+                  rules={{ required: "A margem é obrigatória" }}
+                  render={({ field: { onChange, value, onBlur } }) => (
+                    <CustomInput
+                      label="Margem (%)"
+                      placeholder="Digite a margem de lucro"
+                      keyboardType="numeric"
+                      value={value}
+                      onChangeText={(text) => onChange(text.replace(/[^\d,]/g, ""))}
+                      onBlur={onBlur}
+                      error={errors.margin?.message}
+                    />
+                  )}
+                />
+
+                {priceSale !== "" && (
+                  <Text style={styles.resultText}>
+                    Preço de venda: R$ {priceSale}
+                  </Text>
+                )}
+              </SafeAreaView>
+            </ScrollView>
+
+            {/* Footer fixo do botão */}
+            <View style={styles.footer}>
+              <ActionButton
+                label="Salvar"
+                onPress={handleSubmit(onSubmit, onError)}
+                color={colors.page.lavender}
+              />
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      </Modal>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: colors.white,
+    padding: 16,
+    borderRadius: 10,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  cardTitle: {
+    fontSize: 16,
+    fontFamily: fonts.bold,
+    color: colors.black,
+  },
+  cardSubtitle: {
+    fontSize: 14,
+    color: "#666",
+    marginTop: 4,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.4)",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 16,
+  },
+  modalContainer: {
+    width: "90%",
+    maxHeight: 350,
+    backgroundColor: colors.white,
+    borderRadius: 12,
+    overflow: "hidden",
+  },
+  scrollContent: {
+    padding: 20,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontFamily: fonts.italic,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  resultText: {
+    fontSize: 18,
+    fontFamily: fonts.italic,
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  footer: {
+    padding: 16,
+    backgroundColor: colors.white,
+    borderTopWidth: 1,
+    borderTopColor: colors.page.clearSky,
+  },
+});
