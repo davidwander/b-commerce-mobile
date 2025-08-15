@@ -1,6 +1,7 @@
-import React from 'react';
-import { View, Text, FlatList } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { View, Text, FlatList, Animated } from 'react-native';
 import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
 import { Header } from '@/components/Header';
 import { ActionButton } from '@/components/ActionButton';
@@ -15,16 +16,25 @@ const openSales = [
 ];
 
 export default function Sales() {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
   return (
     <View style={{
       flex: 1,
       paddingTop: 30,
-      backgroundColor: colors.page.daffodils, // mantém a cor original
+      backgroundColor: colors.page.daffodils,
     }}>
       <Header />
 
       <View style={{ flex: 1, paddingHorizontal: 16, paddingTop: 16 }}>
-        {/* Título da seção */}
         <Text
           style={{
             fontSize: 18,
@@ -54,30 +64,72 @@ export default function Sales() {
             keyExtractor={(item) => item.id}
             contentContainerStyle={{ paddingBottom: 100 }}
             showsVerticalScrollIndicator={false}
-            renderItem={({ item }) => (
-              <View
+            renderItem={({ item, index }) => (
+              <Animated.View
                 style={{
-                  backgroundColor: colors.white,
-                  borderRadius: 14,
-                  padding: 20,
-                  marginBottom: 16,
-                  elevation: 5,
-                  shadowColor: "#000",
-                  shadowOffset: { width: 5, height: 8 },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 3.84,
+                  opacity: fadeAnim,
+                  transform: [{ translateY: fadeAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [20, 0],
+                  }) }],
                 }}
               >
-                <Text style={{ fontFamily: fonts.bold, fontSize: 16, marginBottom: 6, color: colors.black }}>
-                  Cliente: {item.client}
-                </Text>
-                <Text style={{ fontFamily: fonts.regular, fontSize: 14, marginBottom: 4, color: colors.black }}>
-                  Data: {item.date}
-                </Text>
-                <Text style={{ fontFamily: fonts.regular, fontSize: 14, color: colors.black }}>
-                  Total: R$ {item.total.toFixed(2)}
-                </Text>
-              </View>
+                <View
+                  style={{
+                    backgroundColor: colors.white,
+                    borderRadius: 12,
+                    padding: 20,
+                    marginBottom: 16,
+                    elevation: 5,
+                    shadowColor: "#000",
+                    shadowOffset: { width: 5, height: 8 },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+  
+                  }}
+                >
+                  {/* Tag de status */}
+                  <View style={{
+                    position: 'absolute',
+                    top: 8,
+                    right: 12,
+                    backgroundColor: colors.page.tulips,
+                    paddingVertical: 2,
+                    paddingHorizontal: 8,
+                    borderRadius: 12,
+                  }}>
+                    <Text style={{
+                      fontSize: 14,
+                      fontFamily: fonts.bold,
+                      color: colors.white
+                    }}>Aberta</Text>
+                  </View>
+
+                  {/* Cliente */}
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                    <Ionicons name="person-circle-outline" size={26} color={colors.black} style={{ marginRight: 6 }} />
+                    <Text style={{ fontFamily: fonts.bold, fontSize: 18, color: colors.black }}>
+                      {item.client}
+                    </Text>
+                  </View>
+
+                  {/* Data */}
+                  <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                    <Ionicons name="calendar-outline" size={26} color={colors.black} style={{ marginRight: 6 }} />
+                    <Text style={{ fontFamily: fonts.regular, fontSize: 16, color: colors.black }}>
+                      {item.date}
+                    </Text>
+                  </View>
+
+                  {/* Total */}
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Ionicons name="cash-outline" size={26} color={colors.black} style={{ marginRight: 6 }} />
+                    <Text style={{ fontFamily: fonts.regular, fontSize: 16, color: colors.black }}>
+                      R$ {item.total.toFixed(2)}
+                    </Text>
+                  </View>
+                </View>
+              </Animated.View>
             )}
           />
         )}
