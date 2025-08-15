@@ -21,18 +21,18 @@ export function CategoryCard({ name, quantity, onPress, disabled }: CategoryCard
       style={{
         backgroundColor: colors.white,
         padding: 16,
-        borderRadius: 10,
+        borderRadius: 12,
         marginBottom: 14,
-        shadowColor: "#000",
-        shadowOpacity: 0.1,
-        shadowRadius: 6,
-        shadowOffset: { width: 3, height: 8 },
         elevation: 5,
+        shadowColor: "#000",
+        shadowOffset: { width: 5, height: 8 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
         opacity: disabled ? 1 : 0.9,
-        width: "100%", // Ocupa toda largura do container pai
+        width: "100%", 
       }}
     >
       <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
@@ -49,7 +49,7 @@ export function CategoryCard({ name, quantity, onPress, disabled }: CategoryCard
             backgroundColor: colors.page.dragonFruit,
             width: 36,
             height: 36,
-            borderRadius: 18,
+            borderRadius: 12,
             justifyContent: "center",
             alignItems: "center",
           }}

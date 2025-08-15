@@ -58,7 +58,7 @@ export default function Inventory() {
             marginBottom: 10,
             padding: 10,
             backgroundColor: colors.page.tulips,
-            borderRadius: 8,
+            borderRadius: 12,
             alignSelf: "flex-start",
           }}
         >

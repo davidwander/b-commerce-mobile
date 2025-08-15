@@ -106,15 +106,6 @@ export default function NewSale() {
           )}
         />
 
-        <View
-          style={{
-            height: 2,
-            backgroundColor: colors.page.clearSky,
-            marginVertical: 20,
-            width: '100%',
-          }}
-        />
-
         <ActionButton 
           label="Adicionar peças"
           onPress={handleSubmit(onSubmit)}

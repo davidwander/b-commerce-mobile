@@ -8,7 +8,6 @@ import { ActionButton } from '@/components/ActionButton';
 import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
 
-
 const openSales = [
   { id: '1', client: 'Celia', total: 280.50, date: '2025-08-06' },
   { id: '2', client: 'Maria', total: 150.00, date: '2025-08-05' },
@@ -20,16 +19,18 @@ export default function Sales() {
     <View style={{
       flex: 1,
       paddingTop: 30,
-      backgroundColor: colors.page.daffodils,
+      backgroundColor: colors.page.daffodils, // mantém a cor original
     }}>
       <Header />
 
-      <View style={{ flex: 1, padding: 16 }}>
+      <View style={{ flex: 1, paddingHorizontal: 16, paddingTop: 16 }}>
+        {/* Título da seção */}
         <Text
           style={{
             fontSize: 18,
             fontFamily: fonts.italic,
-            marginBottom: 18,
+            fontWeight: '600',
+            marginBottom: 16,
             color: colors.black,
           }}
         >
@@ -41,6 +42,8 @@ export default function Sales() {
             style={{
               color: colors.black,
               fontFamily: fonts.italic,
+              textAlign: 'center',
+              marginTop: 50,
             }}
           >
             Nenhuma venda em aberto.
@@ -49,29 +52,29 @@ export default function Sales() {
           <FlatList
             data={openSales}
             keyExtractor={(item) => item.id}
-            contentContainerStyle={{ paddingBottom: 80 }}
+            contentContainerStyle={{ paddingBottom: 100 }}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
               <View
                 style={{
                   backgroundColor: colors.white,
-                  borderRadius: 8,
-                  padding: 16,
-                  marginBottom: 12,
-                  shadowColor: '#000',
-                  shadowOffset: { width: 2, height: 4 },
-                  shadowOpacity: 0.1,
-                  shadowRadius: 8,
-                  elevation: 4,
+                  borderRadius: 14,
+                  padding: 20,
+                  marginBottom: 16,
+                  elevation: 5,
+                  shadowColor: "#000",
+                  shadowOffset: { width: 5, height: 8 },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
                 }}
               >
-                <Text style={{ fontWeight: '600', fontSize: 16, marginBottom: 4 }}>
+                <Text style={{ fontFamily: fonts.bold, fontSize: 16, marginBottom: 6, color: colors.black }}>
                   Cliente: {item.client}
                 </Text>
-                <Text style={{ fontSize: 14, marginBottom: 2 }}>
+                <Text style={{ fontFamily: fonts.regular, fontSize: 14, marginBottom: 4, color: colors.black }}>
                   Data: {item.date}
                 </Text>
-                <Text style={{ fontSize: 14 }}>
+                <Text style={{ fontFamily: fonts.regular, fontSize: 14, color: colors.black }}>
                   Total: R$ {item.total.toFixed(2)}
                 </Text>
               </View>
@@ -85,7 +88,10 @@ export default function Sales() {
         label="Nova venda"
         onPress={() => router.push("/sales/new")}
         color={colors.page.dragonFruit}
-        style={{ marginHorizontal: 16, marginBottom: 46 }}
+        style={{
+          marginHorizontal: 16,
+          marginBottom: 46,
+        }}
       />
     </View>
   );

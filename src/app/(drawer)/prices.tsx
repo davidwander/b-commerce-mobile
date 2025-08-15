@@ -180,12 +180,13 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.white,
     padding: 16,
-    borderRadius: 10,
+    borderRadius: 12,
     marginBottom: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
     elevation: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 5, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   cardTitle: {
     fontSize: 16,

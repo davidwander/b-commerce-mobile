@@ -89,8 +89,12 @@ const styles = StyleSheet.create({
     marginTop: 16,
     backgroundColor: colors.white,
     padding: 12,
-    borderRadius: 8,
+    borderRadius: 12,
     elevation: 5,
+    shadowColor: "#000",
+    shadowOffset: { width: 5, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   dateText: {
     fontSize: 16,

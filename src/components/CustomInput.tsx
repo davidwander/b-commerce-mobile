@@ -27,8 +27,13 @@ export function CustomInput({ label, value, onChangeText, error, ...rest }: Cust
         onChangeText={onChangeText}
         style={{
           backgroundColor: colors.white,
-          borderRadius: 5,
+          borderRadius: 12,
           padding: 16,
+          elevation: 5,
+          shadowColor: "#000",
+          shadowOffset: { width: 5, height: 8 },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
           borderWidth: error ? 1 : 0,
           borderColor: error ? "red" : "transparent",
         }}
@@ -42,7 +47,7 @@ export function CustomInput({ label, value, onChangeText, error, ...rest }: Cust
             marginTop: 4, 
             fontSize: 14, 
             backgroundColor: "red",
-            borderRadius: 10,
+            borderRadius: 12,
             padding: 2,
             textAlign: "center",
           }}
