@@ -7,6 +7,7 @@ import {
   Poppins_400Regular_Italic,
   Poppins_700Bold
 } from '@expo-google-fonts/poppins';
+import '@/utils/calendarLocale';
 
 export default function Layout() {
   const [fontsLoaded] = useFonts({
@@ -29,3 +30,6 @@ export default function Layout() {
     </SafeAreaProvider>
   );
 }
+
+
+
