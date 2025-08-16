@@ -18,6 +18,7 @@ import { colors } from '@/styles/colors';
 import { Header } from '@/components/Header';
 import { CustomInput } from '@/components/CustomInput';
 import { ActionButton } from '@/components/ActionButton';
+import { FontAwesome } from '@expo/vector-icons';
 
 // Mock de peças não precificadas
 const mockParts = [
@@ -97,6 +98,12 @@ export default function Prices() {
           keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
         >
           <View style={styles.modalContainer}>
+            <TouchableOpacity
+              onPress={() => setModalVisible(false)}
+              style={styles.closeModal}
+            >
+              <FontAwesome name='close' size={20} />
+            </TouchableOpacity>
             <ScrollView
               contentContainerStyle={styles.scrollContent}
               keyboardShouldPersistTaps="handled"

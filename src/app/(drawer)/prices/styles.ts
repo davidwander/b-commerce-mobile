@@ -69,4 +69,9 @@ export const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: colors.page.clearSky,
   },
+  closeModal: {
+    alignSelf: "flex-end",
+    padding: 8,
+    paddingBottom: 2
+  },
 })
