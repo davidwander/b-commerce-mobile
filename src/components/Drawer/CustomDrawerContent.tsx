@@ -11,15 +11,17 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
   const { state, navigation } = props;
   const { routeNames, index: activeIndex } = state;
 
+  // Labels para cada rota
   const routeLabels: Record<string, string> = {
     dashboard: 'Visão geral',
     sales: 'Vendas',
     inventory: 'Estoque',
     notifications: 'Notificações',
     prices: 'Precificar',
-    otherExpenses: 'Outros'
+    otherExpenses: 'Outros',
   };
 
+  // Cores de fundo para cada rota
   const routeBackgroundColors: Record<string, string> = {
     dashboard: colors.page.meadow,
     sales: colors.page.daffodils,
@@ -29,11 +31,10 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
     otherExpenses: colors.page.dragonFruit,
   };
 
-  // Função para normalizar só a rota inventory
-  const normalizeInventoryRoute = (name: string) => {
-    if (name.startsWith('inventory')) {
-      return 'inventory';
-    }
+  // Normalização de rotas dinâmicas
+  const normalizeRoute = (name: string) => {
+    if (name.startsWith('inventory')) return 'inventory';
+    if (name.startsWith('dashboard')) return 'dashboard';
     return name;
   };
 
@@ -41,16 +42,13 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
     <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
       {routeNames.map((name, idx) => {
         const isFocused = activeIndex === idx;
-        const normalizedName = normalizeInventoryRoute(name);
+        const normalizedName = normalizeRoute(name);
 
         return (
           <TouchableOpacity
             key={name}
             onPress={() => navigation.navigate(name as never)}
-            style={[
-              styles.itemWrapper,
-              { zIndex: isFocused ? 2 : 1 },
-            ]}
+            style={[styles.itemWrapper, { zIndex: isFocused ? 2 : 1 }]}
             accessibilityState={isFocused ? { selected: true } : {}}
           >
             <View
@@ -63,10 +61,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
               <Text
                 numberOfLines={1}
                 ellipsizeMode="tail"
-                style={[
-                  styles.labelText,
-                  isFocused ? styles.activeText : styles.activeText,
-                ]}
+                style={[styles.labelText, isFocused ? styles.activeText : styles.activeText]}
               >
                 {routeLabels[normalizedName] ?? normalizedName}
               </Text>

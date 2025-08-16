@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, ScrollView, Dimensions, Text } from 'react-native';
+import { styles } from './styles';
 
 import { Header } from '@/components/Header';
 import { SemiCircleProgress } from '@/components/SemiCircleProgress';
 import { FloatingCard } from '@/components/FloatingCard';
+
 import { colors } from '@/styles/colors';
-import { fonts } from '@/styles/fonts';
 import { AnimatedLineChart } from '@/components/AnimatedLineChart';
 
 const screenWidth = Dimensions.get('window').width;
@@ -20,11 +21,11 @@ const lineChartData = {
 // Linha com dois semicírculos animados internamente
 function SemiCirclesRow({ lucro, gastos }: { lucro: number; gastos: number }) {
   return (
-    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
-      <View style={{ flex: 1, alignItems: 'center', marginRight: 10 }}>
+    <View style={styles.semiCircleContainer}>
+      <View style={styles.semiCircleContainerContent}>
         <SemiCircleProgress percentage={lucro} radius={60} strokeWidth={15} label="Lucro" />
       </View>
-      <View style={{ flex: 1, alignItems: 'center', marginLeft: 10 }}>
+      <View style={styles.semiCircleContent}>
         <SemiCircleProgress percentage={gastos} radius={60} strokeWidth={15} label="Gastos" />
       </View>
     </View>
@@ -33,7 +34,7 @@ function SemiCirclesRow({ lucro, gastos }: { lucro: number; gastos: number }) {
 
 export default function Dashboard() {
   return (
-    <View style={{ flex: 1, paddingTop: 30, backgroundColor: colors.page.meadow }}>
+    <View style={styles.container}>
       <Header />
 
       <ScrollView
@@ -64,7 +65,7 @@ export default function Dashboard() {
         />
 
         {/* Semicírculo duplo (Lucro vs Gastos) centralizado e maior */}
-        <View style={{ alignItems: 'center', marginBottom: 26 }}>
+        <View style={styles.containerContent}>
           <SemiCircleProgress
             percentage={60}
             secondaryPercentage={35}
@@ -78,17 +79,16 @@ export default function Dashboard() {
         </View>
 
         {/* Floating Cards de resumo */}
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24 }}>
-          <FloatingCard style={{ flex: 1, marginRight: 10, backgroundColor: colors.page.daffodils }}>
-            <Text style={{ fontFamily: fonts.italic, fontSize: 18, color: colors.black }}>
+        <View style={styles.card}>
+          <FloatingCard style={styles.cardContent}>
+            <Text style={styles.cardText}>
               Lucro Total
             </Text>
-            <Text style={{ fontFamily: fonts.bold, fontSize: 18, color: colors.black }}>
+            <Text style={styles.cardValue}>
               R$ 6.000
             </Text>
           </FloatingCard>
         </View>
-        
       </ScrollView>
     </View>
   );
