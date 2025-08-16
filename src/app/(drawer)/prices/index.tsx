@@ -1,24 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import {
   View,
   Text,
   FlatList,
   TouchableOpacity,
   Modal,
-  StyleSheet,
   ScrollView,
   SafeAreaView,
   Platform,
   KeyboardAvoidingView,
-} from "react-native";
+} from 'react-native';
+import { styles } from './styles';
 
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller } from 'react-hook-form';
 
-import { fonts } from "@/styles/fonts";
-import { colors } from "@/styles/colors";
-import { Header } from "@/components/Header";
-import { CustomInput } from "@/components/CustomInput";
-import { ActionButton } from "@/components/ActionButton";
+import { colors } from '@/styles/colors';
+import { Header } from '@/components/Header';
+import { CustomInput } from '@/components/CustomInput';
+import { ActionButton } from '@/components/ActionButton';
 
 // Mock de peças não precificadas
 const mockParts = [
@@ -69,10 +68,9 @@ export default function Prices() {
   };
 
   return (
-    <View style={{ flex: 1, paddingTop: 30, backgroundColor: colors.page.lavender }}>
+    <View style={styles.container}>
       <Header />
-
-      <View style={{ flex: 1, paddingHorizontal: 16, paddingTop: 10 }}>
+      <View style={styles.containerContent}>
         <FlatList
           data={mockParts}
           keyExtractor={(item) => item.id}
@@ -175,62 +173,3 @@ export default function Prices() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: colors.white,
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 10,
-    elevation: 5,
-    shadowColor: "#000",
-    shadowOffset: { width: 5, height: 8 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-  },
-  cardTitle: {
-    fontSize: 16,
-    fontFamily: fonts.bold,
-    color: colors.black,
-  },
-  cardSubtitle: {
-    fontSize: 14,
-    color: "#666",
-    marginTop: 4,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(0,0,0,0.4)",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 16,
-  },
-  modalContainer: {
-    width: "90%",
-    maxHeight: 350,
-    backgroundColor: colors.white,
-    borderRadius: 12,
-    overflow: "hidden",
-  },
-  scrollContent: {
-    padding: 20,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontFamily: fonts.italic,
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  resultText: {
-    fontSize: 18,
-    fontFamily: fonts.italic,
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  footer: {
-    padding: 16,
-    backgroundColor: colors.white,
-    borderTopWidth: 1,
-    borderTopColor: colors.page.clearSky,
-  },
-});

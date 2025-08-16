@@ -9,9 +9,9 @@ import  { CategorySelectorModal }  from '@/components/Modal/CategorySelectorModa
 
 import { CategoryList } from '@/components/CategoryList';
 import { colors } from '@/styles/colors';
-import Feather from "@expo/vector-icons/Feather";
+import Feather from '@expo/vector-icons/Feather';
 
-import { partsTree, PartNode, PartLeaf } from "@/data/partsTree";
+import { partsTree, PartNode, PartLeaf } from '@/data/partsTree';
 import { fonts } from '@/styles/fonts';
 
 export default function Inventory() {

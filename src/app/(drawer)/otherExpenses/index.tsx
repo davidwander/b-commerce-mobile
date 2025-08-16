@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
-import { useForm, Controller } from "react-hook-form";
-import  Feather  from "@expo/vector-icons/Feather";
+import { useState } from 'react';
+import { View, Text, FlatList } from 'react-native';
+import { useForm, Controller } from 'react-hook-form';
+import { styles } from './styles';
 
-import { fonts } from "@/styles/fonts";
-import { colors } from "@/styles/colors";
-import { CustomInput } from "@/components/CustomInput";
-import { Header } from "@/components/Header";
+import  Feather  from '@expo/vector-icons/Feather';
+import { colors } from '@/styles/colors';
+import { CustomInput } from '@/components/CustomInput';
+import { Header } from '@/components/Header';
 import { ActionButton } from '@/components/ActionButton';
 
 type FormData = {
@@ -50,11 +50,12 @@ export default function OtherExpenses() {
   };
 
   return (
-    <View style={{ flex: 1, paddingTop: 30, backgroundColor: colors.page.dragonFruit }}>
+    <View style={styles.container}>
       <Header />
-
-      <View style={styles.container}>
-        <Text style={styles.title}>Registrar outros gastos</Text>
+      <View style={styles.containerContent}>
+        <Text style={styles.title}>
+          Registrar outros gastos
+        </Text>
 
         {/* Campo descrição */}
         <Controller
@@ -105,22 +106,14 @@ export default function OtherExpenses() {
           data={expenses}
           keyExtractor={(item) => item.id}
           ListEmptyComponent={
-            <View style={{ alignItems: "center", marginTop: 20 }}>
+            <View style={styles.listEmptyContent}>
               <Feather 
                 name="wind"
                 size={50}
                 color={colors.page.clearSky}
                 style={{ marginRight: 10, opacity: 0.5 }}
               />
-              <Text 
-                style={{ 
-                  color: colors.white, 
-                  textAlign: "center",
-                  fontFamily: fonts.italic,
-                  fontSize: 18,
-                  marginTop: 20 
-                }}
-              >
+              <Text style={styles.listEmptyText}>
                 Nenhum gasto registrado.
               </Text>
             </View>
@@ -138,34 +131,3 @@ export default function OtherExpenses() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  title: {
-    fontSize: 20,
-    fontFamily: fonts.bold,
-    marginBottom: 12,
-    color: colors.white,
-  },
-  expenseItem: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    backgroundColor: "rgba(255,255,255,0.1)",
-    padding: 14,
-    borderRadius: 12,
-    marginBottom: 8,
-    alignItems: "center",
-  },
-  expenseText: {
-    color: colors.white,
-    fontFamily: fonts.italic,
-    fontSize: 19,
-  },
-  expenseValue: {
-    color: colors.white,
-    fontFamily: fonts.bold,
-    fontSize: 19,
-  },
-});
