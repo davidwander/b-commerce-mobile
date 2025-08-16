@@ -17,8 +17,6 @@ const lineChartData = {
   ],
 };
 
-// Gráfico animado foi extraído para '@/components/AnimatedLineChart'
-
 // Linha com dois semicírculos animados internamente
 function SemiCirclesRow({ lucro, gastos }: { lucro: number; gastos: number }) {
   return (

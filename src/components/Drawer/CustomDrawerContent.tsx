@@ -27,12 +27,21 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
     notifications: colors.page.tulips,
     prices: colors.page.lavender,
     otherExpenses: colors.page.dragonFruit,
-  }
+  };
+
+  // Função para normalizar só a rota inventory
+  const normalizeInventoryRoute = (name: string) => {
+    if (name.startsWith('inventory')) {
+      return 'inventory';
+    }
+    return name;
+  };
 
   return (
     <DrawerContentScrollView {...props} contentContainerStyle={styles.container}>
       {routeNames.map((name, idx) => {
         const isFocused = activeIndex === idx;
+        const normalizedName = normalizeInventoryRoute(name);
 
         return (
           <TouchableOpacity
@@ -47,10 +56,8 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
             <View
               style={[
                 styles.labelContainer,
-                
-                 { backgroundColor: routeBackgroundColors[name] || '#fff',
-                },
-                  isFocused && styles.labelActiveContainer,
+                { backgroundColor: routeBackgroundColors[normalizedName] || '#fff' },
+                isFocused && styles.labelActiveContainer,
               ]}
             >
               <Text
@@ -61,7 +68,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
                   isFocused ? styles.activeText : styles.activeText,
                 ]}
               >
-                {routeLabels[name] ?? name}
+                {routeLabels[normalizedName] ?? normalizedName}
               </Text>
             </View>
           </TouchableOpacity>
@@ -70,5 +77,3 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
     </DrawerContentScrollView>
   );
 }
-
-

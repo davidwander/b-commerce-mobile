@@ -23,11 +23,19 @@ const routeColors: Record<string, string> = {
   otherExpenses: colors.page.dragonFruit,
 };
 
+// Função para normalizar rotas que estão dentro de pastas
+function normalizeRouteName(name: string) {
+  if (!name) return 'dashboard';
+  // Pega só a primeira parte antes de "/"
+  return name.split('/')[0];
+}
+
 export function Header() {
   const navigation = useNavigation();
   const navigationState = useNavigationState(state => state);
 
-  const currentRoute = navigationState?.routes[navigationState.index]?.name || 'dashboard';
+  const rawRouteName = navigationState?.routes[navigationState.index]?.name || 'dashboard';
+  const currentRoute = normalizeRouteName(rawRouteName);
 
   const backgroundColor = routeColors[currentRoute] || colors.black;
   const title = routeTitles[currentRoute] || currentRoute;
