@@ -52,4 +52,10 @@ export const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     fontSize: 14,
   },
+  settingsWrapper: {
+    borderTopWidth: 2,
+    borderTopColor: 'rgba(255, 255, 255, 0.6)', // linha sutil
+    paddingTop: 14,
+    height: 75,
+  },
 });
