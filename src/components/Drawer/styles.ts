@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     overflow: 'visible',
   },
   itemWrapper: {
-    height: 80,
+    height: 90,
     justifyContent: 'center',
     width: '120%',
     overflow: 'visible',
