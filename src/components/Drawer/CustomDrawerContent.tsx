@@ -19,7 +19,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
     notifications: "Notificações",
     prices: "Precificar",
     otherExpenses: "Outros",
-    settings: "Configurações", // novo
+    settings: "Configurações",
   };
 
   // Cores de fundo para cada rota
@@ -30,7 +30,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
     notifications: colors.page.tulips,
     prices: colors.page.lavender,
     otherExpenses: colors.page.dragonFruit,
-    settings: colors.page.tulips, // cor pro settings
+    settings: colors.page.tulips,
   };
 
   // Normalização de rotas dinâmicas
@@ -43,69 +43,45 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
     return name;
   };
 
-  const settingsRoute = "settings";
-
   return (
-    <DrawerContentScrollView {...props} contentContainerStyle={{ flex: 1 }}>
-      <View style={{ flex: 1, justifyContent: "space-between" }}>
-        {/* Rotas normais em cima */}
+    <DrawerContentScrollView {...props} contentContainerStyle={{ paddingTop: 12 }}>
+      <View style={{ flex: 1, justifyContent: "flex-start" }}>
         <View>
-          {routeNames
-            .filter((name) => name !== settingsRoute)
-            .map((name, idx) => {
-              const isFocused = activeIndex === idx;
-              const normalizedName = normalizeRoute(name);
+          {routeNames.map((name, idx) => {
+            const isFocused = activeIndex === idx;
+            const normalizedName = normalizeRoute(name);
 
-              return (
-                <TouchableOpacity
-                  key={name}
-                  onPress={() => navigation.navigate(name as never)}
-                  style={[styles.itemWrapper, { zIndex: isFocused ? 2 : 1 }]}
-                  accessibilityState={isFocused ? { selected: true } : {}}
+            return (
+              <TouchableOpacity
+                key={name}
+                onPress={() => navigation.navigate(name as never)}
+                style={[styles.itemWrapper, { zIndex: isFocused ? 2 : 1 }]}
+                accessibilityState={isFocused ? { selected: true } : {}}
+              >
+                <View
+                  style={[
+                    styles.labelContainer,
+                    {
+                      backgroundColor:
+                        routeBackgroundColors[normalizedName] || "#fff",
+                    },
+                    isFocused && styles.labelActiveContainer,
+                  ]}
                 >
-                  <View
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
                     style={[
-                      styles.labelContainer,
-                      {
-                        backgroundColor:
-                          routeBackgroundColors[normalizedName] || "#fff",
-                      },
-                      isFocused && styles.labelActiveContainer,
+                      styles.labelText,
+                      isFocused ? styles.activeText : styles.labelText,
                     ]}
                   >
-                    <Text
-                      numberOfLines={1}
-                      ellipsizeMode="tail"
-                      style={[
-                        styles.labelText,
-                        isFocused ? styles.activeText : styles.activeText,
-                      ]}
-                    >
-                      {routeLabels[normalizedName] ?? normalizedName}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
-        </View>
-
-        {/* Rota de settings embaixo */}
-        <View style={{ marginBottom: 20 }}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate(settingsRoute as never)}
-            style={[styles.itemWrapper, { zIndex: 1 }]}
-          >
-            <View
-              style={[
-                styles.labelContainer,
-                { backgroundColor: routeBackgroundColors.settings },
-              ]}
-            >
-              <Text style={[styles.labelText, styles.activeText]}>
-                {routeLabels.settings}
-              </Text>
-            </View>
-          </TouchableOpacity>
+                    {routeLabels[normalizedName] ?? normalizedName}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
         </View>
       </View>
     </DrawerContentScrollView>

@@ -19,10 +19,10 @@ export const styles = StyleSheet.create({
   labelContainer: {
     transform: [{ rotate: '-90deg' }],
     paddingHorizontal: 12,
-    paddingVertical: 14,
+    paddingVertical: 16,
     borderTopRightRadius: 28,
     borderTopLeftRadius: 28,
-    minWidth: 90,
+    minWidth: 98,
     alignSelf: 'center',
   },
   labelActiveContainer: {
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     fontWeight: '300',
     textAlign: 'center',
-    color: '#888',
+    color: colors.black,
   },
   activeText: {
     color: colors.black,
