@@ -13,9 +13,9 @@ export default function DrawerLayout() {
         overlayColor: 'transparent',
         drawerStyle: {
           backgroundColor: colors.black,
-          width: 45, 
+          width: 47, 
           borderRightWidth: 0,
-          elevation: 0,
+          elevation: 5,
           shadowColor: 'transparent'
         },
       }}

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { DrawerContentScrollView } from "@react-navigation/drawer";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Animated } from "react-native";
 
 import { colors } from "@/styles/colors";
 import { styles } from "./styles";
@@ -43,6 +43,21 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
   const settingsRoute = "settings";
   const activeRoute = state.routeNames[state.index];
 
+  // animação de largura
+  const animatedWidths = useRef<Record<string, Animated.Value>>(
+    Object.fromEntries(routeNames.map((r) => [r, new Animated.Value(r === activeRoute ? 140 : 98)]))
+  ).current;
+
+  useEffect(() => {
+    routeNames.forEach((name) => {
+      Animated.timing(animatedWidths[name], {
+        toValue: name === activeRoute ? 140 : 98,
+        duration: 200,
+        useNativeDriver: false,
+      }).start();
+    });
+  }, [activeRoute]);
+
   return (
     <DrawerContentScrollView
       {...props}
@@ -64,10 +79,13 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
                   style={[styles.itemWrapper, { zIndex: isFocused ? 2 : 1 }]}
                   accessibilityState={isFocused ? { selected: true } : {}}
                 >
-                  <View
+                  <Animated.View
                     style={[
                       styles.labelContainer,
-                      { backgroundColor: routeBackgroundColors[normalizedName] || "#fff" },
+                      { 
+                        backgroundColor: routeBackgroundColors[normalizedName] || "#fff",
+                        width: animatedWidths[name],
+                      },
                       isFocused && styles.labelActiveContainer,
                     ]}
                   >
@@ -78,7 +96,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
                     >
                       {routeLabels[normalizedName] ?? normalizedName}
                     </Text>
-                  </View>
+                  </Animated.View>
                 </TouchableOpacity>
               );
             })}
@@ -90,10 +108,13 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
             onPress={() => navigation.navigate(settingsRoute as never)}
             style={styles.itemWrapper}
           >
-            <View
+            <Animated.View
               style={[
                 styles.labelContainer,
-                { backgroundColor: routeBackgroundColors.settings },
+                { 
+                  backgroundColor: routeBackgroundColors.settings,
+                  width: animatedWidths[settingsRoute],
+                },
                 activeRoute === settingsRoute && styles.labelActiveContainer,
               ]}
             >
@@ -107,7 +128,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
               >
                 {routeLabels.settings}
               </Text>
-            </View>
+            </Animated.View>
           </TouchableOpacity>
         </View>
       </View>

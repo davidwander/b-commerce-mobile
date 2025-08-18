@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     overflow: 'visible',
   },
   itemWrapper: {
-    height: 90,
+    height: 85,
     justifyContent: 'center',
     width: '120%',
     overflow: 'visible',
@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   labelContainer: {
     transform: [{ rotate: '-90deg' }],
     paddingHorizontal: 12,
-    paddingVertical: 16,
+    paddingVertical: 14,
     borderTopRightRadius: 28,
     borderTopLeftRadius: 28,
     minWidth: 98,
@@ -54,8 +54,12 @@ export const styles = StyleSheet.create({
   },
   settingsWrapper: {
     borderTopWidth: 2,
-    borderTopColor: 'rgba(255, 255, 255, 0.6)', // linha sutil
-    paddingTop: 14,
-    height: 75,
+    borderTopColor: 'rgba(255, 255, 255, 0.6)',
+    paddingTop: 12,
+    paddingVertical: 14,
+    paddingBottom: 12,
+    width: '100%',
+    height: 80, 
+    
   },
 });
