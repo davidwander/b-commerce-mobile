@@ -1,8 +1,8 @@
-import { Drawer } from "expo-router/drawer";
-import CustomDrawerContent from "@/components/Drawer/CustomDrawerContent";
-import { colors } from "@/styles/colors";
+import { Drawer } from 'expo-router/drawer';
+import CustomDrawerContent from '@/components/Drawer/CustomDrawerContent';
+import { colors } from '@/styles/colors';
 
-import { RequireAuth } from "@/components/RequireAuth";
+import { RequireAuth } from '@/components/RequireAuth';
 
 export default function DrawerLayout() {
   return (

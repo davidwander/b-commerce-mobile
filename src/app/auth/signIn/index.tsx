@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Alert } from "react-native";
-import { styles } from "./styles";
-import { useRouter } from "expo-router";
-import { CustomInput } from "@/components/CustomInput";
-import { useAuth } from "@/contexts/AuthContext";
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { styles } from './styles';
+import { useRouter } from 'expo-router';
+import { CustomInput } from '@/components/CustomInput';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function SignIn() {
   const router = useRouter();

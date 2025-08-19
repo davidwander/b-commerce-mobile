@@ -1,11 +1,11 @@
-import React, { useRef, useEffect } from "react";
-import { DrawerContentScrollView } from "@react-navigation/drawer";
-import { View, Text, TouchableOpacity, Animated } from "react-native";
+import React, { useRef, useEffect } from 'react';
+import { DrawerContentScrollView } from '@react-navigation/drawer';
+import { View, Text, TouchableOpacity, Animated } from 'react-native';
 
-import { colors } from "@/styles/colors";
-import { styles } from "./styles";
+import { colors } from '@/styles/colors';
+import { styles } from './styles';
 
-import type { DrawerContentComponentProps } from "@react-navigation/drawer";
+import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 
 export default function CustomDrawerContent(props: DrawerContentComponentProps) {
   const { state, navigation } = props;

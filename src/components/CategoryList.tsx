@@ -1,6 +1,6 @@
-import React from "react";
-import { FlatList, View } from "react-native";
-import { CategoryCard } from "./CategoryCard";
+import React from 'react';
+import { FlatList, View } from 'react-native';
+import { CategoryCard } from './CategoryCard';
 
 type PartLeaf = {
   id: string;

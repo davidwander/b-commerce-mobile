@@ -1,6 +1,6 @@
-import React from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import { useRouter } from "expo-router";
+import React from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'expo-router';
 
 export const RequireAuth = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
@@ -8,7 +8,7 @@ export const RequireAuth = ({ children }: { children: React.ReactNode }) => {
 
   React.useEffect(() => {
     if (!user) {
-      router.replace("/auth/signIn"); // redireciona para login se não estiver logado
+      router.replace("/../contexts/AuthContext"); // redireciona para login se não estiver logado
     }
   }, [user]);
 

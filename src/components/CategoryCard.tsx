@@ -1,10 +1,10 @@
-import React from "react";
-import { TouchableOpacity, View, Text } from "react-native";
+import React from 'react';
+import { TouchableOpacity, View, Text } from 'react-native';
 
-import categoryIcons from "@/utils/categoryIcons";
+import categoryIcons from '@/utils/categoryIcons';
 
-import { fonts } from "@/styles/fonts";
-import { colors } from "@/styles/colors";
+import { fonts } from '@/styles/fonts';
+import { colors } from '@/styles/colors';
 
 type CategoryCardProps = {
   name: string;

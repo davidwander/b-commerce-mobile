@@ -1,5 +1,3 @@
-// src/data/partsTree.ts
-
 export type PartLeaf = {
   id: string;
   name: string;
@@ -114,4 +112,5 @@ export const partsTree: PartNode[] = [
     ]
   }
 ];
+
 

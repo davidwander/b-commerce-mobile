@@ -1,7 +1,7 @@
-import React from "react";
-import { TouchableOpacity, Text, ViewStyle, TextStyle } from "react-native";
-import { colors } from "@/styles/colors";
-import { fonts } from "@/styles/fonts";
+import React from 'react';
+import { TouchableOpacity, Text, ViewStyle, TextStyle } from 'react-native';
+import { colors } from '@/styles/colors';
+import { fonts } from '@/styles/fonts';
 
 type ActionButtonProps = {
   label: string;

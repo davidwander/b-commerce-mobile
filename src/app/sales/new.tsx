@@ -1,12 +1,12 @@
-import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import React from 'react';
+import { View, Text, ScrollView } from 'react-native';
 
-import { router } from "expo-router";
-import { colors } from "@/styles/colors";
-import { fonts } from "@/styles/fonts";
+import { router } from 'expo-router';
+import { colors } from '@/styles/colors';
+import { fonts } from '@/styles/fonts';
 
-import { CustomInput } from "@/components/CustomInput";
-import { useForm, Controller } from "react-hook-form";
+import { CustomInput } from '@/components/CustomInput';
+import { useForm, Controller } from 'react-hook-form';
 import { ActionButton } from '@/components/ActionButton';
 
 type FormData = {

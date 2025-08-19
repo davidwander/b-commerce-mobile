@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Modal, View, Text, TouchableOpacity, FlatList } from "react-native";
+import React, { useState } from 'react';
+import { Modal, View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
 import { styles } from './styles';
