@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
-import Loading from "@/components/Loading";
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+import Loading from '@/components/Loading';
 
 type LoadingContextType = {
   showLoading: (msg?: string) => void;

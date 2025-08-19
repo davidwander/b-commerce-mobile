@@ -1,6 +1,5 @@
-// src/hooks/useApiRequest.ts
-import { useLoading } from "@/contexts/LoadingContext";
-import { Alert } from "react-native";
+import { useLoading } from '@/contexts/LoadingContext';
+import { Alert } from 'react-native';
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
