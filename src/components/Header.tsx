@@ -22,7 +22,7 @@ const routeColors: Record<string, string> = {
   notifications: colors.page.tulips,
   prices: colors.page.lavender,
   otherExpenses: colors.page.dragonFruit,
-  settings: colors.page.tulips,
+  settings: colors.page.auburn,
 };
 
 // Função para normalizar rotas que estão dentro de pastas

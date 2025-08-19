@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 30,
-    backgroundColor: colors.page.tulips,
+    backgroundColor: colors.page.auburn,
   },
   optionsWrapper: {
     paddingTop: 20,
