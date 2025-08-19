@@ -1,34 +1,79 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+
 import { styles } from "./styles";
 import { Header } from "@/components/Header";
+import { colors } from "@/styles/colors";
+import { useRouter } from "expo-router";
 
 const settingsOptions = [
-  { id: '1', title: 'Trocar E-mail' },
-  { id: '2', title: 'Trocar Senha' },
-  { id: '3', title: 'Nova Senha' },
+  {
+    id: '1',
+    title: 'Trocar E-mail',
+    category: 'Conta',
+    icon: 'mail-outline',
+    targetScreen: 'ChangeEmail',
+  },
+  {
+    id: '2',
+    title: 'Trocar Senha',
+    category: 'Conta',
+    icon: 'lock-closed-outline',
+    targetScreen: 'ChangePassword',
+  },
+  {
+    id: '3',
+    title: 'Nova Senha',
+    category: 'Segurança',
+    icon: 'key-outline',
+    targetScreen: 'NewPassword',
+  },
 ];
 
 export default function Settings() {
-  const handleOptionPress = (optionId: string) => {
-    // Aqui você pode adicionar a navegação ou modal correspondente
-    console.log("Opção selecionada:", optionId);
+  const router = useRouter();
+
+  const handleOptionPress = (targetScreen?: string) => {
+    if (targetScreen) {
+      router.push(targetScreen); // navega para a tela correspondente
+    }
   };
+
+  // Agrupa opções por categoria
+  const groupedOptions = settingsOptions.reduce<Record<string, typeof settingsOptions>>(
+    (acc, item) => {
+      if (!acc[item.category]) acc[item.category] = [];
+      acc[item.category].push(item);
+      return acc;
+    },
+    {}
+  );
 
   return (
     <View style={styles.container}>
       <Header />
-      <View style={styles.optionsWrapper}>
-        {settingsOptions.map((item) => (
-          <TouchableOpacity
-            key={item.id}
-            style={styles.optionContainer}
-            onPress={() => handleOptionPress(item.id)}
-          >
-            <Text style={styles.optionText}>{item.title}</Text>
-          </TouchableOpacity>
+      <ScrollView contentContainerStyle={styles.optionsWrapper}>
+        {Object.entries(groupedOptions).map(([category, options]) => (
+          <View key={category} style={styles.categoryWrapper}>
+            <Text style={styles.categoryTitle}>{category}</Text>
+            {options.map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                style={styles.optionContainer}
+                activeOpacity={0.6}
+                onPress={() => handleOptionPress(item.targetScreen)}
+              >
+                <View style={styles.optionRow}>
+                  <Ionicons name={item.icon as any} size={22} color={colors.black} />
+                  <Text style={styles.optionText}>{item.title}</Text>
+                  <Ionicons name="chevron-forward-outline" size={20} color={colors.black} />
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
         ))}
-      </View>
+      </ScrollView>
     </View>
   );
 }

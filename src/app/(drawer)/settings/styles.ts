@@ -9,16 +9,41 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.page.tulips,
   },
   optionsWrapper: {
-    marginTop: 20,
+    paddingTop: 20,
+    paddingBottom: 40,
+  },
+  categoryWrapper: {
+    marginBottom: 30,
+  },
+  categoryTitle: {
+    fontSize: 20,
+    fontFamily: fonts.bold,
+    color: colors.black,
+    marginHorizontal: 15,
+    marginBottom: 10,
   },
   optionContainer: {
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.black,
+    padding: 15,
+    marginHorizontal: 15,
+    marginVertical: 5,
+    backgroundColor: colors.white,
+    borderRadius: 10,
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  optionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   optionText: {
+    flex: 1,
     fontSize: 18,
     color: colors.black,
-    fontFamily: fonts.regular,
+    fontFamily: fonts.italic,
+    marginLeft: 10,
   },
-})
+});
