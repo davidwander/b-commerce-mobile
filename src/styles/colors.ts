@@ -10,5 +10,10 @@ export const colors ={
     clearSky: "#89b7c2",
     dragonFruit: "#dd4368",
     lavender: "#c5a7d1",
+    yellow: "#e09f3e",
+    auburn: "#9e2a2b",
+    vanilla: "#fff3b0",
+    sunset: "#ffd29d",
+    olive: "#918450",
   }
 }

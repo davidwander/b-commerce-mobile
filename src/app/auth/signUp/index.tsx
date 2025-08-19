@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
+import { colors } from '@/styles/colors';
+
 import { useRouter } from 'expo-router';
-import { CustomInput } from '@/components/CustomInput';
 import { useAuth } from '@/contexts/AuthContext';
+
+import { ActionButton } from '@/components/ActionButton';
+import { CustomInput } from '@/components/CustomInput';
 
 export default function SignUp() {
   const router = useRouter();
@@ -73,12 +77,16 @@ export default function SignUp() {
         error={errors.confirmPassword}
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-        <Text style={styles.buttonText}>Cadastrar</Text>
-      </TouchableOpacity>
+      <ActionButton 
+        label="Confirmar"
+        onPress={handleSignUp}
+        color={colors.page.auburn}
+      />
 
       <TouchableOpacity onPress={() => router.push("./signIn")}>
-        <Text style={styles.linkText}>Já tem uma conta? Entrar</Text>
+        <Text style={styles.linkText}>
+          Já tem uma conta? Entrar
+        </Text>
       </TouchableOpacity>
     </View>
   );

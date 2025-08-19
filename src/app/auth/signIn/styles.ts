@@ -5,7 +5,7 @@ import { fonts } from '@/styles/fonts';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.page.tulips,
+    backgroundColor: colors.page.yellow,
     justifyContent: "center",
     paddingHorizontal: 30,
   },
@@ -39,6 +39,7 @@ export const styles = StyleSheet.create({
     color: colors.black,
     textAlign: "center",
     marginTop: 20,
+    fontSize: 18,
     fontFamily: fonts.italic,
   },
 });
