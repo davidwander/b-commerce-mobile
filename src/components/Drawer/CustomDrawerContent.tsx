@@ -11,6 +11,9 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
   const { state, navigation } = props;
   const { routeNames } = state;
 
+  const settingsRoute = "settings/index";
+  const activeRoute = state.routeNames[state.index];
+
   const routeLabels: Record<string, string> = {
     dashboard: "Visão geral",
     sales: "Vendas",
@@ -18,7 +21,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
     notifications: "Notificações",
     prices: "Precificar",
     otherExpenses: "Outros",
-    settings: "Configurações",
+    [settingsRoute]: "Configurações", 
   };
 
   const routeBackgroundColors: Record<string, string> = {
@@ -28,7 +31,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
     notifications: colors.page.tulips,
     prices: colors.page.lavender,
     otherExpenses: colors.page.dragonFruit,
-    settings: colors.page.tulips,
+    [settingsRoute]: colors.page.tulips,
   };
 
   const normalizeRoute = (name: string) => {
@@ -37,22 +40,29 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
     if (name.startsWith("notifications")) return "notifications";
     if (name.startsWith("otherExpenses")) return "otherExpenses";
     if (name.startsWith("prices")) return "prices";
+    if (name.startsWith("settings")) return settingsRoute;
     return name;
   };
 
-  const settingsRoute = "settings";
-  const activeRoute = state.routeNames[state.index];
+  // Rotas para animação: settings no final
+  const allRoutes = routeNames
+    .filter((name) => name !== settingsRoute)
+    .concat(settingsRoute);
 
-  // animação de largura
   const animatedWidths = useRef<Record<string, Animated.Value>>(
-    Object.fromEntries(routeNames.map((r) => [r, new Animated.Value(r === activeRoute ? 140 : 98)]))
+    Object.fromEntries(
+      allRoutes.map((r) => [
+        r,
+        new Animated.Value(r === activeRoute ? 140 : 98),
+      ])
+    )
   ).current;
 
   useEffect(() => {
-    routeNames.forEach((name) => {
+    allRoutes.forEach((name) => {
       Animated.timing(animatedWidths[name], {
         toValue: name === activeRoute ? 140 : 98,
-        duration: 200,
+        duration: 400,
         useNativeDriver: false,
       }).start();
     });
@@ -82,8 +92,9 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
                   <Animated.View
                     style={[
                       styles.labelContainer,
-                      { 
-                        backgroundColor: routeBackgroundColors[normalizedName] || "#fff",
+                      {
+                        backgroundColor:
+                          routeBackgroundColors[normalizedName] || "#fff",
                         width: animatedWidths[name],
                       },
                       isFocused && styles.labelActiveContainer,
@@ -92,7 +103,10 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
                     <Text
                       numberOfLines={1}
                       ellipsizeMode="tail"
-                      style={[styles.labelText, isFocused ? styles.activeText : styles.labelText]}
+                      style={[
+                        styles.labelText,
+                        isFocused ? styles.activeText : styles.labelText,
+                      ]}
                     >
                       {routeLabels[normalizedName] ?? normalizedName}
                     </Text>
@@ -111,8 +125,8 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
             <Animated.View
               style={[
                 styles.labelContainer,
-                { 
-                  backgroundColor: routeBackgroundColors.settings,
+                {
+                  backgroundColor: routeBackgroundColors[settingsRoute],
                   width: animatedWidths[settingsRoute],
                 },
                 activeRoute === settingsRoute && styles.labelActiveContainer,
@@ -123,10 +137,12 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
                 ellipsizeMode="tail"
                 style={[
                   styles.labelText,
-                  activeRoute === settingsRoute ? styles.activeText : styles.labelText,
+                  activeRoute === settingsRoute
+                    ? styles.activeText
+                    : styles.labelText,
                 ]}
               >
-                {routeLabels.settings}
+                {routeLabels[settingsRoute]}
               </Text>
             </Animated.View>
           </TouchableOpacity>
