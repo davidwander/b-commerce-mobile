@@ -77,7 +77,7 @@ export default function SignUp() {
         <Text style={styles.buttonText}>Cadastrar</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => router.push("/../contexts/AuthContext")}>
+      <TouchableOpacity onPress={() => router.push("./signIn")}>
         <Text style={styles.linkText}>Já tem uma conta? Entrar</Text>
       </TouchableOpacity>
     </View>
