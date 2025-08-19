@@ -9,6 +9,8 @@ export const colors ={
     daffodils: "#eccd86",
     clearSky: "#89b7c2",
     dragonFruit: "#dd4368",
+    buff: "#deaa79",
+    viridian: "#659287",
     lavender: "#c5a7d1",
     yellow: "#e09f3e",
     auburn: "#9e2a2b",
