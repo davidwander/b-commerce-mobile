@@ -1,17 +1,18 @@
-import { Stack } from 'expo-router';
-import { StatusBar, Text, View } from 'react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Stack } from "expo-router";
+import { StatusBar } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
   useFonts,
   Poppins_400Regular,
   Poppins_400Regular_Italic,
   Poppins_700Bold,
-} from '@expo-google-fonts/poppins';
-import '@/utils/calendarLocale';
+} from "@expo-google-fonts/poppins";
+import "@/utils/calendarLocale";
+import { LoadingProvider, useLoading } from "@/contexts/LoadingContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import Loading from "@/components/Loading";
 
-import { AuthProvider } from '@/contexts/AuthContext';
-
-export default function Layout() {
+function AppStack() {
   const [fontsLoaded] = useFonts({
     Poppins_400Regular,
     Poppins_400Regular_Italic,
@@ -19,19 +20,24 @@ export default function Layout() {
   });
 
   if (!fontsLoaded) {
-    return (
-      <View>
-        <Text>Carregando...</Text>
-      </View>
-    );
+    // usamos nosso componente de Loading aqui
+    return <Loading visible message="Carregando aplicação..." />;
   }
 
   return (
+    <SafeAreaProvider>
+      <StatusBar barStyle="light-content" translucent={false} />
+      <Stack screenOptions={{ headerShown: false }} />
+    </SafeAreaProvider>
+  );
+}
+
+export default function Layout() {
+  return (
     <AuthProvider>
-      <SafeAreaProvider>
-        <StatusBar barStyle="light-content" translucent={false} />
-        <Stack screenOptions={{ headerShown: false }} />
-      </SafeAreaProvider>
+      <LoadingProvider>
+        <AppStack />
+      </LoadingProvider>
     </AuthProvider>
   );
 }

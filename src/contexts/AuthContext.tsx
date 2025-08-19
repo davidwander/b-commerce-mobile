@@ -1,34 +1,55 @@
-import React, { createContext, useState, useContext, ReactNode } from "react";
+// src/contexts/AuthContext.tsx
+import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type AuthContextType = {
-  user: string | null;
-  signIn: (email: string, password: string) => void;
-  signOut: () => void;
+  user: any | null;
+  loadingAuth: boolean;
+  signIn: (userData: any) => Promise<void>;
+  signOut: () => Promise<void>;
 };
 
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  signIn: () => {},
-  signOut: () => {},
-});
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<string | null>(null);
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<any | null>(null);
+  const [loadingAuth, setLoadingAuth] = useState(true);
 
-  const signIn = (email: string, password: string) => {
-    // Simulação de login
-    setUser(email);
+  useEffect(() => {
+    async function loadUser() {
+      try {
+        const storedUser = await AsyncStorage.getItem("@user");
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+      } catch (e) {
+        console.log("Erro ao carregar usuário:", e);
+      } finally {
+        setLoadingAuth(false);
+      }
+    }
+    loadUser();
+  }, []);
+
+  const signIn = async (userData: any) => {
+    await AsyncStorage.setItem("@user", JSON.stringify(userData));
+    setUser(userData);
   };
 
-  const signOut = () => {
+  const signOut = async () => {
+    await AsyncStorage.removeItem("@user");
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, loadingAuth, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}
 
-export const useAuth = () => useContext(AuthContext);
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) throw new Error("useAuth deve ser usado dentro de AuthProvider");
+  return context;
+}
