@@ -8,7 +8,7 @@ export const RequireAuth = ({ children }: { children: React.ReactNode }) => {
 
   React.useEffect(() => {
     if (!user) {
-      router.replace("/../contexts/AuthContext"); // redireciona para login se não estiver logado
+      router.replace("../contexts/AuthContext"); // redireciona para login se não estiver logado
     }
   }, [user]);
 
