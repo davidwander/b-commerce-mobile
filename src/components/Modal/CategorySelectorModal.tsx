@@ -5,7 +5,7 @@ import { ActionButton } from '../ActionButton';
 import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
 import { PartNode, PartLeaf } from '@/data/partsTree';
-import { inventoryService } from '@/services/inventoryService';
+import { useInventory } from '@/hook/useInventory'; // Importar useInventory
 
 type CategorySelectorModalProps = {
   visible: boolean;
@@ -19,6 +19,8 @@ export function CategorySelectorModal({ visible, partsTree, onClose, onConfirm }
   const [selectedPath, setSelectedPath] = useState<PartNode[]>([]);
   const [description, setDescription] = useState('');
   const [quantity, setQuantity] = useState('1');
+
+  const { createPiece } = useInventory(); // Usar o hook useInventory
 
   const currentLevel = navigationStack[navigationStack.length - 1];
 
@@ -41,7 +43,7 @@ export function CategorySelectorModal({ visible, partsTree, onClose, onConfirm }
 
     const categoryPath = selectedPath.map(node => node.id);
 
-    const result = await inventoryService.createPiece({
+    const result = await createPiece({
       categoryPath,
       description,
       quantity: qty
