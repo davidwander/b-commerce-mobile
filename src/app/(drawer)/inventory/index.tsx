@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from './styles';
 
 import { Header } from '@/components/Header';
 import { CustomInput } from '@/components/CustomInput';
 import { ActionButton } from '@/components/ActionButton';
-import  { CategorySelectorModal }  from '@/components/Modal/CategorySelectorModal';
+import { CategorySelectorModal } from '@/components/Modal/CategorySelectorModal';
 
 import { CategoryList } from '@/components/CategoryList';
 import { colors } from '@/styles/colors';
@@ -15,33 +15,72 @@ import { partsTree, PartNode, PartLeaf } from '@/data/partsTree';
 import { fonts } from '@/styles/fonts';
 
 export default function Inventory() {
-  const [navigationStack, setNavigationStack] = React.useState<Array<(PartNode | PartLeaf)[]>>([partsTree]);
+  const [navigationStack, setNavigationStack] = useState<Array<(PartNode | PartLeaf)[]>>([partsTree]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [searchText, setSearchText] = useState('');
 
   const currentLevel = navigationStack[navigationStack.length - 1];
 
+  // ⬅️ Correção: tipagem do timeout
+  let searchTimeout: ReturnType<typeof setTimeout>;
+
   function handleItemPress(item: PartNode) {
     setNavigationStack([...navigationStack, item.children ?? []]);
-  };
+  }
 
   function handleBack() {
     if (navigationStack.length > 1) {
       setNavigationStack(navigationStack.slice(0, -1));
     }
-  };
+  }
 
   function handleAddPiece() {
     setModalVisible(true);
-  };
+  }
 
   function handleModalClose() {
     setModalVisible(false);
-  };
+  }
 
   function handleModalConfirm(selectedPath: PartNode[]) {
     setModalVisible(false);
     console.log("Selecionou:", selectedPath);
-  };
+  }
+
+  // Função para obter caminho atual de categoria
+  function getCurrentCategoryPath(): PartNode[] {
+    const path: PartNode[] = [];
+  
+    for (let i = 1; i < navigationStack.length; i++) {
+      const level = navigationStack[i - 1];
+  
+      // Filtra apenas PartNode
+      const nodesOnly = level.filter((item): item is PartNode => 'children' in item);
+  
+      const selected = nodesOnly.find(node => node.children === navigationStack[i]);
+      if (selected) path.push(selected);
+    }
+  
+    return path;
+  }
+  
+
+  // Debounce de busca
+  function handleSearchChange(text: string) {
+    setSearchText(text);
+
+    if (searchTimeout) clearTimeout(searchTimeout);
+
+    searchTimeout = setTimeout(() => {
+      const currentCategoryPath = getCurrentCategoryPath();
+      fetchFilteredPieces(currentCategoryPath, text);
+    }, 500);
+  }
+
+  function fetchFilteredPieces(categoryPath: PartNode[], search: string) {
+    console.log('🔎 Filtrando peças para:', categoryPath.map(c => c.name), 'com busca:', search);
+    // Aqui você chamaria a API do backend
+  }
 
   return (
     <View style={styles.container}>
@@ -49,7 +88,9 @@ export default function Inventory() {
       <View style={{ padding: 16 }}>
         <CustomInput 
           label="Buscar por peça"
-           placeholder="Digite aqui..." 
+          placeholder="Digite aqui..." 
+          value={searchText}
+          onChangeText={handleSearchChange}
         />
       </View>
 

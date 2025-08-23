@@ -1,97 +1,97 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, FlatList } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
-
-import { styles } from './styles';
-
-type PartLeaf = {
-  id: string;
-  name: string;
-  quantity?: number;
-};
-
-type PartNode = {
-  id: string;
-  name: string;
-  children?: Array<PartNode | PartLeaf>;
-};
+import { Modal, View, Text, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { CategoryList } from '../CategoryList';
+import { ActionButton } from '../ActionButton';
+import { colors } from '@/styles/colors';
+import { fonts } from '@/styles/fonts';
+import { PartNode, PartLeaf } from '@/data/partsTree';
+import { inventoryService } from '@/services/inventoryService';
 
 type CategorySelectorModalProps = {
   visible: boolean;
   partsTree: PartNode[];
   onClose: () => void;
-  onConfirm: (selectedPath: PartNode[]) => void;
+  onConfirm?: (selectedPath: PartNode[]) => void;
 };
 
 export function CategorySelectorModal({ visible, partsTree, onClose, onConfirm }: CategorySelectorModalProps) {
-  const [navigationStack, setNavigationStack] = useState<PartNode[][]>([partsTree]);
+  const [navigationStack, setNavigationStack] = useState<Array<(PartNode | PartLeaf)[]>>([partsTree]);
   const [selectedPath, setSelectedPath] = useState<PartNode[]>([]);
+  const [description, setDescription] = useState('');
+  const [quantity, setQuantity] = useState('1');
 
   const currentLevel = navigationStack[navigationStack.length - 1];
 
   function handleItemPress(item: PartNode) {
+    setNavigationStack([...navigationStack, item.children ?? []]);
     setSelectedPath([...selectedPath, item]);
-    if (item.children && item.children.length > 0) {
-      setNavigationStack([...navigationStack, item.children]);
-    } else {
-      // Último nível, confirma seleção
-      onConfirm([...selectedPath, item]);
-      handleClose();
-    }
-  };
+  }
 
   function handleBack() {
     if (navigationStack.length > 1) {
       setNavigationStack(navigationStack.slice(0, -1));
       setSelectedPath(selectedPath.slice(0, -1));
-    } else {
-      handleClose();
     }
-  };
+  }
 
-  function handleClose() {
-    setNavigationStack([partsTree]);
-    setSelectedPath([]);
-    onClose();
-  };
+  async function handleConfirm() {
+    if (!description.trim()) return Alert.alert('Erro', 'Informe a descrição da peça');
+    const qty = parseInt(quantity, 10);
+    if (isNaN(qty) || qty <= 0) return Alert.alert('Erro', 'Informe uma quantidade válida');
+
+    const categoryPath = selectedPath.map(node => node.id);
+
+    const result = await inventoryService.createPiece({
+      categoryPath,
+      description,
+      quantity: qty
+    });
+
+    if (result.success) {
+      Alert.alert('Sucesso', 'Peça adicionada com sucesso!');
+      onConfirm && onConfirm(selectedPath);
+
+      setDescription('');
+      setQuantity('1');
+      setNavigationStack([partsTree]);
+      setSelectedPath([]);
+      onClose();
+    } else {
+      Alert.alert('Erro', result.error || 'Falha ao adicionar peça');
+    }
+  }
 
   return (
     <Modal visible={visible} animationType="slide" transparent>
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
-          <View style={styles.header}>
-            {navigationStack.length > 1 && (
-              <TouchableOpacity onPress={handleBack} style={styles.backButton}>
-                <FontAwesome 
-                  name="chevron-left"
-                  style={styles.icon} 
-                />
-              </TouchableOpacity>
-            )}
-            <Text style={styles.title}>Selecione a categoria</Text>
-            <TouchableOpacity onPress={handleClose} style={styles.closeButton}>
-              <FontAwesome 
-                name="close"
-                style={styles.icon} 
-              />
+      <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center' }}>
+        <View style={{ backgroundColor: colors.white, marginHorizontal: 20, borderRadius: 12, padding: 16, maxHeight: '80%' }}>
+          {navigationStack.length > 1 && (
+            <TouchableOpacity onPress={handleBack} style={{ marginBottom: 12 }}>
+              <Text style={{ fontFamily: fonts.bold, color: colors.page.dragonFruit }}>Voltar</Text>
             </TouchableOpacity>
-          </View>
+          )}
 
-          <FlatList
-            data={currentLevel}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <TouchableOpacity style={styles.item} onPress={() => handleItemPress(item)}>
-                <Text style={styles.itemText}>{item.name}</Text>
-                {item.children && item.children.length > 0 && 
-                  <FontAwesome 
-                    name="share" 
-                    style={styles.icon} 
-                  />
-                }
-              </TouchableOpacity>
-            )}
-          />
+          {currentLevel && currentLevel.length > 0 ? (
+            <CategoryList data={currentLevel} onItemPress={handleItemPress} />
+          ) : (
+            <Text style={{ textAlign: 'center', marginVertical: 12 }}>Selecione a categoria anterior para adicionar a peça</Text>
+          )}
+
+          {navigationStack.length > 1 && currentLevel.length === 0 && (
+            <View style={{ marginTop: 12 }}>
+              <Text style={{ fontFamily: fonts.bold, marginBottom: 4 }}>Descrição</Text>
+              <TextInput value={description} onChangeText={setDescription} placeholder="Digite a descrição" style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 8, marginBottom: 12 }} />
+
+              <Text style={{ fontFamily: fonts.bold, marginBottom: 4 }}>Quantidade</Text>
+              <TextInput value={quantity} onChangeText={setQuantity} keyboardType="numeric" placeholder="1" style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 8, marginBottom: 12 }} />
+
+              <ActionButton label="Adicionar Peça" onPress={handleConfirm} color={colors.page.dragonFruit} />
+            </View>
+          )}
+
+          <TouchableOpacity onPress={onClose} style={{ marginTop: 12, alignSelf: 'center' }}>
+            <Text style={{ fontFamily: fonts.bold, color: colors.black }}>Cancelar</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </Modal>
