@@ -8,7 +8,7 @@ const categoryIcons: Record<string, string> = {
   Shorts: "🩳",
   Sapatos: "👞",
   Acessórios: "👒",
-  Bequine: "👙",
+  Biquíni: "👙",
   Casacos: "🧥",
 
   // Subcategorias de Camisa

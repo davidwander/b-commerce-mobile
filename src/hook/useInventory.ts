@@ -1,4 +1,3 @@
-// hooks/useInventory.ts - Crie este arquivo
 import { useAuth } from '@/contexts/AuthContext';
 
 export interface CreatePieceRequest {

@@ -5,7 +5,7 @@ import { CategoryCard } from './CategoryCard';
 type PartLeaf = {
   id: string;
   name: string;
-  quantity: number;
+  quantity?: number;
 };
 
 type PartNode = {
@@ -16,11 +16,12 @@ type PartNode = {
 
 type CategoryListProps = {
   data: Array<PartNode | PartLeaf>;
-  onItemPress: (item: PartNode) => void;
+  onItemPress: (item: PartNode | PartLeaf) => void; // ✅ Aceitar também PartLeaf
 };
 
+// ✅ CORREÇÃO: Verificar se é folha baseado na ausência de children
 function isLeaf(item: PartNode | PartLeaf): item is PartLeaf {
-  return (item as PartLeaf).quantity !== undefined;
+  return !('children' in item) || !item.children || item.children.length === 0;
 }
 
 export function CategoryList({ data, onItemPress }: CategoryListProps) {
@@ -34,6 +35,14 @@ export function CategoryList({ data, onItemPress }: CategoryListProps) {
       numColumns={2}
       renderItem={({ item, index }) => {
         const isLastOddItem = isOdd && index === data.length - 1;
+        const itemIsLeaf = isLeaf(item);
+
+        console.log('🎯 CategoryList renderizando:', {
+          name: item.name,
+          isLeaf: itemIsLeaf,
+          hasChildren: 'children' in item ? !!item.children : false,
+          childrenLength: 'children' in item ? (item.children?.length || 0) : 0
+        });
 
         return (
           <View
@@ -46,9 +55,9 @@ export function CategoryList({ data, onItemPress }: CategoryListProps) {
           >
             <CategoryCard
               name={item.name}
-              quantity={isLeaf(item) ? item.quantity : undefined}
-              disabled={isLeaf(item)}
-              onPress={() => !isLeaf(item) && onItemPress(item)}
+              quantity={itemIsLeaf && 'quantity' in item ? item.quantity : undefined}
+              disabled={false} // ✅ Remover disabled para permitir clique em gêneros
+              onPress={() => onItemPress(item)} // ✅ Permitir clique em qualquer item
             />
           </View>
         );
