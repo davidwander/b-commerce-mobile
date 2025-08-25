@@ -7,32 +7,31 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "center",
-    paddingHorizontal: 24,
   },
   modalContent: {
     backgroundColor: colors.white,
-    borderRadius: 12,
-    maxHeight: "80%",
-    paddingVertical: 16,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 14,
-    marginBottom: 10,
+    marginHorizontal: 20,
+    borderRadius: 18,
+    padding: 16,
+    maxHeight: '80%',
   },
   backButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+    fontFamily: fonts.bold, 
+    color: colors.page.dragonFruit,
+    fontSize: 18,
   },
   backText: {
     color: colors.page.tulips,
     fontWeight: "bold",
   },
-  closeButton: {
-    marginLeft: "auto",
-    paddingHorizontal: 10,
-    paddingVertical: 6,
+  cancelButton: {
+    paddingTop: 12,
+    alignItems: 'center'
+  },
+  cancelText: {
+    fontFamily: fonts.bold, 
+    color: colors.black,
+    fontSize: 18,
   },
   closeText: {
     fontWeight: "bold",
@@ -58,12 +57,19 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: fonts.italic,
   },
-  icon: {
-    fontSize: 20,
-    color: colors.black,
+  inputContainer: {
+    marginTop: 12, 
   },
-  arrow: {
-    fontSize: 18,
-    color: colors.page.clearSky,
+  inputLabel: {
+    fontFamily: fonts.bold,
+    fontSize: 16, 
+    marginBottom: 4, 
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 12,
+    padding: 10,
+    marginBottom: 12,
   },
 })

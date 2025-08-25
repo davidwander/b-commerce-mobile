@@ -34,6 +34,10 @@ const categoryIcons: Record<string, string> = {
   // Subcategorias específicas de gênero 
   "Masculina": "👨",
   "Feminina": "👩",
+
+  // Subcategoria de shorts
+  "Casual": "🩳",
+  "Esportivo": "🩳"
 };
 
 export default categoryIcons;

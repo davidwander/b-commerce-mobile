@@ -37,7 +37,7 @@ export function CategoryCard({ name, quantity, onPress, disabled }: CategoryCard
     >
       <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
         <Text style={{ fontSize: 28, marginRight: 12 }}>
-          {categoryIcons[name] || "🧥"}
+          {categoryIcons[name] || "🧩"}
         </Text>
         <Text style={{ fontSize: 16, fontWeight: "700", color: colors.black }}>
           {name}

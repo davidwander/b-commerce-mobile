@@ -5,6 +5,7 @@ import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
 import { PartNode, PartLeaf } from '@/data/partsTree';
 import { useInventory } from '@/hook/useInventory';
+import { styles } from './styles';
 
 type CategorySelectorModalProps = {
   visible: boolean;
@@ -77,19 +78,15 @@ export function CategorySelectorModal({
 
   return (
     <Modal visible={visible} animationType="slide" transparent>
-      <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center' }}>
+      <View style={styles.modalOverlay}>
         <View
-          style={{
-            backgroundColor: colors.white,
-            marginHorizontal: 20,
-            borderRadius: 12,
-            padding: 16,
-            maxHeight: '80%',
-          }}
+          style={styles.modalContent}
         >
           {navigationStack.length > 1 && (
             <TouchableOpacity onPress={handleBack} style={{ marginBottom: 12 }}>
-              <Text style={{ fontFamily: fonts.bold, color: colors.page.dragonFruit }}>← Voltar</Text>
+              <Text style={styles.backButton}> 
+                Voltar
+              </Text>
             </TouchableOpacity>
           )}
 
@@ -100,55 +97,41 @@ export function CategorySelectorModal({
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() => handleItemPress(item as PartNode)}
-                  style={{
-                    paddingVertical: 10,
-                    borderBottomWidth: 1,
-                    borderBottomColor: '#eee',
-                  }}
+                  style={styles.item}
                 >
-                  <Text style={{ fontFamily: fonts.regular, fontSize: 16, color: colors.black }}>
+                  <Text style={styles.itemText}>
                     {item.name}
                   </Text>
                 </TouchableOpacity>
               )}
             />
           ) : (
-            <Text style={{ textAlign: 'center', marginVertical: 12 }}>
-              Selecione a categoria anterior para adicionar a peça
+            <Text style={styles.itemText}>
+              Adicione uma descrição 
             </Text>
           )}
 
           {navigationStack.length > 1 && currentLevel.length === 0 && (
-            <View style={{ marginTop: 12 }}>
-              <Text style={{ fontFamily: fonts.bold, marginBottom: 4 }}>Descrição</Text>
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputLabel}>
+                Descrição
+              </Text>
               <TextInput
                 value={description}
                 onChangeText={setDescription}
                 placeholder="Digite a descrição"
-                style={{
-                  borderWidth: 1,
-                  borderColor: '#ccc',
-                  borderRadius: 8,
-                  padding: 8,
-                  marginBottom: 12,
-                }}
+                style={styles.input}
               />
-
-              <Text style={{ fontFamily: fonts.bold, marginBottom: 4 }}>Quantidade</Text>
+              <Text style={styles.inputLabel}>
+                Quantidade
+              </Text>
               <TextInput
                 value={quantity}
                 onChangeText={setQuantity}
                 keyboardType="numeric"
                 placeholder="1"
-                style={{
-                  borderWidth: 1,
-                  borderColor: colors.page.clearSky,
-                  borderRadius: 8,
-                  padding: 8,
-                  marginBottom: 12,
-                }}
+                style={styles.input}
               />
-
               <ActionButton
                 label="Adicionar Peça"
                 onPress={handleConfirm}
@@ -157,8 +140,13 @@ export function CategorySelectorModal({
             </View>
           )}
 
-          <TouchableOpacity onPress={handleCancel} style={{ marginTop: 12, alignSelf: 'center' }}>
-            <Text style={{ fontFamily: fonts.bold, color: colors.black }}>Cancelar</Text>
+          <TouchableOpacity 
+            onPress={handleCancel} 
+            style={styles.cancelButton}
+          >
+            <Text style={styles.cancelText}>
+              Cancelar
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
