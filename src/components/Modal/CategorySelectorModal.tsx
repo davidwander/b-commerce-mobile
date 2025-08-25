@@ -67,6 +67,14 @@ export function CategorySelectorModal({
     }
   }
 
+  function handleCancel() {
+    setDescription('');
+    setQuantity('1');
+    setNavigationStack([partsTree]);
+    setSelectedPath([]);
+    onClose();
+  }
+
   return (
     <Modal visible={visible} animationType="slide" transparent>
       <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center' }}>
@@ -149,7 +157,7 @@ export function CategorySelectorModal({
             </View>
           )}
 
-          <TouchableOpacity onPress={onClose} style={{ marginTop: 12, alignSelf: 'center' }}>
+          <TouchableOpacity onPress={handleCancel} style={{ marginTop: 12, alignSelf: 'center' }}>
             <Text style={{ fontFamily: fonts.bold, color: colors.black }}>Cancelar</Text>
           </TouchableOpacity>
         </View>
