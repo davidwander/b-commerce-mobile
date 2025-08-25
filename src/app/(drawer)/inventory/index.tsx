@@ -194,17 +194,14 @@ export default function Inventory() {
       categoryPath: currentCategoryPath.map(c => c.name)
     });
     
-    // Só buscar peças se tiver texto de busca. A busca por seleção de gênero será tratada em handleItemPress.
-    if (searchText.trim() !== '') {
+    // Só buscar peças se tiver texto de busca OU se estiver no nível final (gênero)
+    if (searchText.trim() !== '' || isLeafLevel) {
       fetchFilteredPieces(currentCategoryPath, searchText);
     } else {
       // Limpar peças se estiver navegando por categorias e não houver busca
-      // e não estivermos no nível que exibe as peças por clique no gênero
-      if (pieces.length > 0) {
-        setPieces([]);
-      }
+      setPieces([]);
     }
-  }, [navigationStack, searchText]); // Adicionei searchText como dependência
+  }, [navigationStack, searchText, isLeafLevel]); // Adicionei isLeafLevel como dependência
 
   // ✅ Cleanup do timeout ao desmontar o componente
   useEffect(() => {
@@ -239,15 +236,15 @@ export default function Inventory() {
       )}
 
       {/* ✅ Mostrar categorias e folhas (gêneros) */}
-      {currentLevel && currentLevel.length > 0 && !searchText && pieces.length === 0 && (
+      {currentLevel && currentLevel.length > 0 && !searchText && (
         <CategoryList 
           data={currentLevel} 
           onItemPress={handleItemPress} 
         />
       )}
 
-      {/* ✅ Mostrar peças quando houver busca OU peças já carregadas */}
-      {(searchText.trim() !== '' || pieces.length > 0) && (
+      {/* ✅ Mostrar peças quando houver busca OU estivermos em um nível folha (gênero) */}
+      {(searchText.trim() !== '' || isLeafLevel) && (
         <View style={{ flex: 1, paddingHorizontal: 16, marginTop: 16 }}>
           {isLoading ? (
             <View style={styles.emptyListContent}>
