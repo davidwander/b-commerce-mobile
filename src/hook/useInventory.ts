@@ -57,5 +57,17 @@ export const useInventory = () => {
     }
   };
 
-  return { createPiece, getFilteredPieces };
+  const getAllPieces = async () => {
+    try {
+      ensureAuthenticated();
+      const response = await authenticatedFetch(`${BASE_URL}/pieces`);
+      if (!response.ok) throw new Error(await response.text());
+      const result = await response.json();
+      return { success: true, data: result.data };
+    } catch (error: any) {
+      return { success: false, error: error.message || 'Erro desconhecido', data: [] };
+    }
+  };
+
+  return { createPiece, getFilteredPieces, getAllPieces };
 };

@@ -21,6 +21,7 @@ export default function Inventory() {
   const [searchText, setSearchText] = useState('');
   const [pieces, setPieces] = useState<PartLeaf[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedGenderId, setSelectedGenderId] = useState<string | null>(null);
 
   // ✅ Usar useRef para o timeout
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -60,12 +61,14 @@ export default function Inventory() {
       console.log('📂 Navegando para:', item.name, 'com', item.children.length, 'itens');
       setNavigationStack([...navigationStack, item.children]);
       setPieces([]); // Limpar peças ao navegar para uma nova categoria
+      setSelectedGenderId(null); // Resetar gênero selecionado
     } else {
       // Se é uma folha (gênero), disparar a busca de peças COM este item no caminho.
       console.log('🍃 Item folha clicado (gênero): ', item.name, '- buscando peças com filtro...');
       const currentPathExcludingGender = getCurrentCategoryPath(); // Pega o caminho até a subcategoria
       // Agora adicionamos o item (gênero) clicado a esse caminho para a busca
       fetchFilteredPieces([...currentPathExcludingGender, item as PartNode], searchText);
+      setSelectedGenderId(item.id); // Definir o gênero selecionado
     }
   }
 
@@ -76,6 +79,7 @@ export default function Inventory() {
       if (navigationStack.length > 2) {
         setPieces([]);
       }
+      setSelectedGenderId(null); // Resetar gênero selecionado ao voltar
     }
   }
 
@@ -138,6 +142,10 @@ export default function Inventory() {
 
       console.log('🔧 Query params preparados:', queryParams);
 
+      // Adicionar logs para verificar o categoryPath antes de enviar
+      console.log('🔍 Debug fetchFilteredPieces - categoryPath recebido:', categoryPath.map(c => c.id));
+      console.log('🔍 Debug fetchFilteredPieces - queryParams a serem enviados:', queryParams);
+
       // ✅ Tentar primeiro a busca filtrada
       let result = await getFilteredPieces(categoryPath.map(p => p.id), search, queryParams);
       
@@ -184,24 +192,33 @@ export default function Inventory() {
 
   // ✅ Carregar peças quando chegar no nível final ou quando buscar
   useEffect(() => {
-    const currentCategoryPath = getCurrentCategoryPath();
+    let currentCategoryPath = getCurrentCategoryPath();
     
-    console.log('🔍 Debug - Nível atual:', {
+    // Se um gênero foi selecionado, garantir que ele seja incluído no categoryPath para a busca
+    if (selectedGenderId !== null) {
+      const selectedGenderNode = currentLevel.find(item => item.id === selectedGenderId);
+      if (selectedGenderNode && !currentCategoryPath.some(item => item.id === selectedGenderId)) {
+        currentCategoryPath = [...currentCategoryPath, selectedGenderNode as PartNode];
+      }
+    }
+
+    console.log('🔍 Debug - Nível atual (useEffect):', {
       currentLevel: currentLevel.map(item => ({ id: item.id, name: item.name, hasChildren: 'children' in item })),
       isLeafLevel,
       hasCategories,
       searchText: searchText.trim(),
-      categoryPath: currentCategoryPath.map(c => c.name)
+      categoryPath: currentCategoryPath.map(c => c.name),
+      selectedGenderId
     });
     
-    // Só buscar peças se tiver texto de busca OU se estiver no nível final (gênero)
-    if (searchText.trim() !== '' || isLeafLevel) {
+    // Buscar peças se tiver texto de busca OU se um gênero foi selecionado
+    if (searchText.trim() !== '' || selectedGenderId !== null) {
       fetchFilteredPieces(currentCategoryPath, searchText);
     } else {
-      // Limpar peças se estiver navegando por categorias e não houver busca
+      // Limpar peças se não houver busca e nenhum gênero selecionado
       setPieces([]);
     }
-  }, [navigationStack, searchText, isLeafLevel]); // Adicionei isLeafLevel como dependência
+  }, [navigationStack, searchText, selectedGenderId, currentLevel]); // Adicionei currentLevel como dependência
 
   // ✅ Cleanup do timeout ao desmontar o componente
   useEffect(() => {
@@ -236,15 +253,15 @@ export default function Inventory() {
       )}
 
       {/* ✅ Mostrar categorias e folhas (gêneros) */}
-      {currentLevel && currentLevel.length > 0 && !searchText && (
+      {currentLevel && currentLevel.length > 0 && !searchText && selectedGenderId === null && (
         <CategoryList 
           data={currentLevel} 
           onItemPress={handleItemPress} 
         />
       )}
 
-      {/* ✅ Mostrar peças quando houver busca OU estivermos em um nível folha (gênero) */}
-      {(searchText.trim() !== '' || isLeafLevel) && (
+      {/* ✅ Mostrar peças quando houver busca OU um gênero foi selecionado */}
+      {(searchText.trim() !== '' || selectedGenderId !== null) && (
         <View style={{ flex: 1, paddingHorizontal: 16, marginTop: 16 }}>
           {isLoading ? (
             <View style={styles.emptyListContent}>
