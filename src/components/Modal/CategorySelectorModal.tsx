@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, TextInput, Alert } from 'react-native';
-import { CategoryList } from '../CategoryList';
+import { Modal, View, Text, TouchableOpacity, TextInput, Alert, FlatList } from 'react-native';
 import { ActionButton } from '../ActionButton';
 import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
 import { PartNode, PartLeaf } from '@/data/partsTree';
-import { useInventory } from '@/hook/useInventory'; // Importar useInventory
+import { useInventory } from '@/hook/useInventory';
 
 type CategorySelectorModalProps = {
   visible: boolean;
@@ -14,13 +13,18 @@ type CategorySelectorModalProps = {
   onConfirm?: (selectedPath: PartNode[]) => void;
 };
 
-export function CategorySelectorModal({ visible, partsTree, onClose, onConfirm }: CategorySelectorModalProps) {
+export function CategorySelectorModal({
+  visible,
+  partsTree,
+  onClose,
+  onConfirm,
+}: CategorySelectorModalProps) {
   const [navigationStack, setNavigationStack] = useState<Array<(PartNode | PartLeaf)[]>>([partsTree]);
   const [selectedPath, setSelectedPath] = useState<PartNode[]>([]);
   const [description, setDescription] = useState('');
   const [quantity, setQuantity] = useState('1');
 
-  const { createPiece } = useInventory(); // Usar o hook useInventory
+  const { createPiece } = useInventory();
 
   const currentLevel = navigationStack[navigationStack.length - 1];
 
@@ -41,12 +45,12 @@ export function CategorySelectorModal({ visible, partsTree, onClose, onConfirm }
     const qty = parseInt(quantity, 10);
     if (isNaN(qty) || qty <= 0) return Alert.alert('Erro', 'Informe uma quantidade válida');
 
-    const categoryPath = selectedPath.map(node => node.id);
+    const categoryPath = selectedPath.map((node) => node.id);
 
     const result = await createPiece({
       categoryPath,
       description,
-      quantity: qty
+      quantity: qty,
     });
 
     if (result.success) {
@@ -66,28 +70,82 @@ export function CategorySelectorModal({ visible, partsTree, onClose, onConfirm }
   return (
     <Modal visible={visible} animationType="slide" transparent>
       <View style={{ flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center' }}>
-        <View style={{ backgroundColor: colors.white, marginHorizontal: 20, borderRadius: 12, padding: 16, maxHeight: '80%' }}>
+        <View
+          style={{
+            backgroundColor: colors.white,
+            marginHorizontal: 20,
+            borderRadius: 12,
+            padding: 16,
+            maxHeight: '80%',
+          }}
+        >
           {navigationStack.length > 1 && (
             <TouchableOpacity onPress={handleBack} style={{ marginBottom: 12 }}>
-              <Text style={{ fontFamily: fonts.bold, color: colors.page.dragonFruit }}>Voltar</Text>
+              <Text style={{ fontFamily: fonts.bold, color: colors.page.dragonFruit }}>← Voltar</Text>
             </TouchableOpacity>
           )}
 
           {currentLevel && currentLevel.length > 0 ? (
-            <CategoryList data={currentLevel} onItemPress={handleItemPress} />
+            <FlatList
+              data={currentLevel}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => handleItemPress(item as PartNode)}
+                  style={{
+                    paddingVertical: 10,
+                    borderBottomWidth: 1,
+                    borderBottomColor: '#eee',
+                  }}
+                >
+                  <Text style={{ fontFamily: fonts.regular, fontSize: 16, color: colors.black }}>
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+              )}
+            />
           ) : (
-            <Text style={{ textAlign: 'center', marginVertical: 12 }}>Selecione a categoria anterior para adicionar a peça</Text>
+            <Text style={{ textAlign: 'center', marginVertical: 12 }}>
+              Selecione a categoria anterior para adicionar a peça
+            </Text>
           )}
 
           {navigationStack.length > 1 && currentLevel.length === 0 && (
             <View style={{ marginTop: 12 }}>
               <Text style={{ fontFamily: fonts.bold, marginBottom: 4 }}>Descrição</Text>
-              <TextInput value={description} onChangeText={setDescription} placeholder="Digite a descrição" style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 8, marginBottom: 12 }} />
+              <TextInput
+                value={description}
+                onChangeText={setDescription}
+                placeholder="Digite a descrição"
+                style={{
+                  borderWidth: 1,
+                  borderColor: '#ccc',
+                  borderRadius: 8,
+                  padding: 8,
+                  marginBottom: 12,
+                }}
+              />
 
               <Text style={{ fontFamily: fonts.bold, marginBottom: 4 }}>Quantidade</Text>
-              <TextInput value={quantity} onChangeText={setQuantity} keyboardType="numeric" placeholder="1" style={{ borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 8, marginBottom: 12 }} />
+              <TextInput
+                value={quantity}
+                onChangeText={setQuantity}
+                keyboardType="numeric"
+                placeholder="1"
+                style={{
+                  borderWidth: 1,
+                  borderColor: colors.page.clearSky,
+                  borderRadius: 8,
+                  padding: 8,
+                  marginBottom: 12,
+                }}
+              />
 
-              <ActionButton label="Adicionar Peça" onPress={handleConfirm} color={colors.page.dragonFruit} />
+              <ActionButton
+                label="Adicionar Peça"
+                onPress={handleConfirm}
+                color={colors.page.dragonFruit}
+              />
             </View>
           )}
 
