@@ -56,14 +56,16 @@ export default function Inventory() {
   });
 
   function handleItemPress(item: PartNode | PartLeaf) {
-    // Se o item tem children, navegar para eles
     if ('children' in item && item.children && item.children.length > 0) {
       console.log('📂 Navegando para:', item.name, 'com', item.children.length, 'itens');
       setNavigationStack([...navigationStack, item.children]);
+      setPieces([]); // Limpar peças ao navegar para uma nova categoria
     } else {
-      // Se é uma folha, não fazer nada ou mostrar algum feedback
-      console.log('🍃 Item folha clicado:', item.name, '- buscando peças...');
-      // Aqui poderia disparar a busca diretamente se necessário
+      // Se é uma folha (gênero), disparar a busca de peças COM este item no caminho.
+      console.log('🍃 Item folha clicado (gênero): ', item.name, '- buscando peças com filtro...');
+      const currentPathExcludingGender = getCurrentCategoryPath(); // Pega o caminho até a subcategoria
+      // Agora adicionamos o item (gênero) clicado a esse caminho para a busca
+      fetchFilteredPieces([...currentPathExcludingGender, item as PartNode], searchText);
     }
   }
 
@@ -192,12 +194,15 @@ export default function Inventory() {
       categoryPath: currentCategoryPath.map(c => c.name)
     });
     
-    // Só buscar peças se estiver no nível final (sem subcategorias) ou se tiver texto de busca
-    if (isLeafLevel || searchText.trim() !== '') {
+    // Só buscar peças se tiver texto de busca. A busca por seleção de gênero será tratada em handleItemPress.
+    if (searchText.trim() !== '') {
       fetchFilteredPieces(currentCategoryPath, searchText);
     } else {
-      // Limpar peças se estiver navegando por categorias
-      setPieces([]);
+      // Limpar peças se estiver navegando por categorias e não houver busca
+      // e não estivermos no nível que exibe as peças por clique no gênero
+      if (pieces.length > 0) {
+        setPieces([]);
+      }
     }
   }, [navigationStack, searchText]); // Adicionei searchText como dependência
 
@@ -234,15 +239,15 @@ export default function Inventory() {
       )}
 
       {/* ✅ Mostrar categorias e folhas (gêneros) */}
-      {currentLevel && currentLevel.length > 0 && !isLeafLevel && (
+      {currentLevel && currentLevel.length > 0 && !searchText && pieces.length === 0 && (
         <CategoryList 
           data={currentLevel} 
           onItemPress={handleItemPress} 
         />
       )}
 
-      {/* ✅ Mostrar peças quando estiver no nível final OU quando houver busca */}
-      {(isLeafLevel || searchText.trim() !== '') && (
+      {/* ✅ Mostrar peças quando houver busca OU peças já carregadas */}
+      {(searchText.trim() !== '' || pieces.length > 0) && (
         <View style={{ flex: 1, paddingHorizontal: 16, marginTop: 16 }}>
           {isLoading ? (
             <View style={styles.emptyListContent}>
