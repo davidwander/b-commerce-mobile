@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, TouchableOpacity, TextInput, Alert, FlatList } from 'react-native';
 import { ActionButton } from '../ActionButton';
-import { colors } from '@/styles/colors';
-import { fonts } from '@/styles/fonts';
 import { PartNode, PartLeaf } from '@/data/partsTree';
 import { useInventory } from '@/hook/useInventory';
+
+import { colors } from '@/styles/colors';
 import { styles } from './styles';
 
 type CategorySelectorModalProps = {
@@ -83,8 +83,8 @@ export function CategorySelectorModal({
           style={styles.modalContent}
         >
           {navigationStack.length > 1 && (
-            <TouchableOpacity onPress={handleBack} style={{ marginBottom: 12 }}>
-              <Text style={styles.backButton}> 
+            <TouchableOpacity onPress={handleBack} style={styles.backButton}>
+              <Text style={styles.backButtonText}> 
                 Voltar
               </Text>
             </TouchableOpacity>

@@ -23,25 +23,20 @@ export default function Inventory() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedGenderId, setSelectedGenderId] = useState<string | null>(null);
 
-  // ✅ Usar useRef para o timeout
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { getFilteredPieces, getAllPieces } = useInventory();
 
   const currentLevel = navigationStack[navigationStack.length - 1];
 
-  // ✅ CORREÇÃO: Verificar se o nível atual contém apenas folhas (peças finais)
-  // Uma folha é um item que NÃO tem children OU tem children vazio
   const isLeafLevel = currentLevel.length > 0 && currentLevel.every(item => 
     !('children' in item) || !item.children || item.children.length === 0
   );
   
-  // Tem categorias se pelo menos um item tem children não vazios
   const hasCategories = currentLevel.some(item => 
     'children' in item && item.children && item.children.length > 0
   );
 
-  // 🔍 DEBUG: Logs para entender o comportamento
   console.log('🔍 Debug navegação:', {
     currentLevel: currentLevel.map(item => ({ 
       id: item.id, 
@@ -60,26 +55,26 @@ export default function Inventory() {
     if ('children' in item && item.children && item.children.length > 0) {
       console.log('📂 Navegando para:', item.name, 'com', item.children.length, 'itens');
       setNavigationStack([...navigationStack, item.children]);
-      setPieces([]); // Limpar peças ao navegar para uma nova categoria
-      setSelectedGenderId(null); // Resetar gênero selecionado
+      setPieces([]); 
+      setSelectedGenderId(null); 
     } else {
-      // Se é uma folha (gênero), disparar a busca de peças COM este item no caminho.
+      
       console.log('🍃 Item folha clicado (gênero): ', item.name, '- buscando peças com filtro...');
-      const currentPathExcludingGender = getCurrentCategoryPath(); // Pega o caminho até a subcategoria
-      // Agora adicionamos o item (gênero) clicado a esse caminho para a busca
+      const currentPathExcludingGender = getCurrentCategoryPath(); 
+      
       fetchFilteredPieces([...currentPathExcludingGender, item as PartNode], searchText);
-      setSelectedGenderId(item.id); // Definir o gênero selecionado
+      setSelectedGenderId(item.id); 
     }
   }
 
   function handleBack() {
     if (navigationStack.length > 1) {
       setNavigationStack(navigationStack.slice(0, -1));
-      // ✅ Limpar peças ao voltar para níveis de categoria
+      
       if (navigationStack.length > 2) {
         setPieces([]);
       }
-      setSelectedGenderId(null); // Resetar gênero selecionado ao voltar
+      setSelectedGenderId(null); 
     }
   }
 
@@ -95,7 +90,6 @@ export default function Inventory() {
     setModalVisible(false);
     console.log("Selecionou:", selectedPath);
     
-    // ✅ Recarregar as peças após adicionar uma nova
     const currentCategoryPath = getCurrentCategoryPath();
     await fetchFilteredPieces(currentCategoryPath, searchText);
   }
@@ -116,7 +110,6 @@ export default function Inventory() {
   function handleSearchChange(text: string) {
     setSearchText(text);
 
-    // ✅ Limpar timeout anterior
     if (searchTimeoutRef.current) {
       clearTimeout(searchTimeoutRef.current);
     }
@@ -142,24 +135,19 @@ export default function Inventory() {
 
       console.log('🔧 Query params preparados:', queryParams);
 
-      // Adicionar logs para verificar o categoryPath antes de enviar
       console.log('🔍 Debug fetchFilteredPieces - categoryPath recebido:', categoryPath.map(c => c.id));
       console.log('🔍 Debug fetchFilteredPieces - queryParams a serem enviados:', queryParams);
 
-      // ✅ Tentar primeiro a busca filtrada
       let result = await getFilteredPieces(categoryPath.map(p => p.id), search, queryParams);
       
-      // ✅ Se der erro 404, tentar buscar todas as peças para teste
       if (!result.success && result.error?.includes('Not Found')) {
         console.log('⚠️ Rota de filtro não encontrada, tentando buscar todas as peças...');
         result = await getAllPieces();
         
-        // Se conseguiu todas as peças, filtrar manualmente no frontend temporariamente
         if (result.success && result.data) {
           const allPieces = result.data;
           console.log('📦 Total de peças no banco:', allPieces.length);
           
-          // Filtro simples para teste - você pode ajustar conforme sua necessidade
           let filteredPieces = allPieces;
           
           if (search) {
@@ -190,11 +178,9 @@ export default function Inventory() {
     }
   }
 
-  // ✅ Carregar peças quando chegar no nível final ou quando buscar
   useEffect(() => {
     let currentCategoryPath = getCurrentCategoryPath();
     
-    // Se um gênero foi selecionado, garantir que ele seja incluído no categoryPath para a busca
     if (selectedGenderId !== null) {
       const selectedGenderNode = currentLevel.find(item => item.id === selectedGenderId);
       if (selectedGenderNode && !currentCategoryPath.some(item => item.id === selectedGenderId)) {
@@ -211,16 +197,13 @@ export default function Inventory() {
       selectedGenderId
     });
     
-    // Buscar peças se tiver texto de busca OU se um gênero foi selecionado
     if (searchText.trim() !== '' || selectedGenderId !== null) {
       fetchFilteredPieces(currentCategoryPath, searchText);
     } else {
-      // Limpar peças se não houver busca e nenhum gênero selecionado
       setPieces([]);
     }
-  }, [navigationStack, searchText, selectedGenderId, currentLevel]); // Adicionei currentLevel como dependência
+  }, [navigationStack, searchText, selectedGenderId, currentLevel]); 
 
-  // ✅ Cleanup do timeout ao desmontar o componente
   useEffect(() => {
     return () => {
       if (searchTimeoutRef.current) {
@@ -252,7 +235,6 @@ export default function Inventory() {
         </TouchableOpacity>
       )}
 
-      {/* ✅ Mostrar categorias e folhas (gêneros) */}
       {currentLevel && currentLevel.length > 0 && !searchText && selectedGenderId === null && (
         <CategoryList 
           data={currentLevel} 
@@ -260,34 +242,25 @@ export default function Inventory() {
         />
       )}
 
-      {/* ✅ Mostrar peças quando houver busca OU um gênero foi selecionado */}
       {(searchText.trim() !== '' || selectedGenderId !== null) && (
-        <View style={{ flex: 1, paddingHorizontal: 16, marginTop: 16 }}>
+        <View style={styles.emptyListContainer}>
           {isLoading ? (
             <View style={styles.emptyListContent}>
-              <Text style={styles.emptyListText1}>Carregando...</Text>
+              <Text style={styles.emptyListText1}>
+                Carregando...
+              </Text>
             </View>
           ) : pieces.length > 0 ? (
             pieces.map(piece => (
-              <View key={piece.id} style={{ 
-                flexDirection: 'row', 
-                justifyContent: 'space-between', 
-                paddingVertical: 12, 
-                paddingHorizontal: 16,
-                marginVertical: 4,
-                backgroundColor: '#f8f9fa',
-                borderRadius: 8,
-                borderLeftWidth: 4,
-                borderLeftColor: colors.page.dragonFruit
-              }}>
-                <Text style={{ fontFamily: fonts.regular, fontSize: 16, flex: 1 }}>
+              <View key={piece.id} style={styles.pieceCard}>
+                <Text style={styles.pieceCardText}>
                   {piece.name}
                 </Text>
-                <View style={{ alignItems: 'flex-end' }}>
-                  <Text style={{ fontFamily: fonts.bold, fontSize: 16, color: colors.page.dragonFruit }}>
+                <View style={styles.pieceCardContent}>
+                  <Text style={styles.pieceCardQuantity}>
                     {piece.quantity}
                   </Text>
-                  <Text style={{ fontFamily: fonts.regular, fontSize: 12, color: '#666' }}>
+                  <Text style={styles.pieceQuantityText}>
                     unidades
                   </Text>
                 </View>
@@ -315,7 +288,6 @@ export default function Inventory() {
         </View>
       )}
 
-      {/* ✅ Mostrar tela vazia apenas quando não há categorias nem peças */}
       {!hasCategories && !isLeafLevel && pieces.length === 0 && !searchText && (
         <View style={styles.emptyListContent}>
           <Feather 

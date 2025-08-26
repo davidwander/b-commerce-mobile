@@ -38,5 +38,38 @@ export const styles = StyleSheet.create({
     textAlign: "center", 
     marginTop: 6,
     fontSize: 16, 
-  }
+  },
+  emptyListContainer: {
+    flex: 1, 
+    paddingHorizontal: 16, 
+    marginTop: 16 ,
+  },
+  pieceCard: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    paddingVertical: 12, 
+    paddingHorizontal: 16,
+    marginVertical: 4,
+    backgroundColor: '#f8f9fa',
+    borderRadius: 8,
+    borderLeftWidth: 4,
+    borderLeftColor: colors.page.dragonFruit,
+  },
+  pieceCardText: {
+    flex: 1,
+    fontSize: 16, 
+    fontFamily: fonts.regular, 
+  },
+  pieceCardContent: {
+    alignItems: 'flex-end',
+  },
+  pieceCardQuantity: {
+    fontFamily: fonts.bold, 
+    fontSize: 16, 
+    color: colors.page.dragonFruit,
+  },
+  pieceQuantityText: {
+    fontFamily: fonts.regular, 
+    fontSize: 12, color: '#666',
+  },
 })

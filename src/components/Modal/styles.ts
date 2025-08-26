@@ -16,6 +16,9 @@ export const styles = StyleSheet.create({
     maxHeight: '80%',
   },
   backButton: {
+    marginBottom: 12
+  },
+  backButtonText: {
     fontFamily: fonts.bold, 
     color: colors.page.dragonFruit,
     fontSize: 18,
