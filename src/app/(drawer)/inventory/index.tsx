@@ -26,6 +26,7 @@ export default function Inventory() {
   const [selectedGenderId, setSelectedGenderId] = useState<string | null>(null);
   const [selectedPiece, setSelectedPiece] = useState<PartLeaf | null>(null); // Novo estado para a peça selecionada
   const [detailsModalVisible, setDetailsModalVisible] = useState(false); // Novo estado para visibilidade do modal de detalhes
+  const [selectedPieceIds, setSelectedPieceIds] = useState<string[]>([]); // Novo estado para peças selecionadas
 
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -106,6 +107,14 @@ export default function Inventory() {
   function handleDetailsModalClose() {
     setDetailsModalVisible(false);
     setSelectedPiece(null);
+  }
+
+  function handleToggleSelect(pieceId: string) {
+    setSelectedPieceIds(prevSelectedIds => 
+      prevSelectedIds.includes(pieceId)
+        ? prevSelectedIds.filter(id => id !== pieceId)
+        : [...prevSelectedIds, pieceId]
+    );
   }
 
   function getCurrentCategoryPath(): PartNode[] {
@@ -272,6 +281,8 @@ export default function Inventory() {
                 category={getCurrentCategoryPath().map(c => c.name).join(' > ')}
                 subcategory={selectedGenderId ? (currentLevel.find(item => item.id === selectedGenderId) as PartNode)?.name : undefined}
                 onPress={handlePiecePress}
+                isSelected={selectedPieceIds.includes(piece.id)} // Passar a prop isSelected
+                onToggleSelect={handleToggleSelect} // Passar a prop onToggleSelect
               />
             ))
           ) : (

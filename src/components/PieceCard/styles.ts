@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center', // Centralizar itens verticalmente
     paddingVertical: 6,
     paddingHorizontal: 6,
     marginVertical: 4,
@@ -21,6 +22,7 @@ export const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
+    marginLeft: 10, 
   },
   categoryText: {
     fontSize: 18,
@@ -38,5 +40,8 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: fonts.italic,
     color: colors.black,
+  },
+  checkboxContainer: {
+    padding: 10, // Área de toque maior para o checkbox
   },
 });
