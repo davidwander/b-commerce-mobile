@@ -41,7 +41,4 @@ export const styles = StyleSheet.create({
     fontFamily: fonts.italic,
     color: colors.black,
   },
-  checkboxContainer: {
-    padding: 10, // Área de toque maior para o checkbox
-  },
 });

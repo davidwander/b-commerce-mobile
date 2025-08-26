@@ -19,18 +19,19 @@ import { Header } from '@/components/Header';
 import { CustomInput } from '@/components/CustomInput';
 import { ActionButton } from '@/components/ActionButton';
 import { FontAwesome } from '@expo/vector-icons';
+import { PieceCard } from '@/components/PieceCard'; // Importar PieceCard
+import { PartLeaf, partsTree, PartNode } from '@/data/partsTree'; // Importar partsTree e PartNode
+import { useInventory } from '@/hook/useInventory'; // Importar useInventory
 
-// Mock de peças não precificadas
-const mockParts = [
-  { id: "1", nome: "Filtro de Óleo", categoria: "Motor" },
-  { id: "2", nome: "Pastilha de Freio", categoria: "Freio" },
-  { id: "3", nome: "Correia Dentada", categoria: "Transmissão" },
-];
 
 export default function Prices() {
-  const [selectedPart, setSelectedPart] = useState<any>(null);
+  const [selectedPart, setSelectedPart] = useState<PartLeaf | null>(null); // Atualizar tipo
   const [modalVisible, setModalVisible] = useState(false);
   const [priceSale, setPriceSale] = useState("");
+  const [inventoryPieces, setInventoryPieces] = useState<PartLeaf[]>([]); // Estado para peças do estoque
+  const [isLoading, setIsLoading] = useState(true); // Estado de carregamento
+
+  const { getAllPieces } = useInventory(); // Usar hook useInventory
 
   const {
     control,
@@ -47,13 +48,25 @@ export default function Prices() {
   const watchMargin = watch("margin");
 
   useEffect(() => {
+    async function loadPieces() {
+      setIsLoading(true);
+      const result = await getAllPieces();
+      if (result.success && result.data) {
+        setInventoryPieces(result.data);
+      }
+      setIsLoading(false);
+    }
+    loadPieces();
+  }, []); // Carregar peças apenas uma vez ao montar o componente
+
+  useEffect(() => {
     const costNum = parseFloat((watchCost || "").replace(",", ".")) || 0;
     const marginNum = parseFloat((watchMargin || "").replace(",", ".")) || 0;
     const sale = costNum + costNum * (marginNum / 100);
     setPriceSale(sale ? sale.toFixed(2) : "");
   }, [watchCost, watchMargin]);
 
-  function openModal(part: any) {
+  function openModal(part: PartLeaf) {
     setSelectedPart(part);
     setModalVisible(true);
     reset({ cost: "", margin: "" });
@@ -68,21 +81,55 @@ export default function Prices() {
     console.log("Erros do formulário:", errors);
   };
 
+  function getCategoryNameById(id: string | undefined): string | undefined {
+    if (!id) return undefined;
+
+    // Função auxiliar para buscar o nó recursivamente
+    const findNode = (nodes: Array<PartNode | PartLeaf>[]): PartNode | PartLeaf | undefined => {
+      for (const level of nodes) {
+        for (const node of level) {
+          if (node.id === id) {
+            return node;
+          }
+          if ('children' in node && node.children) {
+            const foundInChild = findNode([node.children]); // Passa os filhos como um array de um único nível
+            if (foundInChild) return foundInChild;
+          }
+        }
+      }
+      return undefined;
+    };
+
+    const foundNode = findNode([partsTree]); // Buscar a partir do topo da árvore
+    return foundNode?.name;
+  }
+
   return (
     <View style={styles.container}>
       <Header />
       <View style={styles.containerContent}>
-        <FlatList
-          data={mockParts}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.card} onPress={() => openModal(item)}>
-              <Text style={styles.cardTitle}>{item.nome}</Text>
-              <Text style={styles.cardSubtitle}>{item.categoria}</Text>
-            </TouchableOpacity>
-          )}
-          contentContainerStyle={{ paddingBottom: 20 }}
-        />
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <Text style={styles.loadingText}>Carregando peças...</Text>
+          </View>
+        ) : (
+          <FlatList
+            data={inventoryPieces} // Usar peças do estoque
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <PieceCard
+                key={item.id}
+                piece={item}
+                category={getCategoryNameById(item.categoryId) || 'Geral'} // Usar nome da categoria
+                subcategory={getCategoryNameById(item.subcategoryId) || undefined} // Usar nome da subcategoria
+                onPress={openModal}
+                isSelected={false} // Não relevante para esta tela
+                onToggleSelect={() => {}} // Não relevante para esta tela
+              />
+            )}
+            contentContainerStyle={{ paddingBottom: 20 }}
+          />
+        )}
       </View>
 
       {/* Modal de precificação */}
@@ -110,7 +157,7 @@ export default function Prices() {
             >
               <SafeAreaView style={{ width: "100%" }}>
                 <Text style={styles.modalTitle}>
-                  Precificar: {selectedPart?.nome}
+                  Precificar: {selectedPart?.name} {/* Usar .name */}
                 </Text>
 
                 {/* Controller para Valor de Custo */}

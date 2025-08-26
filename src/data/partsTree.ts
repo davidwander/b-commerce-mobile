@@ -1,8 +1,12 @@
 export type PartLeaf = {
-  description: ReactNode;
+  description: string;
   id: string;
   name: string;
   quantity?: number;  
+  categoryPath: string;
+  categoryId: string;
+  subcategoryId?: string;
+  genderId?: string;
 };
 
 export type PartNode = {

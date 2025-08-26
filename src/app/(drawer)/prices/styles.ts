@@ -34,6 +34,16 @@ export const styles = StyleSheet.create({
     color: "#666",
     marginTop: 4,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    fontSize: 18,
+    fontFamily: fonts.regular,
+    color: colors.black,
+  },
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.4)",

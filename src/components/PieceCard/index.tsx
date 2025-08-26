@@ -10,11 +10,9 @@ interface PieceCardProps {
   category: string;
   subcategory?: string;
   onPress: (piece: PartLeaf) => void;
-  isSelected: boolean; // Nova prop para o estado de seleção
-  onToggleSelect: (pieceId: string) => void; // Nova prop para alternar a seleção
 }
 
-export function PieceCard({ piece, category, subcategory, onPress, isSelected, onToggleSelect }: PieceCardProps) {
+export function PieceCard({ piece, category, subcategory, onPress }: PieceCardProps) {
   let finalDescription = '';
   if (piece.description) {
     if (piece.description.length > 6) {
@@ -35,16 +33,6 @@ export function PieceCard({ piece, category, subcategory, onPress, isSelected, o
           {displayTitle}
         </Text>
       </View>
-      <TouchableOpacity 
-        style={styles.checkboxContainer} 
-        onPress={() => onToggleSelect(piece.id)}
-      >
-        <Feather 
-          name={isSelected ? "check-square" : "square"} 
-          size={24} 
-          color={isSelected ? colors.page.dragonFruit : colors.black}
-        />
-      </TouchableOpacity>
     </TouchableOpacity>
   );
 }
