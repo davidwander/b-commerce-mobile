@@ -16,7 +16,7 @@ type PartNode = {
 
 type CategoryListProps = {
   data: Array<PartNode | PartLeaf>;
-  onItemPress: (item: PartNode | PartLeaf) => void; // ✅ Aceitar também PartLeaf
+  onItemPress: (item: PartNode | PartLeaf) => void; 
 };
 
 // ✅ CORREÇÃO: Verificar se é folha baseado na ausência de children

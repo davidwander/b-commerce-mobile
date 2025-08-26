@@ -28,15 +28,18 @@ export function CategoryCard({ name, quantity, onPress, disabled }: CategoryCard
         shadowOffset: { width: 5, height: 8 },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
         opacity: disabled ? 1 : 0.9,
         width: "100%", 
       }}
     >
-      <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
-        <Text style={{ fontSize: 28, marginRight: 12 }}>
+      <View 
+        style={{ 
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text style={{ fontSize: 32 }}>
           {categoryIcons[name] || "🧩"}
         </Text>
         <Text style={{ fontSize: 16, fontWeight: "700", color: colors.black }}>
