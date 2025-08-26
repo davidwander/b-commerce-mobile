@@ -6,6 +6,8 @@ import { Header } from '@/components/Header';
 import { CustomInput } from '@/components/CustomInput';
 import { ActionButton } from '@/components/ActionButton';
 import { CategorySelectorModal } from '@/components/Modal/CategorySelectorModal';
+import { PieceCard } from '@/components/PieceCard'; // Importar o novo componente
+import { PieceDetailsModal } from '@/components/Modal/PieceDetailsModal'; // Importar o modal de detalhes
 
 import { CategoryList } from '@/components/CategoryList';
 import { colors } from '@/styles/colors';
@@ -22,6 +24,8 @@ export default function Inventory() {
   const [pieces, setPieces] = useState<PartLeaf[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedGenderId, setSelectedGenderId] = useState<string | null>(null);
+  const [selectedPiece, setSelectedPiece] = useState<PartLeaf | null>(null); // Novo estado para a peça selecionada
+  const [detailsModalVisible, setDetailsModalVisible] = useState(false); // Novo estado para visibilidade do modal de detalhes
 
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -92,6 +96,16 @@ export default function Inventory() {
     
     const currentCategoryPath = getCurrentCategoryPath();
     await fetchFilteredPieces(currentCategoryPath, searchText);
+  }
+
+  function handlePiecePress(piece: PartLeaf) {
+    setSelectedPiece(piece);
+    setDetailsModalVisible(true);
+  }
+
+  function handleDetailsModalClose() {
+    setDetailsModalVisible(false);
+    setSelectedPiece(null);
   }
 
   function getCurrentCategoryPath(): PartNode[] {
@@ -252,19 +266,13 @@ export default function Inventory() {
             </View>
           ) : pieces.length > 0 ? (
             pieces.map(piece => (
-              <View key={piece.id} style={styles.pieceCard}>
-                <Text style={styles.pieceCardText}>
-                  {piece.name}
-                </Text>
-                <View style={styles.pieceCardContent}>
-                  <Text style={styles.pieceCardQuantity}>
-                    {piece.quantity}
-                  </Text>
-                  <Text style={styles.pieceQuantityText}>
-                    unidades
-                  </Text>
-                </View>
-              </View>
+              <PieceCard
+                key={piece.id}
+                piece={piece}
+                category={getCurrentCategoryPath().map(c => c.name).join(' > ')}
+                subcategory={selectedGenderId ? (currentLevel.find(item => item.id === selectedGenderId) as PartNode)?.name : undefined}
+                onPress={handlePiecePress}
+              />
             ))
           ) : (
             <View style={styles.emptyListContent}>
@@ -318,6 +326,14 @@ export default function Inventory() {
         onClose={handleModalClose}
         onConfirm={handleModalConfirm}
       />
+
+      {selectedPiece && (
+        <PieceDetailsModal
+          visible={detailsModalVisible}
+          piece={selectedPiece}
+          onClose={handleDetailsModalClose}
+        />
+      )}
     </View>
   );
 }
