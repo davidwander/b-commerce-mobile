@@ -123,8 +123,6 @@ export default function Prices() {
                 category={getCategoryNameById(item.categoryId) || 'Geral'} // Usar nome da categoria
                 subcategory={getCategoryNameById(item.subcategoryId) || undefined} // Usar nome da subcategoria
                 onPress={openModal}
-                isSelected={false} // Não relevante para esta tela
-                onToggleSelect={() => {}} // Não relevante para esta tela
               />
             )}
             contentContainerStyle={{ paddingBottom: 20 }}
@@ -172,7 +170,6 @@ export default function Prices() {
                       keyboardType="numeric"
                       value={value}
                       onChangeText={(text) => {
-                        // Mantém texto limpo durante digitação
                         const numeric = text.replace(/[^\d,]/g, "");
                         onChange(numeric);
                       }}

@@ -52,10 +52,10 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   modalContainer: {
-    width: "90%",
+    width: "100%", // Largura fixa de 100%
     maxHeight: 350,
     backgroundColor: colors.white,
-    borderRadius: 12,
+    borderRadius: 16,
     overflow: "hidden",
   },
   scrollContent: {
