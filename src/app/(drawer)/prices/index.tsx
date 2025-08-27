@@ -56,7 +56,9 @@ export default function Prices() {
         setIsLoading(true);
         const result = await getAllPieces();
         if (result.success && result.data) {
-          setInventoryPieces(result.data);
+          // Filtra as peças para mostrar apenas aquelas com preço 0.00 (não precificadas)
+          const unpricedPieces = result.data.filter(piece => !piece.price || piece.price === 0);
+          setInventoryPieces(unpricedPieces);
         }
         setIsLoading(false);
       }
@@ -91,11 +93,9 @@ export default function Prices() {
 
     if (result.success) {
       Alert.alert("Sucesso", "Preço atualizado com sucesso!");
-      // Atualizar a peça na lista localmente
+      // Remover a peça da lista localmente
       setInventoryPieces(prevPieces =>
-        prevPieces.map(p =>
-          p.id === selectedPart.id ? { ...p, price: parseFloat(priceSale.replace(',', '.')) } : p
-        )
+        prevPieces.filter(p => p.id !== selectedPart.id) // Filtra a peça atualizada
       );
       setModalVisible(false);
       setSelectedPart(null);
