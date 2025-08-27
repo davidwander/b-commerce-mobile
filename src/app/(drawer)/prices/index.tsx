@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
   Text,
@@ -48,17 +49,20 @@ export default function Prices() {
   const watchCost = watch("cost");
   const watchMargin = watch("margin");
 
-  useEffect(() => {
-    async function loadPieces() {
-      setIsLoading(true);
-      const result = await getAllPieces();
-      if (result.success && result.data) {
-        setInventoryPieces(result.data);
+  useFocusEffect(
+    useCallback(() => {
+      async function loadPieces() {
+        setIsLoading(true);
+        const result = await getAllPieces();
+        if (result.success && result.data) {
+          setInventoryPieces(result.data);
+        }
+        setIsLoading(false);
       }
-      setIsLoading(false);
-    }
-    loadPieces();
-  }, []); // Carregar peças apenas uma vez ao montar o componente
+      loadPieces();
+      return () => { /* optional cleanup */ };
+    }, [getAllPieces])
+  );
 
   useEffect(() => {
     const costNum = parseFloat((watchCost || "").replace(",", ".")) || 0;

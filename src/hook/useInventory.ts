@@ -1,4 +1,5 @@
 import { useAuth } from '@/contexts/AuthContext';
+import { useCallback } from 'react';
 
 export interface CreatePieceRequest {
   categoryPath: string[];
@@ -72,5 +73,9 @@ export const useInventory = () => {
     }
   };
 
-  return { createPiece, getFilteredPieces, getAllPieces };
+  return {
+    createPiece: useCallback((data: CreatePieceRequest) => createPiece(data), [authenticatedFetch, isAuthenticated]),
+    getFilteredPieces: useCallback((categoryPath: string[], search: string, query: FilterPiecesQuery) => getFilteredPieces(categoryPath, search, query), [authenticatedFetch, isAuthenticated]),
+    getAllPieces: useCallback(() => getAllPieces(), [authenticatedFetch, isAuthenticated]),
+  };
 };
