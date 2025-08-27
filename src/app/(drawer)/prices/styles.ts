@@ -44,6 +44,26 @@ export const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     color: colors.black,
   },
+  emptyListContent: {
+    alignItems: "center", 
+    justifyContent: "center", 
+    padding: 24,
+    flex: 1
+  },
+  emptyListText1: {
+    color: colors.black, 
+    fontFamily: fonts.italic,
+    fontSize: 18,
+    opacity: 0.7,
+    textAlign: "center" 
+  },
+  emptyListText2: {
+    color: colors.black, 
+    opacity: 0.7, 
+    textAlign: "center", 
+    marginTop: 6,
+    fontSize: 16, 
+  },
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.4)",

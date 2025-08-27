@@ -22,6 +22,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { PieceCard } from '@/components/PieceCard'; // Importar PieceCard
 import { PartLeaf, partsTree, PartNode } from '@/data/partsTree'; // Importar partsTree e PartNode
 import { useInventory } from '@/hook/useInventory'; // Importar useInventory
+import Feather from '@expo/vector-icons/Feather';
 
 
 export default function Prices() {
@@ -112,7 +113,7 @@ export default function Prices() {
           <View style={styles.loadingContainer}>
             <Text style={styles.loadingText}>Carregando peças...</Text>
           </View>
-        ) : (
+        ) : inventoryPieces.length > 0 ? (
           <FlatList
             data={inventoryPieces} // Usar peças do estoque
             keyExtractor={(item) => item.id}
@@ -127,6 +128,21 @@ export default function Prices() {
             )}
             contentContainerStyle={{ paddingBottom: 20 }}
           />
+        ) : (
+          <View style={styles.emptyListContent}>
+            <Feather 
+              name="package" 
+              size={48} 
+              color="#9aa0a6" 
+              style={{ marginBottom: 8 }} 
+            />
+            <Text style={styles.emptyListText1}>
+              Nenhuma peça cadastrada.
+            </Text>
+            <Text style={styles.emptyListText2}>
+              Acesse o estoque e adicione uma peça para precificar.
+            </Text>
+          </View>
         )}
       </View>
 
