@@ -13,21 +13,21 @@ const settingsOptions = [
     title: 'Trocar E-mail',
     category: 'Conta',
     icon: 'mail-outline',
-    targetScreen: 'ChangeEmail',
+    targetScreen: '/auth/changeEmail',
   },
   {
     id: '2',
     title: 'Trocar Senha',
     category: 'Conta',
     icon: 'lock-closed-outline',
-    targetScreen: 'ChangePassword',
+    targetScreen: '/auth/changePassword',
   },
   {
     id: '3',
     title: 'Nova Senha',
     category: 'Segurança',
     icon: 'key-outline',
-    targetScreen: 'NewPassword',
+    targetScreen: '/auth/signUp',
   },
 ];
 
@@ -36,7 +36,7 @@ export default function Settings() {
 
   const handleOptionPress = (targetScreen?: string) => {
     if (targetScreen) {
-      router.push(targetScreen); // navega para a tela correspondente
+      router.push(targetScreen as any); // navega para a tela correspondente
     }
   };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, View } from 'react-native';
 import { styles } from './styles';
 import { PartLeaf } from '@/data/partsTree';
-import Feather from '@expo/vector-icons/Feather'; // Importar Feather para o ícone do checkbox
+import Feather from '@expo/vector-icons/Feather'; 
 import { colors } from '@/styles/colors';
 
 interface PieceCardProps {

@@ -31,7 +31,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
     notifications: colors.page.tulips,
     prices: colors.page.lavender,
     otherExpenses: colors.page.dragonFruit,
-    [settingsRoute]: colors.page.auburn,
+    [settingsRoute]: colors.page.olive,
   };
 
   const normalizeRoute = (name: string) => {

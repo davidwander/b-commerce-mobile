@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
   cardContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center', // Centralizar itens verticalmente
+    alignItems: 'center', 
     paddingVertical: 6,
     paddingHorizontal: 6,
     marginVertical: 4,
@@ -42,9 +42,9 @@ export const styles = StyleSheet.create({
     color: colors.black,
   },
   priceText: {
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: fonts.bold,
-    color: colors.page.lavender, // Ou uma cor de sua escolha para o preço
+    color: colors.page.lavender,
     marginTop: 4,
   }
 });
