@@ -15,6 +15,11 @@ export interface FilterPiecesQuery {
   search?: string;
 }
 
+// Nova interface para atualização de preço
+export interface UpdatePiecePriceRequest {
+  price: number;
+}
+
 const BASE_URL = 'http://192.168.3.7:3333/api/inventory';
 
 export const useInventory = () => {
@@ -74,9 +79,25 @@ export const useInventory = () => {
     }
   };
 
+  const updatePiecePrice = async (pieceId: string, data: UpdatePiecePriceRequest) => {
+    try {
+      ensureAuthenticated();
+      const response = await authenticatedFetch(`${BASE_URL}/pieces/${pieceId}/price`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error(await response.text());
+      const result = await response.json();
+      return { success: true, data: result.data };
+    } catch (error: any) {
+      return { success: false, error: error.message || 'Erro desconhecido' };
+    }
+  };
+
   return {
     createPiece: useCallback((data: CreatePieceRequest) => createPiece(data), [authenticatedFetch, isAuthenticated]),
     getFilteredPieces: useCallback((categoryPath: string[], search: string, query: FilterPiecesQuery) => getFilteredPieces(categoryPath, search, query), [authenticatedFetch, isAuthenticated]),
     getAllPieces: useCallback(() => getAllPieces(), [authenticatedFetch, isAuthenticated]),
+    updatePiecePrice: useCallback((pieceId: string, data: UpdatePiecePriceRequest) => updatePiecePrice(pieceId, data), [authenticatedFetch, isAuthenticated]), // Adicionar nova função
   };
 };

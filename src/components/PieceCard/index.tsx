@@ -14,7 +14,7 @@ interface PieceCardProps {
 }
 
 export function PieceCard({ piece, category, subcategory, onPress, price }: PieceCardProps) {
-  const displayTitle = `${piece.description}`;
+  const displayTitle = `${piece.name}`;
   
   return (
     <TouchableOpacity style={styles.cardContainer} onPress={() => onPress(piece)}>

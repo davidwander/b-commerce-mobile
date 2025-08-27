@@ -1,5 +1,4 @@
 export type PartLeaf = {
-  description: string;
   id: string;
   name: string;
   quantity?: number;  

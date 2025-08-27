@@ -24,6 +24,7 @@ export function CategorySelectorModal({
   const [selectedPath, setSelectedPath] = useState<PartNode[]>([]);
   const [description, setDescription] = useState('');
   const [quantity, setQuantity] = useState('1');
+//   const [price, setPrice] = useState('0.00'); // Removido estado para o preço
 
   const { createPiece } = useInventory();
 
@@ -45,6 +46,9 @@ export function CategorySelectorModal({
     if (!description.trim()) return Alert.alert('Erro', 'Informe a descrição da peça');
     const qty = parseInt(quantity, 10);
     if (isNaN(qty) || qty <= 0) return Alert.alert('Erro', 'Informe uma quantidade válida');
+    
+    // const parsedPrice = parseFloat(price.replace(',', '.')) || 0.00; // Removido validação e parse de preço
+    // if (isNaN(parsedPrice) || parsedPrice < 0) return Alert.alert('Erro', 'Informe um preço válido'); // Removido validação de preço
 
     const categoryPath = selectedPath.map((node) => node.id);
 
@@ -52,6 +56,7 @@ export function CategorySelectorModal({
       categoryPath,
       description,
       quantity: qty,
+    //   price: parsedPrice, // Removido passagem do preço
     });
 
     if (result.success) {
@@ -60,6 +65,7 @@ export function CategorySelectorModal({
 
       setDescription('');
       setQuantity('1');
+    //   setPrice('0.00'); // Removido reset do preço
       setNavigationStack([partsTree]);
       setSelectedPath([]);
       onClose();
@@ -71,6 +77,7 @@ export function CategorySelectorModal({
   function handleCancel() {
     setDescription('');
     setQuantity('1');
+    // setPrice('0.00'); // Removido reset do preço
     setNavigationStack([partsTree]);
     setSelectedPath([]);
     onClose();
@@ -132,6 +139,19 @@ export function CategorySelectorModal({
                 placeholder="1"
                 style={styles.input}
               />
+              {/* Removido o campo de preço */}
+              {/*
+              <Text style={styles.inputLabel}>
+                Preço
+              </Text>
+              <TextInput
+                value={price}
+                onChangeText={(text) => setPrice(text.replace(/[^\d,.]/g, ''))}
+                keyboardType="numeric"
+                placeholder="0.00"
+                style={styles.input}
+              />
+              */}
               <ActionButton
                 label="Adicionar Peça"
                 onPress={handleConfirm}

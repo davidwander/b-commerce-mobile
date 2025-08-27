@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   Platform,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import { styles } from './styles';
 
@@ -33,7 +34,7 @@ export default function Prices() {
   const [inventoryPieces, setInventoryPieces] = useState<PartLeaf[]>([]); // Estado para peças do estoque
   const [isLoading, setIsLoading] = useState(true); // Estado de carregamento
 
-  const { getAllPieces } = useInventory(); // Usar hook useInventory
+  const { getAllPieces, updatePiecePrice } = useInventory(); // Usar hook useInventory e a nova função
 
   const {
     control,
@@ -74,12 +75,34 @@ export default function Prices() {
   function openModal(part: PartLeaf) {
     setSelectedPart(part);
     setModalVisible(true);
-    reset({ cost: "", margin: "" });
-    setPriceSale("");
+    reset({ cost: part.price ? part.price.toFixed(2).replace('.', ',') : "", margin: "" }); // Inicializar custo com o preço atual da peça
+    setPriceSale(part.price ? part.price.toFixed(2).replace('.', ',') : ""); // Inicializar priceSale
   }
 
-  const onSubmit = (data: any) => {
-    setModalVisible(false);
+  const onSubmit = async () => {
+    if (!selectedPart || priceSale === "") {
+      Alert.alert("Erro", "Não foi possível salvar o preço.");
+      return;
+    }
+
+    setIsLoading(true);
+    const result = await updatePiecePrice(selectedPart.id, { price: parseFloat(priceSale.replace(',', '.')) });
+    setIsLoading(false);
+
+    if (result.success) {
+      Alert.alert("Sucesso", "Preço atualizado com sucesso!");
+      // Atualizar a peça na lista localmente
+      setInventoryPieces(prevPieces =>
+        prevPieces.map(p =>
+          p.id === selectedPart.id ? { ...p, price: parseFloat(priceSale.replace(',', '.')) } : p
+        )
+      );
+      setModalVisible(false);
+      setSelectedPart(null);
+      setPriceSale("");
+    } else {
+      Alert.alert("Erro", result.error || "Falha ao atualizar preço.");
+    }
   };
 
   const onError = (errors: any) => {
