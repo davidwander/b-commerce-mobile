@@ -3,6 +3,7 @@ export type PartLeaf = {
   id: string;
   name: string;
   quantity?: number;  
+  price?: number;
   categoryPath: string;
   categoryId: string;
   subcategoryId?: string;

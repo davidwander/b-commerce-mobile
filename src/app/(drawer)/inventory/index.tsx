@@ -283,6 +283,7 @@ export default function Inventory() {
                 onPress={handlePiecePress}
                 isSelected={selectedPieceIds.includes(piece.id)} // Passar a prop isSelected
                 onToggleSelect={handleToggleSelect} // Passar a prop onToggleSelect
+                price={piece.price} // Passar o preço para o PieceCard
               />
             ))
           ) : (

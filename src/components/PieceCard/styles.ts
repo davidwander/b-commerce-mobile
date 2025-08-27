@@ -41,4 +41,10 @@ export const styles = StyleSheet.create({
     fontFamily: fonts.italic,
     color: colors.black,
   },
+  priceText: {
+    fontSize: 16,
+    fontFamily: fonts.bold,
+    color: colors.page.lavender, // Ou uma cor de sua escolha para o preço
+    marginTop: 4,
+  }
 });

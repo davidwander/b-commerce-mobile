@@ -5,6 +5,7 @@ export interface CreatePieceRequest {
   categoryPath: string[];
   description: string;
   quantity?: number;
+  price?: number; // Adicionar campo de preço
 }
 
 export interface FilterPiecesQuery {

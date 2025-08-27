@@ -10,20 +10,12 @@ interface PieceCardProps {
   category: string;
   subcategory?: string;
   onPress: (piece: PartLeaf) => void;
+  price?: number;
 }
 
-export function PieceCard({ piece, category, subcategory, onPress }: PieceCardProps) {
-  let finalDescription = '';
-  if (piece.description) {
-    if (piece.description.length > 6) {
-      finalDescription = ` ${piece.description.substring(0, 6)}...`;
-    } else {
-      finalDescription = ` ${piece.description}`;
-    }
-  }
-
-  const displayTitle = `${piece.name}${finalDescription}`;
-
+export function PieceCard({ piece, category, subcategory, onPress, price }: PieceCardProps) {
+  const displayTitle = `${piece.description}`;
+  
   return (
     <TouchableOpacity style={styles.cardContainer} onPress={() => onPress(piece)}>
       <View style={styles.textContainer}>
@@ -32,6 +24,9 @@ export function PieceCard({ piece, category, subcategory, onPress }: PieceCardPr
         <Text style={styles.pieceNameText}>
           {displayTitle}
         </Text>
+        {price !== undefined && (
+          <Text style={styles.priceText}>R$ {price.toFixed(2).replace('.', ',')}</Text>
+        )}
       </View>
     </TouchableOpacity>
   );
