@@ -52,17 +52,17 @@ export default function Prices() {
 
   useFocusEffect(
     useCallback(() => {
-      async function loadPieces() {
-        setIsLoading(true);
-        const result = await getAllPieces();
-        if (result.success && result.data) {
+    async function loadPieces() {
+      setIsLoading(true);
+      const result = await getAllPieces();
+      if (result.success && result.data) {
           // Filtra as peças para mostrar apenas aquelas com preço 0.00 (não precificadas)
           const unpricedPieces = result.data.filter(piece => !piece.price || piece.price === 0);
           setInventoryPieces(unpricedPieces);
-        }
-        setIsLoading(false);
       }
-      loadPieces();
+      setIsLoading(false);
+    }
+    loadPieces();
       return () => { /* optional cleanup */ };
     }, [getAllPieces])
   );
@@ -97,7 +97,7 @@ export default function Prices() {
       setInventoryPieces(prevPieces =>
         prevPieces.filter(p => p.id !== selectedPart.id) // Filtra a peça atualizada
       );
-      setModalVisible(false);
+    setModalVisible(false);
       setSelectedPart(null);
       setPriceSale("");
     } else {
