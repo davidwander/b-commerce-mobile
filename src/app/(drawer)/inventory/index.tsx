@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Alert } from "react-native";
 import { styles } from './styles';
 
 import { Header } from '@/components/Header';
@@ -12,6 +12,7 @@ import { PieceDetailsModal } from '@/components/Modal/PieceDetailsModal'; // Imp
 import { CategoryList } from '@/components/CategoryList';
 import { colors } from '@/styles/colors';
 import Feather from '@expo/vector-icons/Feather';
+import { useLocalSearchParams, router } from 'expo-router'; // Importar useLocalSearchParams e router
 
 import { partsTree, PartNode, PartLeaf } from '@/data/partsTree';
 import { fonts } from '@/styles/fonts';
@@ -27,6 +28,8 @@ export default function Inventory() {
   const [selectedPiece, setSelectedPiece] = useState<PartLeaf | null>(null);
   const [detailsModalVisible, setDetailsModalVisible] = useState(false); 
   const [selectedPieceIds, setSelectedPieceIds] = useState<string[]>([]); 
+  const params = useLocalSearchParams();
+  const saleId = typeof params.saleId === 'string' ? params.saleId : null; // Obter saleId da rota
 
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -325,12 +328,25 @@ export default function Inventory() {
         </View>
       )}
 
-      <ActionButton 
-        label="Adicionar peça"
-        onPress={handleAddPiece}
-        color={colors.page.dragonFruit}
-        style={{ marginHorizontal: 16, marginBottom: 46 }}
-      />
+      {saleId ? (
+        <ActionButton
+          label="Finalizar Venda"
+          onPress={() => {
+            // Lógica para finalizar a venda
+            Alert.alert("Venda Finalizada", `Venda ${saleId} finalizada com sucesso!`);
+            router.replace("/(drawer)/sales"); // Redireciona de volta para a tela de vendas
+          }}
+          color={colors.page.tulips}
+          style={{ marginHorizontal: 16, marginBottom: 46 }}
+        />
+      ) : (
+        <ActionButton 
+          label="Adicionar peça"
+          onPress={handleAddPiece}
+          color={colors.page.dragonFruit}
+          style={{ marginHorizontal: 16, marginBottom: 46 }}
+        />
+      )}
 
       <CategorySelectorModal 
         visible={modalVisible}
@@ -344,6 +360,7 @@ export default function Inventory() {
           visible={detailsModalVisible}
           piece={selectedPiece}
           onClose={handleDetailsModalClose}
+          saleId={saleId} // Passar saleId para o modal de detalhes
         />
       )}
     </View>
