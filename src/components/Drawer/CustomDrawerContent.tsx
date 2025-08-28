@@ -35,6 +35,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
   };
 
   const normalizeRoute = (name: string) => {
+    if (name.startsWith("sales")) return "sales";
     if (name.startsWith("inventory")) return "inventory";
     if (name.startsWith("dashboard")) return "dashboard";
     if (name.startsWith("notifications")) return "notifications";

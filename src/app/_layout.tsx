@@ -26,7 +26,7 @@ function AppStack() {
 
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle="light-content" translucent={false} />
+      <StatusBar barStyle="dark-content" translucent={false} />
       <Stack screenOptions={{ headerShown: false }} />
     </SafeAreaProvider>
   );
