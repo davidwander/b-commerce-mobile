@@ -24,9 +24,9 @@ export default function Inventory() {
   const [pieces, setPieces] = useState<PartLeaf[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedGenderId, setSelectedGenderId] = useState<string | null>(null);
-  const [selectedPiece, setSelectedPiece] = useState<PartLeaf | null>(null); // Novo estado para a peça selecionada
-  const [detailsModalVisible, setDetailsModalVisible] = useState(false); // Novo estado para visibilidade do modal de detalhes
-  const [selectedPieceIds, setSelectedPieceIds] = useState<string[]>([]); // Novo estado para peças selecionadas
+  const [selectedPiece, setSelectedPiece] = useState<PartLeaf | null>(null);
+  const [detailsModalVisible, setDetailsModalVisible] = useState(false); 
+  const [selectedPieceIds, setSelectedPieceIds] = useState<string[]>([]); 
 
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
