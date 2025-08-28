@@ -157,7 +157,7 @@ export default function SignUp() {
         label={loading ? "Cadastrando..." : "Confirmar"}
         onPress={handleSignUp}
         color={colors.page.auburn}
-        //disabled={loading}
+        disabled={loading}
       />
 
       <TouchableOpacity 

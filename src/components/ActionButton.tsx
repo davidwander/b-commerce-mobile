@@ -9,6 +9,7 @@ type ActionButtonProps = {
   color?: string;
   style?: ViewStyle;
   textStyle?: TextStyle;
+  disabled?: boolean;
 };
 
 export function ActionButton({
@@ -17,10 +18,12 @@ export function ActionButton({
   color = colors.page.tulips,
   style,
   textStyle,
+  disabled = false,
 }: ActionButtonProps) {
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={disabled}
       style={[
         {
           paddingVertical: 12,
