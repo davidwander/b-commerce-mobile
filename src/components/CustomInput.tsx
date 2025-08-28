@@ -16,7 +16,6 @@ export function CustomInput({ label, value, onChangeText, error, ...rest }: Cust
         style={{
           fontSize: 16,
           fontFamily: fonts.italic,
-          fontWeight: "500",
           marginBottom: 6,
         }}
       >
@@ -27,8 +26,9 @@ export function CustomInput({ label, value, onChangeText, error, ...rest }: Cust
         onChangeText={onChangeText}
         style={{
           backgroundColor: colors.white,
-          borderRadius: 12,
-          padding: 16,
+          borderRadius: 14,
+          padding: 15,
+          marginHorizontal: 14,
           elevation: 5,
           shadowColor: "#000",
           shadowOffset: { width: 5, height: 8 },
@@ -45,7 +45,8 @@ export function CustomInput({ label, value, onChangeText, error, ...rest }: Cust
           style={{
             color: colors.white, 
             marginTop: 4, 
-            fontSize: 14, 
+            fontSize: 16, 
+            marginHorizontal: 14,
             backgroundColor: "red",
             borderRadius: 12,
             padding: 2,

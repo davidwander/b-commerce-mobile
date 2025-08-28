@@ -66,7 +66,14 @@ export default function SignIn() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Entrar</Text>
+      <View>
+        <Text style={styles.title}>
+          Brecho Vitoriano
+        </Text>
+      </View>
+        <Text style={styles.subTitle}>
+          Entrar
+        </Text>
 
       <CustomInput
         label="E-mail"

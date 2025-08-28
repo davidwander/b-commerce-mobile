@@ -10,19 +10,20 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   title: {
+    textAlign: "center",
+    fontSize: 38,
+    fontWeight: "900",
+    fontFamily: fonts.italic,
+    marginTop: -60,
+  },
+  subTitle: {
     fontSize: 28,
     fontFamily: fonts.bold,
     color: colors.black,
     marginBottom: 40,
     textAlign: "center",
   },
-  input: {
-    backgroundColor: colors.white,
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 15,
-    fontSize: 16,
-  },
+
   button: {
     backgroundColor: colors.black,
     padding: 15,

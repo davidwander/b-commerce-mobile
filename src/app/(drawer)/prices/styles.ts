@@ -10,14 +10,14 @@ export const styles = StyleSheet.create({
   },
   containerContent: {
     flex: 1, 
-    paddingHorizontal: 16, 
-    paddingTop: 10,
+    paddingTop: 10
   },
   card: {
     backgroundColor: colors.white,
     padding: 16,
     borderRadius: 12,
     marginBottom: 10,
+    marginHorizontal: 16,
     elevation: 5,
     shadowColor: "#000",
     shadowOffset: { width: 5, height: 8 },

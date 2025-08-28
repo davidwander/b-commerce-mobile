@@ -39,7 +39,7 @@ export default function NewSale() {
         flex: 1,
         paddingTop: 46,
         backgroundColor: colors.page.daffodils,
-        paddingHorizontal: 16,
+        paddingHorizontal: 18,
       }}
     >
       <Text

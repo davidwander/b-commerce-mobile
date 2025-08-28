@@ -76,7 +76,7 @@ export default function Notifications() {
           data={MOCK_DATA}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
-          contentContainerStyle={{ paddingVertical: 16 }}
+          contentContainerStyle={{ paddingVertical: 14 }}
         />
 
         {/* Botão flutuante para calendário */}

@@ -9,15 +9,15 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.page.daffodils,
   },
   containerContent: {
-    flex: 1, 
-    paddingHorizontal: 16, 
+    flex: 1,
     paddingTop: 16
   },
   header: {
     fontSize: 18,
     fontFamily: fonts.italic,
     fontWeight: '600',
-    marginBottom: 16,
+    marginBottom: 6,
+    padding: 12,
     color: colors.black,
   },
   listEmptyText: {
@@ -29,8 +29,9 @@ export const styles = StyleSheet.create({
   card: {
     backgroundColor: colors.white,
     borderRadius: 12,
-    padding: 20,
+    padding: 22,
     marginBottom: 16,
+    marginHorizontal: 16,
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 5, height: 8 },

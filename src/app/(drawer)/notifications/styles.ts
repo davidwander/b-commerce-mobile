@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 12,
     marginBottom: 12,
+    marginHorizontal: 16,
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 5, height: 8 },
@@ -40,8 +41,7 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.page.tulips
   },
   containerContent: {
-    flex: 1, 
-    paddingHorizontal: 16,
+    flex: 1,
   },
   testButton: {
     backgroundColor: colors.page.meadow || '#4CAF50',
@@ -50,6 +50,7 @@ export const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     marginBottom: 18,
+    marginHorizontal: 16,
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 5, height: 8 },
