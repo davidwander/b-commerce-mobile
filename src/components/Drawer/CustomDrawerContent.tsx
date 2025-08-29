@@ -16,7 +16,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 
   const routeLabels: Record<string, string> = {
     dashboard: "Visão geral",
-    sales: "Vendas",
+    sale: "Vendas",
     inventory: "Estoque",
     notifications: "Notificações",
     prices: "Precificar",
@@ -26,7 +26,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
 
   const routeBackgroundColors: Record<string, string> = {
     dashboard: colors.page.meadow,
-    sales: colors.page.daffodils,
+    sale: colors.page.daffodils,
     inventory: colors.page.clearSky,
     notifications: colors.page.tulips,
     prices: colors.page.lavender,
@@ -35,7 +35,7 @@ export default function CustomDrawerContent(props: DrawerContentComponentProps) 
   };
 
   const normalizeRoute = (name: string) => {
-    if (name.startsWith("sales")) return "sales";
+    if (name.startsWith("sale")) return "sale";
     if (name.startsWith("inventory")) return "inventory";
     if (name.startsWith("dashboard")) return "dashboard";
     if (name.startsWith("notifications")) return "notifications";

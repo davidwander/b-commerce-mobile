@@ -7,7 +7,7 @@ import { useNavigation, DrawerActions, useNavigationState } from '@react-navigat
 
 const routeTitles: Record<string, string> = {
   dashboard: 'Visão geral',
-  sales: 'Vendas',
+  sale: 'Vendas',
   inventory: 'Estoque',
   notifications: 'Notificações',
   prices: 'Registrar preços',
@@ -17,7 +17,7 @@ const routeTitles: Record<string, string> = {
 
 const routeColors: Record<string, string> = {
   dashboard: colors.page.meadow,
-  sales: colors.page.daffodils,
+  sale: colors.page.daffodils,
   inventory: colors.page.clearSky,
   notifications: colors.page.tulips,
   prices: colors.page.lavender,
