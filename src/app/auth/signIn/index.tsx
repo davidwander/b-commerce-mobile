@@ -100,7 +100,7 @@ export default function SignIn() {
         label={loading ? "Entrando..." : "Entrar"}
         onPress={handleSignIn}
         color={colors.black}
-        //disabled={loading}
+        disabled={loading}
       />
 
       <TouchableOpacity 
