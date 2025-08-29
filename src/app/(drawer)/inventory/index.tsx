@@ -33,7 +33,7 @@ export default function Inventory() {
 
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const { getFilteredPieces, getAllPieces } = useInventory();
+  const { getFilteredPieces, getAllPieces, createPiece } = useInventory();
 
   const currentLevel = navigationStack[navigationStack.length - 1];
 
