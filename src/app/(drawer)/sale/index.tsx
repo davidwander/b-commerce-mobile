@@ -112,7 +112,7 @@ export default function Sales() {
       {/* Botão flutuante: Nova Venda */}
       <ActionButton 
         label="Nova venda"
-        onPress={() => router.push("/sales/newSale")}
+        onPress={() => router.push("/sales/new")}
         color={colors.page.dragonFruit}
         style={{
           marginHorizontal: 16,
