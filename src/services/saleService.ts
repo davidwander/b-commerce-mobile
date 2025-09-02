@@ -37,6 +37,50 @@ interface AddPieceToSaleResponse {
   };
 }
 
+// NOVAS INTERFACES PARA LISTAGEM
+export interface Sale {
+  id: string;
+  clientName: string;
+  phone: string | null;
+  address: string | null;
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
+  totalPieces: number;
+  totalValue: number;
+  status: 'open' | 'closed';
+  salePieces?: SalePiece[];
+}
+
+export interface SalePiece {
+  id: string;
+  saleId: string;
+  pieceId: string;
+  quantity: number;
+  piece: {
+    id: string;
+    description: string;
+    price: number;
+    categoryPath?: string;
+  };
+}
+
+interface GetSalesResponse {
+  message: string;
+  data: Sale[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+}
+
+interface GetSaleByIdResponse {
+  message: string;
+  data: Sale;
+}
+
 const api = axios.create({
   baseURL: 'http://192.168.3.7:3333/api/sales',
   timeout: 5000,
@@ -89,8 +133,6 @@ async function getAuthHeaders() {
   }
 }
 
-// Função para verificar se o usuário está logado (removida pois não é necessária)
-
 export const saleService = {
   createSale: async (data: CreateSaleRequest): Promise<{ success: boolean; message: string; data?: CreateSaleResponse['data'] }> => {
     try {
@@ -118,6 +160,89 @@ export const saleService = {
       return {
         success: false,
         message: error.response?.data?.error || error.message || 'Erro desconhecido ao criar venda.',
+      };
+    }
+  },
+
+  // NOVA FUNÇÃO: Listar vendas
+  getSales: async (params?: { 
+    status?: 'open' | 'closed'; 
+    page?: number; 
+    limit?: number 
+  }): Promise<{ success: boolean; message: string; data?: Sale[]; pagination?: any }> => {
+    try {
+      console.log('📋 Tentando listar vendas:', params);
+      
+      const headers = await getAuthHeaders();
+      
+      // Construir query parameters
+      const queryParams = new URLSearchParams();
+      if (params?.status) queryParams.append('status', params.status);
+      if (params?.page) queryParams.append('page', params.page.toString());
+      if (params?.limit) queryParams.append('limit', params.limit.toString());
+      
+      const queryString = queryParams.toString();
+      const url = queryString ? `/?${queryString}` : '/';
+      
+      console.log('🌐 URL da requisição:', `${api.defaults.baseURL}${url}`);
+      
+      const response = await api.get<GetSalesResponse>(url, { headers });
+      console.log('✅ Vendas listadas com sucesso:', response.data);
+      
+      return { 
+        success: true, 
+        message: response.data.message, 
+        data: response.data.data,
+        pagination: response.data.pagination
+      };
+    } catch (error: any) {
+      console.error('❌ Erro completo ao listar vendas:', error);
+      
+      if (error.response) {
+        console.error('📄 Resposta do servidor:', error.response.data);
+        console.error('📊 Status:', error.response.status);
+      } else if (error.request) {
+        console.error('📡 Sem resposta do servidor:', error.request);
+      } else {
+        console.error('⚙️ Erro de configuração:', error.message);
+      }
+      
+      return {
+        success: false,
+        message: error.response?.data?.error || error.message || 'Erro desconhecido ao listar vendas.',
+      };
+    }
+  },
+
+  // NOVA FUNÇÃO: Buscar venda por ID
+  getSaleById: async (saleId: string): Promise<{ success: boolean; message: string; data?: Sale }> => {
+    try {
+      console.log('🔍 Tentando buscar venda por ID:', saleId);
+      
+      const headers = await getAuthHeaders();
+      const response = await api.get<GetSaleByIdResponse>(`/${saleId}`, { headers });
+      console.log('✅ Venda encontrada com sucesso:', response.data);
+      
+      return { 
+        success: true, 
+        message: response.data.message, 
+        data: response.data.data 
+      };
+    } catch (error: any) {
+      console.error('❌ Erro completo ao buscar venda:', error);
+      
+      if (error.response) {
+        console.error('📄 Resposta do servidor:', error.response.data);
+        console.error('📊 Status:', error.response.status);
+      } else if (error.request) {
+        console.error('📡 Sem resposta do servidor:', error.request);
+      } else {
+        console.error('⚙️ Erro de configuração:', error.message);
+      }
+      
+      return {
+        success: false,
+        message: error.response?.data?.error || error.message || 'Erro desconhecido ao buscar venda.',
       };
     }
   },

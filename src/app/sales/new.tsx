@@ -7,7 +7,7 @@ import { CustomInput } from '@/components/CustomInput';
 import { useForm, Controller } from 'react-hook-form';
 import { ActionButton } from '@/components/ActionButton';
 import { saleService } from '@/services/saleService';
-import { debugAuthComplete, quickTokenCheck } from '@/utils/debugTokens'; // Import do seu debug
+import { debugAuthComplete, quickTokenCheck } from '@/utils/debugTokens';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type FormData = {
@@ -32,6 +32,7 @@ export default function NewSale() {
   const [loading, setLoading] = useState(false);
   const [saleId, setSaleId] = useState<string | null>(null);
   const [isSaleSaved, setIsSaleSaved] = useState(false);
+  const [showTests, setShowTests] = useState(false);
 
   async function onSubmit(data: FormData) {
     setLoading(true);
@@ -73,32 +74,64 @@ export default function NewSale() {
     }
   }
 
-  // Função para debug manual
-  async function handleDebug() {
-    console.log('🧪 Executando debug manual...');
-    await debugAuthComplete();
+  // Teste 1: Verificar token atual
+  async function testCurrentToken() {
+    try {
+      const token = await AsyncStorage.getItem('@AuthToken');
+      
+      if (!token) {
+        Alert.alert("❌ Teste Token", "Token não encontrado no AsyncStorage");
+        return;
+      }
+
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const isExpired = payload.exp < Math.floor(Date.now() / 1000);
+        const timeToExpiry = payload.exp - Math.floor(Date.now() / 1000);
+        
+        Alert.alert(
+          "✅ Token Info", 
+          `Token encontrado!\n\nUsuário: ${payload.userId}\nEmail: ${payload.email}\nExpira em: ${Math.floor(timeToExpiry / 60)} minutos\nStatus: ${isExpired ? 'EXPIRADO' : 'VÁLIDO'}`
+        );
+        
+        console.log('📊 Token details:', {
+          userId: payload.userId,
+          email: payload.email,
+          isExpired,
+          timeToExpiry: Math.floor(timeToExpiry / 60) + ' minutos'
+        });
+        
+      } catch (e) {
+        Alert.alert("❌ Erro", "Token inválido ou corrompido");
+      }
+      
+    } catch (error) {
+      console.error('Erro ao verificar token:', error);
+      Alert.alert("❌ Erro", "Erro ao acessar AsyncStorage");
+    }
   }
 
-  // Teste específico de criação de venda
-  async function testSaleAPI() {
-    console.log('💰 === TESTE DA API DE VENDAS ===');
+  // Teste 2: Criar venda via API direta
+  async function testCreateSaleAPI() {
+    console.log('💰 === TESTE DIRETO API VENDAS ===');
+    setLoading(true);
     
     try {
       const token = await AsyncStorage.getItem('@AuthToken');
       if (!token) {
-        console.log('❌ Token não encontrado');
+        Alert.alert("❌ Erro", "Token não encontrado");
         return;
       }
 
       const testData = {
-        clientName: 'Cliente Teste API',
+        clientName: `Cliente Teste ${new Date().getTime()}`,
         phone: '11999999999',
-        address: 'Rua Teste, 456'
+        address: 'Rua de Teste, 123'
       };
 
-      console.log('📦 Dados de teste:', testData);
+      console.log('📤 Enviando:', testData);
 
-      const response = await fetch('http://192.168.3.7:3333/api/sales', {
+      const response = await fetch('http://192.168.3.7:3333/api/sales/', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -108,60 +141,88 @@ export default function NewSale() {
       });
 
       console.log('📊 Status:', response.status);
-      
       const responseText = await response.text();
       console.log('📄 Resposta:', responseText);
 
       if (response.ok) {
-        console.log('✅ TESTE DE VENDA: SUCESSO!');
-        Alert.alert("Sucesso!", "Venda de teste criada com sucesso!");
+        const jsonData = JSON.parse(responseText);
+        Alert.alert("✅ Sucesso!", `Venda criada via API!\n\nID: ${jsonData.data.id}\nCliente: ${jsonData.data.clientName}`);
       } else {
-        console.log('❌ TESTE DE VENDA: FALHOU');
-        Alert.alert("Erro", `Falha no teste: ${responseText}`);
+        Alert.alert("❌ Falhou", `Status ${response.status}\n\nResposta: ${responseText}`);
       }
 
     } catch (error) {
       console.error('❌ Erro no teste:', error);
-      Alert.alert("Erro", "Erro durante o teste da API");
+      Alert.alert("❌ Erro", `Erro na requisição: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
-    
-    console.log('💰 === FIM TESTE VENDAS ===');
   }
 
-  // Teste da rota sem autenticação
-  async function testSaleNoAuth() {
-    console.log('🧪 === TESTE ROTA SEM AUTH ===');
+  // Teste 3: Listar vendas
+  async function testListSales() {
+    console.log('📋 === TESTE LISTAGEM VENDAS ===');
+    setLoading(true);
     
     try {
-      const testData = {
-        clientName: 'Teste Sem Auth',
-        phone: '11888888888',
-        address: 'Rua Sem Auth, 123'
-      };
+      const result = await saleService.getSales({ 
+        status: 'open',
+        page: 1,
+        limit: 10
+      });
 
+      console.log('📊 Resultado:', result);
+
+      if (result.success && result.data) {
+        const salesInfo = result.data.map(sale => 
+          `• ${sale.clientName} - R$ ${sale.totalValue.toFixed(2)}`
+        ).join('\n');
+        
+        Alert.alert(
+          "✅ Sucesso!", 
+          `${result.data.length} vendas encontradas:\n\n${salesInfo || 'Nenhuma venda com detalhes'}`
+        );
+      } else {
+        Alert.alert("⚠️ Info", result.message || "Nenhuma venda encontrada");
+      }
+
+    } catch (error) {
+      console.error('❌ Erro listagem:', error);
+      Alert.alert("❌ Erro", `Erro na listagem: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Teste 4: Rota sem auth (para verificar se servidor está funcionando)
+  async function testBasicRoute() {
+    console.log('🔧 === TESTE ROTA BÁSICA ===');
+    setLoading(true);
+    
+    try {
       const response = await fetch('http://192.168.3.7:3333/api/sales/test', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(testData)
+        body: JSON.stringify({ test: true })
       });
 
-      console.log('📊 Status:', response.status);
-      
       const responseText = await response.text();
+      console.log('📊 Status:', response.status);
       console.log('📄 Resposta:', responseText);
 
       if (response.ok) {
-        console.log('✅ ROTA SEM AUTH: FUNCIONA!');
-        Alert.alert("Sucesso!", "Rota de vendas básica está funcionando!");
+        Alert.alert("✅ Servidor OK", "Rota básica funcionando!\n\nServidor está respondendo corretamente.");
       } else {
-        console.log('❌ ROTA SEM AUTH: PROBLEMA');
-        Alert.alert("Erro", `Problema na rota: ${responseText}`);
+        Alert.alert("❌ Problema", `Status ${response.status}\n${responseText}`);
       }
 
     } catch (error) {
-      console.error('❌ Erro no teste sem auth:', error);
+      console.error('❌ Erro conexão:', error);
+      Alert.alert("❌ Conexão", `Erro de rede: ${error.message}\n\nVerifique se o servidor está rodando.`);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -194,7 +255,7 @@ export default function NewSale() {
       </Text>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 30 }}>
-        {/* Cliente */}
+        {/* Formulário */}
         <Controller
           control={control}
           name="clientName"
@@ -212,7 +273,6 @@ export default function NewSale() {
           )}
         />
 
-        {/* Telefone */}
         <Controller
           control={control}
           name="phone"
@@ -231,7 +291,6 @@ export default function NewSale() {
           )}
         />
 
-        {/* Endereço */}
         <Controller
           control={control}
           name="address"
@@ -249,6 +308,7 @@ export default function NewSale() {
           )}
         />
 
+        {/* Botões principais */}
         <ActionButton
           label={loading ? "Salvando..." : "Salvar Venda"}
           onPress={handleSubmit(onSubmit)}
@@ -274,30 +334,61 @@ export default function NewSale() {
           disabled={loading}
         />
 
-        {/* Botões de debug temporários - remover depois */}
+        {/* Toggle para mostrar/esconder testes */}
         <ActionButton
-          label="🧪 Debug Completo"
-          onPress={handleDebug}
-          color="#ff9500"
-          style={{ marginTop: 14}}
-          disabled={loading}
+          label={showTests ? "🔧 Ocultar Testes" : "🔧 Mostrar Testes"}
+          onPress={() => setShowTests(!showTests)}
+          color="#666666"
+          style={{ marginTop: 20 }}
         />
-        
-        <ActionButton
-          label="💰 Teste API Vendas"
-          onPress={testSaleAPI}
-          color="#ff0000"
-          style={{ marginTop: 14}}
-          disabled={loading}
-        />
-        
-        <ActionButton
-          label="🔓 Teste Sem Auth"
-          onPress={testSaleNoAuth}
-          color="#9900ff"
-          style={{ marginTop: 14}}
-          disabled={loading}
-        />
+
+        {/* Área de testes */}
+        {showTests && (
+          <View style={{ marginTop: 20, padding: 16, backgroundColor: '#f5f5f5', borderRadius: 8 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' }}>
+              🧪 Área de Testes
+            </Text>
+
+            <ActionButton
+              label="1️⃣ Verificar Token"
+              onPress={testCurrentToken}
+              color="#007AFF"
+              style={{ marginBottom: 12 }}
+              disabled={loading}
+            />
+            
+            <ActionButton
+              label="2️⃣ Teste Servidor Básico"
+              onPress={testBasicRoute}
+              color="#34C759"
+              style={{ marginBottom: 12 }}
+              disabled={loading}
+            />
+            
+            <ActionButton
+              label="3️⃣ Criar Venda (API Direta)"
+              onPress={testCreateSaleAPI}
+              color="#FF9500"
+              style={{ marginBottom: 12 }}
+              disabled={loading}
+            />
+            
+            <ActionButton
+              label="4️⃣ Listar Vendas"
+              onPress={testListSales}
+              color="#AF52DE"
+              style={{ marginBottom: 12 }}
+              disabled={loading}
+            />
+
+            <ActionButton
+              label="🔍 Debug Completo"
+              onPress={() => debugAuthComplete()}
+              color="#FF3B30"
+              disabled={loading}
+            />
+          </View>
+        )}
       </ScrollView>
     </View>
   );
