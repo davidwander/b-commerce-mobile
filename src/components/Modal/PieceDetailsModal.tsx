@@ -9,33 +9,45 @@ interface PieceDetailsModalProps {
   piece: PartLeaf;
   onClose: () => void;
   saleId?: string | null;
-  onAddPieceToSale?: (pieceId: string, saleId: string, quantity: number) => Promise<void>;
+  onAddPieceToSale?: (pieceId: string, saleId: string, quantity: number) => Promise<boolean>;
 }
 
 export function PieceDetailsModal({ visible, piece, onClose, saleId, onAddPieceToSale }: PieceDetailsModalProps) {
   const [quantityToAdd, setQuantityToAdd] = useState('1');
+  const [adding, setAdding] = useState(false);
 
   const handleAddPress = async () => {
     if (!saleId || !onAddPieceToSale) {
       Alert.alert("Erro", "Funcionalidade de adicionar à venda não disponível.");
       return;
     }
+    
     const parsedQuantity = parseInt(quantityToAdd, 10);
     if (isNaN(parsedQuantity) || parsedQuantity <= 0) {
       Alert.alert("Erro", "Quantidade inválida.");
       return;
     }
+    
     if (piece.quantity && parsedQuantity > piece.quantity) {
       Alert.alert("Erro", `Quantidade em estoque insuficiente. Disponível: ${piece.quantity}`);
       return;
     }
+    
     try {
-      await onAddPieceToSale(piece.id, saleId, parsedQuantity);
-      Alert.alert("Sucesso!", `${parsedQuantity} ${piece.name} adicionado(s) à venda.`);
-      onClose();
+      setAdding(true);
+      const success = await onAddPieceToSale(piece.id, saleId, parsedQuantity);
+      
+      if (success) {
+        Alert.alert("Sucesso!", `${parsedQuantity} ${piece.name} adicionado(s) à venda.`);
+        onClose();
+      } else {
+        Alert.alert("Erro", "Não foi possível adicionar a peça à venda.");
+      }
     } catch (error) {
-      Alert.alert("Erro", "Não foi possível adicionar a peça à venda.");
+      Alert.alert("Erro", "Erro ao adicionar peça à venda.");
       console.error("Erro ao adicionar peça à venda:", error);
+    } finally {
+      setAdding(false);
     }
   };
 
@@ -70,16 +82,20 @@ export function PieceDetailsModal({ visible, piece, onClose, saleId, onAddPieceT
 
           {saleId && (
             <TouchableOpacity
-              style={[styles.button, styles.addButton]}
+              style={[styles.button, styles.addButton, adding && { opacity: 0.7 }]}
               onPress={handleAddPress}
+              disabled={adding}
             >
-              <Text style={styles.buttonText}>Adicionar à Venda</Text>
+              <Text style={styles.buttonText}>
+                {adding ? "Adicionando..." : "Adicionar à Venda"}
+              </Text>
             </TouchableOpacity>
           )}
 
           <TouchableOpacity
             style={[styles.button, styles.closeButton]}
             onPress={onClose}
+            disabled={adding}
           >
             <Text style={styles.buttonText}>Fechar</Text>
           </TouchableOpacity>
@@ -184,7 +200,7 @@ const styles = StyleSheet.create({
   },
   quantityInput: {
     borderWidth: 1,
-    borderColor: colors.gray,
+    borderColor: colors.black,
     borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 5,

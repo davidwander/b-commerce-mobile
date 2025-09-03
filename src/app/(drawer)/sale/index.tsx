@@ -1,3 +1,4 @@
+// app/(drawer)/sale/index.tsx
 import React, { useRef, useEffect, useState } from 'react';
 import { View, Text, FlatList, Animated, Alert, RefreshControl } from 'react-native';
 import { router } from 'expo-router';
@@ -18,6 +19,7 @@ export default function Sales() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [viewMode, setViewMode] = useState<'list' | 'select'>('list'); // Novo estado para modo de visualização
 
   // Função para carregar vendas
   async function loadSales() {
@@ -71,31 +73,28 @@ export default function Sales() {
     setRefreshing(false);
   }
 
-  // Função para testar carregamento manual
-  async function testLoadSales() {
-    Alert.alert(
-      "Teste de Carregamento",
-      "Deseja recarregar as vendas da API?",
-      [
-        { text: "Cancelar", style: "cancel" },
-        { 
-          text: "Sim", 
-          onPress: async () => {
-            setLoading(true);
-            await loadSales();
-            setLoading(false);
-            
-            Alert.alert(
-              "Resultado", 
-              `${sales.length} vendas carregadas${error ? `\n\nErro: ${error}` : ''}`
-            );
-          }
-        }
-      ]
-    );
-  }
+  // Alternar entre modos de visualização
+  const toggleViewMode = () => {
+    setViewMode(prev => prev === 'list' ? 'select' : 'list');
+  };
 
-  // Renderizar item da lista (usando SaleCard ou card customizado)
+  // Handler para selecionar uma venda (quando no modo lista normal)
+  const handleSelectSale = (sale: Sale) => {
+    if (viewMode === 'select') {
+      // No modo seleção, navega direto para o estoque
+      router.push(`/inventory?saleId=${sale.id}`);
+    }
+  };
+
+  // Handler para ver detalhes da venda (quando no modo lista normal)
+  const handleViewDetails = (sale: Sale) => {
+    if (viewMode === 'list') {
+      // Aqui você pode navegar para os detalhes da venda
+      Alert.alert('Detalhes da Venda', `Visualizando venda: ${sale.clientName}`);
+    }
+  };
+
+  // Renderizar item da lista
   function renderSaleItem({ item, index }: { item: Sale; index: number }) {
     return (
       <Animated.View
@@ -109,82 +108,11 @@ export default function Sales() {
           }],
         }}
       >
-        {/* Usando o SaleCard se existir, senão usar card customizado */}
-        <View style={styles.card}>
-          {/* Tag de status */}
-          <View style={styles.status}>
-            <Text style={styles.statusText}>
-              {item.status === 'open' ? 'Aberta' : 'Fechada'}
-            </Text>
-          </View>
-
-          {/* Cliente */}
-          <View style={styles.client}>
-            <Ionicons 
-              name="person-circle-outline" 
-              size={26} 
-              color={colors.black} 
-              style={styles.icon}
-            />
-            <Text style={styles.clientText}>
-              {item.clientName}
-            </Text>
-          </View>
-
-          {/* Telefone (se existir) */}
-          {item.phone && (
-            <View style={styles.client}>
-              <Ionicons 
-                name="call-outline" 
-                size={24} 
-                color={colors.black} 
-                style={styles.icon}
-              />
-              <Text style={styles.clientText}>
-                {item.phone}
-              </Text>
-            </View>
-          )}
-
-          {/* Data */}
-          <View style={styles.date}>
-            <Ionicons 
-              name="calendar-outline" 
-              size={26} 
-              color={colors.black} 
-              style={styles.icon}
-            />
-            <Text style={styles.dateText}>
-              {new Date(item.createdAt).toLocaleDateString('pt-BR')}
-            </Text>
-          </View>
-
-          {/* Peças */}
-          <View style={styles.date}>
-            <Ionicons 
-              name="shirt-outline" 
-              size={26} 
-              color={colors.black} 
-              style={styles.icon}
-            />
-            <Text style={styles.dateText}>
-              {item.totalPieces} {item.totalPieces === 1 ? 'peça' : 'peças'}
-            </Text>
-          </View>
-
-          {/* Total */}
-          <View style={styles.total}>
-            <Ionicons 
-              name="cash-outline" 
-              size={26} 
-              color={colors.black} 
-              style={styles.icon}
-            />
-            <Text style={styles.totalText}>
-              R$ {item.totalValue.toFixed(2)}
-            </Text>
-          </View>
-        </View>
+        <SaleCard
+          sale={item}
+          onPress={() => handleViewDetails(item)}
+          showSelectButton={viewMode === 'select'}
+        />
       </Animated.View>
     );
   }
@@ -192,7 +120,7 @@ export default function Sales() {
   return (
     <View style={styles.container}>
       <Header />
-
+      
       <View style={styles.containerContent}>
         <View style={{ 
           flexDirection: 'row', 
@@ -201,21 +129,54 @@ export default function Sales() {
           marginBottom: 16
         }}>
           <Text style={styles.header}>
-            Vendas em Aberto
+            {viewMode === 'select' ? 'Selecionar Venda' : 'Vendas em Aberto'}
           </Text>
           
-          {/* Botão de refresh */}
-          <ActionButton
-            label="🔄"
-            onPress={testLoadSales}
-            color={colors.page.tulips}
-            style={{ 
-              minWidth: 50,
-              paddingHorizontal: 12,
-              paddingVertical: 8,
-            }}
-          />
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {/* Botão para alternar modo */}
+            <ActionButton
+              label={viewMode === 'select' ? '✕' : '🛒'}
+              onPress={toggleViewMode}
+              color={viewMode === 'select' ? colors.page.dragonFruit : colors.page.tulips}
+              style={{ 
+                minWidth: 50,
+                paddingHorizontal: 12,
+                paddingVertical: 8,
+                marginRight: 8,
+              }}
+            />
+            
+            {/* Botão de refresh */}
+            <ActionButton
+              label="🔄"
+              onPress={loadSales}
+              color={colors.page.tulips}
+              style={{ 
+                minWidth: 50,
+                paddingHorizontal: 12,
+                paddingVertical: 8,
+              }}
+            />
+          </View>
         </View>
+
+        {/* Mensagem do modo */}
+        {viewMode === 'select' && (
+          <View style={{ 
+            backgroundColor: '#e3f2fd',
+            padding: 12,
+            borderRadius: 8,
+            marginBottom: 16
+          }}>
+            <Text style={{ 
+              textAlign: 'center',
+              color: '#1976d2',
+              fontSize: 14
+            }}>
+              🛒 Selecione uma venda para adicionar peças
+            </Text>
+          </View>
+        )}
 
         {/* Indicador de carregamento */}
         {loading && (
@@ -300,6 +261,19 @@ export default function Sales() {
           marginBottom: 46,
         }}
       />
+
+      {/* Botão de cancelar seleção (quando no modo seleção) */}
+      {viewMode === 'select' && (
+        <ActionButton 
+          label="Cancelar Seleção"
+          onPress={() => setViewMode('list')}
+          color={colors.page.dragonFruit}
+          style={{
+            marginHorizontal: 16,
+            marginBottom: 100,
+          }}
+        />
+      )}
     </View>
   );
 }

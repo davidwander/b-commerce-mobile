@@ -1,4 +1,5 @@
 export type PartLeaf = {
+  description: ReactNode;
   id: string;
   name: string;
   quantity?: number;  

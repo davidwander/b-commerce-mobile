@@ -4,13 +4,15 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
 import { Sale } from '@/services/saleService';
+import { router } from 'expo-router';
 
 interface SaleCardProps {
   sale: Sale;
   onPress?: () => void;
+  showSelectButton?: boolean;
 }
 
-export function SaleCard({ sale, onPress }: SaleCardProps) {
+export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardProps) {
   // Formatação da data
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -29,6 +31,11 @@ export function SaleCard({ sale, onPress }: SaleCardProps) {
       style: 'currency',
       currency: 'BRL'
     });
+  };
+
+  // Função para selecionar a venda e ir para o estoque
+  const handleSelectSale = () => {
+    router.push(`/inventory?saleId=${sale.id}`);
   };
 
   return (
@@ -71,11 +78,38 @@ export function SaleCard({ sale, onPress }: SaleCardProps) {
         </Text>
       </View>
 
+      {/* Botão de Selecionar Venda (se for para mostrar) */}
+      {showSelectButton && sale.status === 'open' && (
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            top: 8,
+            left: 12,
+            backgroundColor: colors.page.dragonFruit,
+            paddingVertical: 4,
+            paddingHorizontal: 8,
+            borderRadius: 12,
+          }}
+          onPress={handleSelectSale}
+        >
+          <Text
+            style={{
+              fontSize: 12,
+              fontFamily: fonts.bold,
+              color: colors.white
+            }}
+          >
+            🛒 Selecionar
+          </Text>
+        </TouchableOpacity>
+      )}
+
       {/* Nome do Cliente */}
       <View style={{
         flexDirection: 'row', 
         alignItems: 'center', 
-        marginBottom: 8 
+        marginBottom: 8,
+        marginTop: showSelectButton ? 20 : 0
       }}>
         <Ionicons 
           name="person" 
@@ -162,45 +196,67 @@ export function SaleCard({ sale, onPress }: SaleCardProps) {
         </Text>
       </View>
 
-      {/* Quantidade de Peças */}
+      {/* NOVA SEÇÃO: Resumo de Peças e Valores */}
       <View style={{
-        flexDirection: 'row', 
-        alignItems: 'center', 
-        marginBottom: 8
+        backgroundColor: '#f8f9fa',
+        borderRadius: 8,
+        padding: 12,
+        marginBottom: 12,
+        borderLeftWidth: 4,
+        borderLeftColor: sale.totalPieces > 0 ? colors.page.tulips : '#6c757d'
       }}>
-        <Ionicons 
-          name="shirt" 
-          size={16} 
-          color={colors.black} 
-          style={{ marginRight: 6 }}
-        />
-        <Text style={{
-          fontFamily: fonts.regular, 
-          fontSize: 16, 
-          color: colors.black
+        {/* Quantidade de Peças */}
+        <View style={{
+          flexDirection: 'row', 
+          alignItems: 'center', 
+          marginBottom: 6
         }}>
-          {sale.totalPieces} {sale.totalPieces === 1 ? 'peça' : 'peças'}
-        </Text>
-      </View>
+          <Ionicons 
+            name="shirt" 
+            size={16} 
+            color={sale.totalPieces > 0 ? colors.page.tulips : '#6c757d'} 
+            style={{ marginRight: 6 }}
+          />
+          <Text style={{
+            fontFamily: fonts.regular, 
+            fontSize: 16, 
+            color: sale.totalPieces > 0 ? colors.black : '#6c757d'
+          }}>
+            {sale.totalPieces} {sale.totalPieces === 1 ? 'peça' : 'peças'}
+          </Text>
+        </View>
 
-      {/* Valor Total */}
-      <View style={{
-        flexDirection: 'row', 
-        alignItems: 'center',
-      }}>
-        <Ionicons 
-          name="cash" 
-          size={16} 
-          color={colors.black} 
-          style={{ marginRight: 6 }}
-        />
-        <Text style={{
-          fontFamily: fonts.bold, 
-          fontSize: 18, 
-          color: sale.totalValue > 0 ? '#4CAF50' : colors.black,
+        {/* Valor Total */}
+        <View style={{
+          flexDirection: 'row', 
+          alignItems: 'center',
         }}>
-          {formatCurrency(sale.totalValue)}
-        </Text>
+          <Ionicons 
+            name="cash" 
+            size={16} 
+            color={sale.totalValue > 0 ? '#4CAF50' : '#6c757d'} 
+            style={{ marginRight: 6 }}
+          />
+          <Text style={{
+            fontFamily: fonts.bold, 
+            fontSize: 18, 
+            color: sale.totalValue > 0 ? '#4CAF50' : '#6c757d',
+          }}>
+            {formatCurrency(sale.totalValue)}
+          </Text>
+        </View>
+
+        {/* Mensagem para vendas sem peças */}
+        {sale.totalPieces === 0 && (
+          <Text style={{
+            fontSize: 12,
+            color: '#6c757d',
+            fontStyle: 'italic',
+            marginTop: 4
+          }}>
+            Nenhuma peça adicionada ainda
+          </Text>
+        )}
       </View>
 
       {/* Indicador de que pode tocar para ver mais */}

@@ -334,7 +334,7 @@ export default function Inventory() {
           onPress={() => {
             // Lógica para finalizar a venda
             Alert.alert("Venda Finalizada", `Venda ${saleId} finalizada com sucesso!`);
-            router.replace("/(drawer)/sales"); // Redireciona de volta para a tela de vendas
+            router.replace("/(drawer)/sale"); // Redireciona de volta para a tela de vendas
           }}
           color={colors.page.tulips}
           style={{ marginHorizontal: 16, marginBottom: 46 }}
