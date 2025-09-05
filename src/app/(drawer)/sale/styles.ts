@@ -10,15 +10,28 @@ export const styles = StyleSheet.create({
   },
   containerContent: {
     flex: 1,
-    paddingTop: 16
+    paddingTop: 16,
+  },
+  headerContainer: {
+    flexDirection: 'column', 
+    marginBottom: 16
   },
   header: {
     fontSize: 18,
     fontFamily: fonts.italic,
-    fontWeight: '600',
+    fontWeight: '700',
     marginBottom: 6,
     padding: 12,
     color: colors.black,
+  },
+  headerButtons: {
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    justifyContent: 'center',
+    minWidth: 50,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    marginRight: 8,
   },
   listEmptyText: {
     color: colors.black,
@@ -28,7 +41,7 @@ export const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: colors.white,
-    borderRadius: 12,
+    borderRadius: 16,
     padding: 22,
     marginBottom: 16,
     marginHorizontal: 16,
@@ -43,12 +56,13 @@ export const styles = StyleSheet.create({
     top: 8,
     right: 12,
     backgroundColor: colors.page.tulips,
-    paddingVertical: 2,
+    paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 12,
   },
   statusText: {
     fontSize: 14,
+    
     fontFamily: fonts.bold,
     color: colors.white
   },
@@ -83,5 +97,42 @@ export const styles = StyleSheet.create({
   },
   icon: {
     marginRight: 6,
+  },
+  messageContainer: {
+    backgroundColor: '#e3f2fd',
+    padding: 12,
+    marginBottom: 16,
+  },
+  messageText: {
+    textAlign: 'center',
+    color: '#1976d2',
+    fontSize: 16,
+  },
+  loadingContainer: {
+    padding: 20, 
+    alignItems: 'center'
+  },
+  errorContainer: {
+    padding: 20, 
+    alignItems: 'center',
+    backgroundColor: '#ffebee',
+    borderRadius: 18,
+    marginBottom: 16,
+  },
+  errorText: {
+    fontSize: 16, 
+    color: '#c62828', 
+    textAlign: 'center'
+  },
+  emptyMessage: {
+    fontSize: 14, 
+    color: colors.black, 
+    textAlign: 'center',
+    marginTop: 8,
+    opacity: 0.7,
+  },
+  floatingButton: {
+    marginHorizontal: 16,
+    marginBottom: 46,
   },
 })

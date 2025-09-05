@@ -1,4 +1,3 @@
-// app/(drawer)/sale/index.tsx
 import React, { useRef, useEffect, useState } from 'react';
 import { View, Text, FlatList, Animated, Alert, RefreshControl } from 'react-native';
 import { router } from 'expo-router';
@@ -10,7 +9,6 @@ import { SaleCard } from '@/components/SaleCard';
 
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/styles/colors';
-import { fonts } from '@/styles/fonts';
 import { saleService, Sale } from '@/services/saleService';
 
 export default function Sales() {
@@ -19,9 +17,8 @@ export default function Sales() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'list' | 'select'>('list'); // Novo estado para modo de visualização
+  const [viewMode, setViewMode] = useState<'list' | 'select'>('list'); 
 
-  // Função para carregar vendas
   async function loadSales() {
     try {
       console.log('📋 Carregando vendas...');
@@ -120,59 +117,37 @@ export default function Sales() {
   return (
     <View style={styles.container}>
       <Header />
-      
       <View style={styles.containerContent}>
-        <View style={{ 
-          flexDirection: 'row', 
-          justifyContent: 'space-between', 
-          alignItems: 'center',
-          marginBottom: 16
-        }}>
+        <View style={styles.headerContainer}>
           <Text style={styles.header}>
             {viewMode === 'select' ? 'Selecionar Venda' : 'Vendas em Aberto'}
           </Text>
           
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={styles.headerButtons}>
             {/* Botão para alternar modo */}
             <ActionButton
-              label={viewMode === 'select' ? '✕' : '🛒'}
+              label={viewMode === 'select' ? undefined : undefined}
+              icon={viewMode === 'select' ? 'x' : 'shopping-cart'}
               onPress={toggleViewMode}
               color={viewMode === 'select' ? colors.page.dragonFruit : colors.page.tulips}
-              style={{ 
-                minWidth: 50,
-                paddingHorizontal: 12,
-                paddingVertical: 8,
-                marginRight: 8,
-              }}
+              style={styles.headerButtons}
             />
             
             {/* Botão de refresh */}
             <ActionButton
-              label="🔄"
+              label={undefined}
+              icon="refresh-ccw"
               onPress={loadSales}
               color={colors.page.tulips}
-              style={{ 
-                minWidth: 50,
-                paddingHorizontal: 12,
-                paddingVertical: 8,
-              }}
+              style={styles.headerButtons}
             />
           </View>
         </View>
 
         {/* Mensagem do modo */}
         {viewMode === 'select' && (
-          <View style={{ 
-            backgroundColor: '#e3f2fd',
-            padding: 12,
-            borderRadius: 8,
-            marginBottom: 16
-          }}>
-            <Text style={{ 
-              textAlign: 'center',
-              color: '#1976d2',
-              fontSize: 14
-            }}>
+          <View style={styles.messageContainer}>
+            <Text style={styles.messageText}>
               🛒 Selecione uma venda para adicionar peças
             </Text>
           </View>
@@ -180,8 +155,8 @@ export default function Sales() {
 
         {/* Indicador de carregamento */}
         {loading && (
-          <View style={{ padding: 20, alignItems: 'center' }}>
-            <Text style={{ fontSize: 16, color: colors.black }}>
+          <View style={styles.loadingContainer}>
+            <Text style={styles.messageText}>
               Carregando vendas...
             </Text>
           </View>
@@ -189,14 +164,8 @@ export default function Sales() {
 
         {/* Mensagem de erro */}
         {error && !loading && (
-          <View style={{ 
-            padding: 20, 
-            alignItems: 'center',
-            backgroundColor: '#ffebee',
-            borderRadius: 8,
-            marginBottom: 16
-          }}>
-            <Text style={{ fontSize: 16, color: '#c62828', textAlign: 'center' }}>
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>
               {error}
             </Text>
             <ActionButton
@@ -218,18 +187,11 @@ export default function Sales() {
               name="receipt-outline" 
               size={64} 
               color={colors.black} 
-              style={{ marginBottom: 16 }}
             />
             <Text style={styles.listEmptyText}>
               Nenhuma venda em aberto.
             </Text>
-            <Text style={{ 
-              fontSize: 14, 
-              color: colors.black, 
-              textAlign: 'center',
-              marginTop: 8,
-              opacity: 0.7
-            }}>
+            <Text style={styles.emptyMessage}>
               Crie sua primeira venda usando o botão abaixo
             </Text>
           </View>
@@ -256,24 +218,8 @@ export default function Sales() {
         label="Nova venda"
         onPress={() => router.push("/sales/new")}
         color={colors.page.dragonFruit}
-        style={{
-          marginHorizontal: 16,
-          marginBottom: 46,
-        }}
+        style={styles.floatingButton}
       />
-
-      {/* Botão de cancelar seleção (quando no modo seleção) */}
-      {viewMode === 'select' && (
-        <ActionButton 
-          label="Cancelar Seleção"
-          onPress={() => setViewMode('list')}
-          color={colors.page.dragonFruit}
-          style={{
-            marginHorizontal: 16,
-            marginBottom: 100,
-          }}
-        />
-      )}
     </View>
   );
 }

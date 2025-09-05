@@ -2,14 +2,16 @@ import React from 'react';
 import { TouchableOpacity, Text, ViewStyle, TextStyle } from 'react-native';
 import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
+import { Feather } from '@expo/vector-icons';
 
 type ActionButtonProps = {
-  label: string;
+  label?: string;
   onPress: () => void;
   color?: string;
   style?: ViewStyle;
   textStyle?: TextStyle;
   disabled?: boolean;
+  icon?: keyof typeof Feather.glyphMap;
 };
 
 export function ActionButton({
@@ -19,6 +21,7 @@ export function ActionButton({
   style,
   textStyle,
   disabled = false,
+  icon,
 }: ActionButtonProps) {
   return (
     <TouchableOpacity
@@ -40,19 +43,23 @@ export function ActionButton({
         style,
       ]}
     >
-      <Text
-        style={[
-          {
-            color: colors.white,
-            fontWeight: "bold",
-            fontSize: 18,
-            fontFamily: fonts.bold
-          },
-          textStyle,
-        ]}
-      >
-        {label}
-      </Text>
+      {icon ? (
+        <Feather name={icon} size={24} color={colors.white} />
+      ) : (
+        <Text
+          style={[
+            {
+              color: colors.white,
+              fontWeight: "bold",
+              fontSize: 18,
+              fontFamily: fonts.bold
+            },
+            textStyle,
+          ]}
+        >
+          {label}
+        </Text>
+      )}
     </TouchableOpacity>
   );
 }
