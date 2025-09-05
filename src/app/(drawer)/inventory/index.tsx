@@ -17,6 +17,7 @@ import { useLocalSearchParams, router } from 'expo-router'; // Importar useLocal
 import { partsTree, PartNode, PartLeaf } from '@/data/partsTree';
 import { fonts } from '@/styles/fonts';
 import { useInventory } from '@/hook/useInventory';
+import { saleService } from '@/services/saleService'; // Importar saleService
 
 export default function Inventory() {
   const [navigationStack, setNavigationStack] = useState<Array<(PartNode | PartLeaf)[]>>([partsTree]);
@@ -34,6 +35,27 @@ export default function Inventory() {
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { getFilteredPieces, getAllPieces, createPiece } = useInventory();
+
+  // NOVA FUNÇÃO: Adicionar peça à venda
+  async function handleAddPieceToSale(pieceId: string, saleId: string, quantity: number): Promise<boolean> {
+    console.log('➕ Tentando adicionar peça à venda:', { pieceId, saleId, quantity });
+    try {
+      const result = await saleService.addPieceToSale(saleId, { pieceId, quantity });
+      if (result.success) {
+        console.log('✅ Peça adicionada à venda com sucesso!');
+        // Opcional: recarregar as peças ou atualizar o estado local se necessário
+        return true;
+      } else {
+        console.error('❌ Erro ao adicionar peça à venda:', result.message);
+        Alert.alert('Erro', result.message);
+        return false;
+      }
+    } catch (error) {
+      console.error('❌ Erro inesperado ao adicionar peça à venda:', error);
+      Alert.alert('Erro', 'Ocorreu um erro inesperado ao adicionar a peça à venda.');
+      return false;
+    }
+  }
 
   const currentLevel = navigationStack[navigationStack.length - 1];
 
@@ -361,6 +383,7 @@ export default function Inventory() {
           piece={selectedPiece}
           onClose={handleDetailsModalClose}
           saleId={saleId} // Passar saleId para o modal de detalhes
+          onAddPieceToSale={handleAddPieceToSale} // Passar a nova função
         />
       )}
     </View>
