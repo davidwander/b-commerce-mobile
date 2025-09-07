@@ -6,6 +6,7 @@ import { styles } from './styles';
 import { Header } from '@/components/Header';
 import { ActionButton } from '@/components/ActionButton';
 import { SaleCard } from '@/components/SaleCard';
+import { SaleDetailsModal } from '@/components/Modal/SaleDetailsModal';
 
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/styles/colors';
@@ -18,6 +19,8 @@ export default function Sales() {
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<'list' | 'select'>('list'); 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedSale, setSelectedSale] = useState<Sale | null>(null);
 
   async function loadSales() {
     try {
@@ -84,11 +87,26 @@ export default function Sales() {
   };
 
   // Handler para ver detalhes da venda (quando no modo lista normal)
-  const handleViewDetails = (sale: Sale) => {
+  const handleViewDetails = async (sale: Sale) => {
     if (viewMode === 'list') {
-      // Aqui você pode navegar para os detalhes da venda
-      Alert.alert('Detalhes da Venda', `Visualizando venda: ${sale.clientName}`);
+      try {
+        const result = await saleService.getSaleById(sale.id);
+        if (result.success && result.data) {
+          setSelectedSale(result.data);
+          setIsModalVisible(true);
+        } else {
+          Alert.alert("Erro", result.message || "Não foi possível carregar os detalhes da venda.");
+        }
+      } catch (error) {
+        console.error("Erro ao buscar detalhes da venda:", error);
+        Alert.alert("Erro", "Ocorreu um erro ao carregar os detalhes da venda.");
+      }
     }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
+    setSelectedSale(null);
   };
 
   // Renderizar item da lista
@@ -221,6 +239,14 @@ export default function Sales() {
         color={colors.page.dragonFruit}
         style={styles.floatingButton}
       />
+
+      {selectedSale && (
+        <SaleDetailsModal
+          isVisible={isModalVisible}
+          onClose={handleCloseModal}
+          sale={selectedSale}
+        />
+      )}
     </View>
   );
 }

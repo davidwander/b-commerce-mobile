@@ -6,7 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/styles/colors';
 import { Sale } from '@/services/saleService';
 import { router } from 'expo-router';
-
 interface SaleCardProps {
   sale: Sale;
   onPress?: () => void;
