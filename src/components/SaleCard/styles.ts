@@ -89,6 +89,11 @@ export const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 14,
     borderLeftWidth: 4,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 5, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
   quantityContent: {
     flexDirection: 'row', 
