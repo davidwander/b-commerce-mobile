@@ -109,6 +109,7 @@ export default function Sales() {
           sale={item}
           onPress={() => handleViewDetails(item)}
           showSelectButton={viewMode === 'select'}
+          statusColor={item.status === 'open' ? colors.page.tulips : '#4CAF50'}
         />
       </Animated.View>
     );

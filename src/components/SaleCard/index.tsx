@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
+import { styles } from './styles';
+
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/styles/colors';
-import { fonts } from '@/styles/fonts';
 import { Sale } from '@/services/saleService';
 import { router } from 'expo-router';
 
@@ -10,9 +11,10 @@ interface SaleCardProps {
   sale: Sale;
   onPress?: () => void;
   showSelectButton?: boolean;
+  statusColor: string;
 }
 
-export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardProps) {
+export function SaleCard({ sale, onPress, showSelectButton = false, statusColor }: SaleCardProps) {
   // Formatação da data
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -40,40 +42,15 @@ export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardPr
 
   return (
     <TouchableOpacity 
-      style={{
-        backgroundColor: colors.white,
-        borderRadius: 12,
-        padding: 22,
-        marginBottom: 16,
-        marginHorizontal: 16,
-        elevation: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 5, height: 8 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-      }}
+      style={[styles.cardContainer, showSelectButton && { paddingTop: 40 } ]}
       onPress={onPress}
       activeOpacity={0.7}
     >
       {/* Status Badge */}
       <View
-        style={{
-          position: 'absolute',
-          top: 8,
-          right: 12,
-          backgroundColor: sale.status === 'open' ? colors.page.tulips : '#4CAF50',
-          paddingVertical: 2,
-          paddingHorizontal: 8,
-          borderRadius: 12,
-        }}
+        style={[styles.statusBadge, { backgroundColor: statusColor } ]}
       >
-        <Text
-          style={{
-            fontSize: 14,
-            fontFamily: fonts.bold,
-            color: colors.white
-          }}
-        >
+        <Text style={styles.statusBadgeText}>
           {sale.status === 'open' ? 'Em Aberto' : 'Fechada'}
         </Text>
       </View>
@@ -81,23 +58,11 @@ export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardPr
       {/* Botão de Selecionar Venda (se for para mostrar) */}
       {showSelectButton && sale.status === 'open' && (
         <TouchableOpacity
-          style={{
-            position: 'absolute',
-            top: 8,
-            left: 12,
-            backgroundColor: colors.page.dragonFruit,
-            paddingVertical: 4,
-            paddingHorizontal: 8,
-            borderRadius: 12,
-          }}
+          style={styles.buttonSelect}
           onPress={handleSelectSale}
         >
           <Text
-            style={{
-              fontSize: 12,
-              fontFamily: fonts.bold,
-              color: colors.white
-            }}
+            style={styles.buttonSelectText}
           >
             🛒 Selecionar
           </Text>
@@ -105,45 +70,28 @@ export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardPr
       )}
 
       {/* Nome do Cliente */}
-      <View style={{
-        flexDirection: 'row', 
-        alignItems: 'center', 
-        marginBottom: 8,
-        marginTop: showSelectButton ? 20 : 0
-      }}>
+      <View style={styles.clientNameContainer}>
         <Ionicons 
           name="person" 
           size={18} 
           color={colors.black} 
           style={{ marginRight: 6 }}
         />
-        <Text style={{
-          fontFamily: fonts.bold, 
-          fontSize: 18, 
-          color: colors.black
-        }}>
+        <Text style={styles.clientName}>
           {sale.clientName}
         </Text>
       </View>
 
       {/* Telefone (se existir) */}
       {sale.phone && (
-        <View style={{
-          flexDirection: 'row', 
-          alignItems: 'center', 
-          marginBottom: 8
-        }}>
+        <View style={styles.phoneClientContainer}>
           <Ionicons 
             name="call" 
-            size={16} 
+            size={18} 
             color={colors.black} 
             style={{ marginRight: 6 }}
           />
-          <Text style={{
-            fontFamily: fonts.regular, 
-            fontSize: 16, 
-            color: colors.black
-          }}>
+          <Text style={styles.phoneClient}>
             {sale.phone}
           </Text>
         </View>
@@ -151,23 +99,14 @@ export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardPr
 
       {/* Endereço (se existir) */}
       {sale.address && (
-        <View style={{
-          flexDirection: 'row', 
-          alignItems: 'center', 
-          marginBottom: 8
-        }}>
+        <View style={styles.addressClientContainer}>
           <Ionicons 
             name="location" 
-            size={16} 
+            size={18} 
             color={colors.black} 
             style={{ marginRight: 6 }}
           />
-          <Text style={{
-            fontFamily: fonts.regular, 
-            fontSize: 14, 
-            color: colors.black,
-            flex: 1
-          }} 
+          <Text style={styles.addressClient} 
           numberOfLines={2}
           >
             {sale.address}
@@ -176,50 +115,34 @@ export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardPr
       )}
 
       {/* Data de Criação */}
-      <View style={{
-        flexDirection: 'row', 
-        alignItems: 'center', 
-        marginBottom: 8
-      }}>
+      <View style={styles.dateContainer}>
         <Ionicons 
           name="calendar" 
-          size={16} 
+          size={18} 
           color={colors.black} 
           style={{ marginRight: 6 }}
         />
-        <Text style={{
-          fontFamily: fonts.regular, 
-          fontSize: 16, 
-          color: colors.black
-        }}>
+        <Text style={styles.date}>
           {formatDate(sale.createdAt)}
         </Text>
       </View>
 
       {/* NOVA SEÇÃO: Resumo de Peças e Valores */}
       <View style={{
-        backgroundColor: '#f8f9fa',
-        borderRadius: 8,
-        padding: 12,
-        marginBottom: 12,
-        borderLeftWidth: 4,
+        ...styles.newSectionContainer,
+        backgroundColor: colors.white,
         borderLeftColor: sale.totalPieces > 0 ? colors.page.tulips : '#6c757d'
       }}>
         {/* Quantidade de Peças */}
-        <View style={{
-          flexDirection: 'row', 
-          alignItems: 'center', 
-          marginBottom: 6
-        }}>
+        <View style={styles.quantityContent}>
           <Ionicons 
             name="shirt" 
-            size={16} 
+            size={18} 
             color={sale.totalPieces > 0 ? colors.page.tulips : '#6c757d'} 
             style={{ marginRight: 6 }}
           />
           <Text style={{
-            fontFamily: fonts.regular, 
-            fontSize: 16, 
+            ...styles.quantityText,
             color: sale.totalPieces > 0 ? colors.black : '#6c757d'
           }}>
             {sale.totalPieces} {sale.totalPieces === 1 ? 'peça' : 'peças'}
@@ -227,19 +150,15 @@ export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardPr
         </View>
 
         {/* Valor Total */}
-        <View style={{
-          flexDirection: 'row', 
-          alignItems: 'center',
-        }}>
+        <View style={styles.totalValueContainer}>
           <Ionicons 
             name="cash" 
-            size={16} 
+            size={18} 
             color={sale.totalValue > 0 ? '#4CAF50' : '#6c757d'} 
             style={{ marginRight: 6 }}
           />
           <Text style={{
-            fontFamily: fonts.bold, 
-            fontSize: 18, 
+            ...styles.totalValueText,
             color: sale.totalValue > 0 ? '#4CAF50' : '#6c757d',
           }}>
             {formatCurrency(sale.totalValue)}
@@ -248,31 +167,11 @@ export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardPr
 
         {/* Mensagem para vendas sem peças */}
         {sale.totalPieces === 0 && (
-          <Text style={{
-            fontSize: 12,
-            color: '#6c757d',
-            fontStyle: 'italic',
-            marginTop: 4
-          }}>
+          <Text style={styles.saleWithoutParts}>
             Nenhuma peça adicionada ainda
           </Text>
         )}
       </View>
-
-      {/* Indicador de que pode tocar para ver mais */}
-      {onPress && (
-        <View style={{
-          position: 'absolute',
-          bottom: 8,
-          right: 12,
-        }}>
-          <Ionicons 
-            name="chevron-forward" 
-            size={20} 
-            color={colors.page.tulips}
-          />
-        </View>
-      )}
     </TouchableOpacity>
   );
 }

@@ -62,7 +62,6 @@ export const styles = StyleSheet.create({
   },
   statusText: {
     fontSize: 14,
-    
     fontFamily: fonts.bold,
     color: colors.white
   },
