@@ -31,6 +31,22 @@ export function SaleDetailsModal({ visible, sale, onClose }: SaleDetailsModalPro
     });
   };
 
+  const getStatusDisplay = (status: Sale['status']) => {
+    switch (status) {
+      case 'open-no-pieces':
+      case 'open': // Para compatibilidade com status antigos
+        return { text: 'Em Aberto', color: colors.page.tulips };
+      case 'open-awaiting-payment':
+        return { text: 'Aguardando Pagamento', color: colors.page.magnolia };
+      case 'closed':
+        return { text: 'Fechada', color: '#4CAF50' };
+      default:
+        return { text: 'Desconhecido', color: colors.black };
+    }
+  };
+
+  const { text: statusText, color: statusDisplayColor } = getStatusDisplay(sale.status);
+
   return (
     <Modal
       animationType="slide"
@@ -65,8 +81,11 @@ export function SaleDetailsModal({ visible, sale, onClose }: SaleDetailsModalPro
             </View>
             <View style={styles.detailRow}>
               <Text style={styles.detailLabel}>Status:</Text>
-              <Text style={[styles.detailValue, { color: sale.status === 'open' ? colors.page.tulips : '#4CAF50' }]}>
-                {sale.status === 'open' ? 'Em Aberto' : 'Fechada'}
+              <Text style={[
+                styles.detailValue, 
+                { color: statusDisplayColor } 
+              ]}>
+                {statusText}
               </Text>
             </View>
             <View style={styles.detailRow}>

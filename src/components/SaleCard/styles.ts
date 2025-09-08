@@ -84,16 +84,10 @@ export const styles = StyleSheet.create({
     color: colors.black,
   },
   newSectionContainer: {
-    backgroundColor: colors.white,
     borderRadius: 12,
     padding: 14,
     marginBottom: 14,
     borderLeftWidth: 4,
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOffset: { width: 5, height: 8 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
   },
   quantityContent: {
     flexDirection: 'row', 
@@ -123,4 +117,4 @@ export const styles = StyleSheet.create({
     bottom: 8,
     right: 12,
   },
-})
+});

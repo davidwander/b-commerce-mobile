@@ -48,7 +48,7 @@ export interface Sale {
   updatedAt: string;
   totalPieces: number;
   totalValue: number;
-  status: 'open' | 'closed';
+  status: 'open-no-pieces' | 'open-awaiting-payment' | 'closed' | 'open';
   salePieces?: SalePiece[];
 }
 

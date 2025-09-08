@@ -4,6 +4,7 @@ import { styles } from './styles';
 
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/styles/colors';
+import { fonts } from '@/styles/fonts';
 import { Sale } from '@/services/saleService';
 import { router } from 'expo-router';
 interface SaleCardProps {
@@ -39,6 +40,22 @@ export function SaleCard({ sale, onPress, showSelectButton = false, statusColor 
     router.push(`/inventory?saleId=${sale.id}`);
   };
 
+  const getStatusDisplay = (status: Sale['status']) => {
+    switch (status) {
+      case 'open-no-pieces':
+      case 'open': // Para compatibilidade com status antigos
+        return { text: 'Em Aberto', color: colors.page.tulips };
+      case 'open-awaiting-payment':
+        return { text: 'Aguardando Pagamento', color: colors.page.magnolia };
+      case 'closed':
+        return { text: 'Fechada', color: '#4CAF50' };
+      default:
+        return { text: 'Desconhecido', color: colors.black };
+    }
+  };
+
+  const { text: statusText, color: statusDisplayColor } = getStatusDisplay(sale.status);
+
   return (
     <TouchableOpacity 
       style={[styles.cardContainer, showSelectButton && { paddingTop: 40 } ]}
@@ -47,15 +64,15 @@ export function SaleCard({ sale, onPress, showSelectButton = false, statusColor 
     >
       {/* Status Badge */}
       <View
-        style={[styles.statusBadge, { backgroundColor: statusColor } ]}
+        style={[styles.statusBadge, { backgroundColor: statusDisplayColor } ]}
       >
         <Text style={styles.statusBadgeText}>
-          {sale.status === 'open' ? 'Em Aberto' : 'Fechada'}
+          {statusText}
         </Text>
       </View>
 
       {/* Botão de Selecionar Venda (se for para mostrar) */}
-      {showSelectButton && sale.status === 'open' && (
+      {showSelectButton && (sale.status === 'open-no-pieces' || sale.status === 'open-awaiting-payment' || sale.status === 'open') && (
         <TouchableOpacity
           style={styles.buttonSelect}
           onPress={handleSelectSale}
@@ -130,7 +147,12 @@ export function SaleCard({ sale, onPress, showSelectButton = false, statusColor 
       <View style={{
         ...styles.newSectionContainer,
         backgroundColor: colors.white,
-        borderLeftColor: sale.totalPieces > 0 ? colors.page.tulips : '#6c757d'
+        borderLeftColor: sale.totalPieces > 0 ? colors.page.tulips : '#6c757d',
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 5, height: 8 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
       }}>
         {/* Quantidade de Peças */}
         <View style={styles.quantityContent}>
