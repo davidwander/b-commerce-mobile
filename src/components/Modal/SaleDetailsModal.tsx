@@ -40,21 +40,21 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
         return { 
           text: 'Em Aberto', 
           color: colors.page.tulips,
-          backgroundColor: colors.page.tulips + '15',
+          backgroundColor: colors.page.tulips + '28',
           icon: 'time-outline' as const
         };
       case 'open-awaiting-payment':
         return { 
           text: 'Aguardando Pagamento', 
-          color: colors.page.magnolia,
-          backgroundColor: colors.page.magnolia + '15',
+          color: colors.page.viridian,
+          backgroundColor: colors.page.meadow + '28',
           icon: 'card-outline' as const
         };
       case 'closed':
         return { 
           text: 'Fechada', 
           color: '#4CAF50',
-          backgroundColor: '#4CAF50' + '15',
+          backgroundColor: '#4CAF50' + '28',
           icon: 'checkmark-circle-outline' as const
         };
       default:
@@ -62,15 +62,15 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
         if (sale.totalPieces > 0) {
           return { 
             text: 'Aguardando Pagamento', 
-            color: colors.page.magnolia,
-            backgroundColor: colors.page.magnolia + '15',
+            color: colors.page.viridian,
+            backgroundColor: colors.page.meadow + '28',
             icon: 'card-outline' as const
           };
         } else {
           return { 
             text: 'Em Aberto', 
             color: colors.page.tulips,
-            backgroundColor: colors.page.tulips + '15',
+            backgroundColor: colors.page.tulips + '28',
             icon: 'time-outline' as const
           };
         }
@@ -96,16 +96,18 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
             marginBottom: 20,
             paddingBottom: 15,
             borderBottomWidth: 1,
-            borderBottomColor: colors.black + '20'
+            borderBottomColor: colors.black + '50'
           }}>
-            <Text style={[styles.modalTitle, { flex: 1 }]}>Detalhes da Venda</Text>
+            <Text style={[styles.modalTitle, { flex: 1 }]}>
+              Detalhes da Venda
+            </Text>
             
             {/* Badge de Status */}
             <View style={{
               flexDirection: 'row',
               alignItems: 'center',
               backgroundColor: statusDisplay.backgroundColor,
-              paddingHorizontal: 12,
+              paddingHorizontal: 18,
               paddingVertical: 6,
               borderRadius: 16,
               borderWidth: 1,
@@ -130,17 +132,33 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
           <ScrollView style={{ width: '100%' }} showsVerticalScrollIndicator={false}>
             {/* Informações do Cliente */}
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Informações do Cliente</Text>
+              <Text style={styles.sectionTitle}>
+                Informações da Cliente
+              </Text>
               
               <View style={styles.detailRow}>
-                <Ionicons name="person-outline" size={16} color={colors.black} style={{ marginRight: 8 }} />
-                <Text style={styles.detailLabel}>Cliente:</Text>
-                <Text style={styles.detailValue}>{sale.clientName}</Text>
+                <Ionicons 
+                  name="person-outline" 
+                  size={16} 
+                  color={colors.black} 
+                  style={{ marginRight: 8 }} 
+                />
+                <Text style={styles.detailLabel}>
+                  Cliente:
+                </Text>
+                <Text style={styles.detailValue}>
+                  {sale.clientName}
+                </Text>
               </View>
 
               {sale.phone && (
                 <View style={styles.detailRow}>
-                  <Ionicons name="call-outline" size={16} color={colors.black} style={{ marginRight: 8 }} />
+                  <Ionicons 
+                    name="call-outline" 
+                    size={16} 
+                    color={colors.black} 
+                    style={{ marginRight: 8 }} 
+                  />
                   <Text style={styles.detailLabel}>Telefone:</Text>
                   <Text style={styles.detailValue}>{sale.phone}</Text>
                 </View>
@@ -148,7 +166,12 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
 
               {sale.address && (
                 <View style={styles.detailRow}>
-                  <Ionicons name="location-outline" size={16} color={colors.black} style={{ marginRight: 8 }} />
+                  <Ionicons 
+                    name="location-outline" 
+                    size={16} 
+                    color={colors.black} 
+                    style={{ marginRight: 8 }} 
+                  />
                   <Text style={styles.detailLabel}>Endereço:</Text>
                   <Text style={styles.detailValue}>{sale.address}</Text>
                 </View>
@@ -157,22 +180,39 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
 
             {/* Informações da Venda */}
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>Informações da Venda</Text>
+              <Text style={styles.sectionTitle}>
+                Informações da Venda
+              </Text>
               
               <View style={styles.detailRow}>
-                <Ionicons name="calendar-outline" size={16} color={colors.black} style={{ marginRight: 8 }} />
+                <Ionicons 
+                  name="calendar-outline" 
+                  size={16} 
+                  color={colors.black} 
+                  style={{ marginRight: 8 }} 
+                />
                 <Text style={styles.detailLabel}>Data:</Text>
                 <Text style={styles.detailValue}>{formatDate(sale.createdAt)}</Text>
               </View>
 
               <View style={styles.detailRow}>
-                <Ionicons name="cube-outline" size={16} color={colors.black} style={{ marginRight: 8 }} />
+                <Ionicons 
+                  name="cube-outline" 
+                  size={16} 
+                  color={colors.black} 
+                  style={{ marginRight: 8 }} 
+                />
                 <Text style={styles.detailLabel}>Total de Peças:</Text>
                 <Text style={[styles.detailValue, { fontFamily: fonts.bold }]}>{sale.totalPieces}</Text>
               </View>
 
               <View style={styles.detailRow}>
-                <Ionicons name="cash-outline" size={16} color={colors.black} style={{ marginRight: 8 }} />
+                <Ionicons 
+                  name="cash-outline" 
+                  size={16} 
+                  color={colors.black} 
+                  style={{ marginRight: 8 }} 
+                />
                 <Text style={styles.detailLabel}>Valor Total:</Text>
                 <Text style={[styles.detailValue, { 
                   fontFamily: fonts.bold, 
@@ -229,13 +269,13 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
                 <Ionicons 
                   name="cube-outline" 
                   size={48} 
-                  color={colors.black + '50'} 
+                  color={colors.black + '40'} 
                   style={{ marginBottom: 12 }}
                 />
                 <Text style={{ 
                   textAlign: 'center', 
                   fontStyle: 'italic', 
-                  color: colors.black + '70',
+                  color: colors.black + '80',
                   fontSize: 16
                 }}>
                   Nenhuma peça adicionada a esta venda ainda.
@@ -243,7 +283,7 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
                 <Text style={{ 
                   textAlign: 'center', 
                   fontSize: 14, 
-                  color: colors.black + '50',
+                  color: colors.black + '70',
                   marginTop: 4
                 }}>
                   Use o botão "Adicionar Peças" para começar.
@@ -262,8 +302,15 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
             }]}
             onPress={onClose}
           >
-            <Ionicons name="close-outline" size={20} color={colors.white} style={{ marginRight: 6 }} />
-            <Text style={styles.closeButtonText}>Fechar</Text>
+            <Ionicons 
+              name="close-outline" 
+              size={22} 
+              color={colors.white} 
+              style={{ marginRight: 6 }} 
+            />
+            <Text style={styles.closeButtonText}>
+              Fechar
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -7,8 +7,8 @@ export const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    paddingHorizontal: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    paddingHorizontal: 12,
   },
   
   modalView: {
@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     padding: 24,
     alignItems: 'center',
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
+    shadowOffset: { width: 2, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 8,
@@ -45,7 +45,7 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
     paddingBottom: 6,
     borderBottomWidth: 1,
-    borderBottomColor: colors.black + '20',
+    borderBottomColor: colors.black + '50',
   },
   
   detailRow: {
@@ -56,8 +56,8 @@ export const styles = StyleSheet.create({
   },
   
   detailLabel: {
-    fontSize: 14,
-    fontFamily: fonts.regular,
+    fontSize: 16,
+    fontFamily: fonts.italic,
     color: colors.black,
     opacity: 0.8,
     marginRight: 8,
@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
   },
   
   detailValue: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: fonts.regular,
     color: colors.black,
     flex: 1,
@@ -83,7 +83,7 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
     paddingBottom: 6,
     borderBottomWidth: 1,
-    borderBottomColor: colors.black + '20',
+    borderBottomColor: colors.black + '50',
   },
 
   pieceItem: {
@@ -93,23 +93,23 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 12,
     backgroundColor: colors.white,
     borderWidth: 1,
-    borderColor: colors.black + '10',
+    borderColor: colors.black + '30',
     borderRadius: 8,
     marginVertical: 2,
   },
 
   pieceDescription: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: fonts.regular,
     color: colors.black,
     lineHeight: 18,
   },
 
   pieceUnitPrice: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: fonts.regular,
     color: colors.black,
-    opacity: 0.6,
+    opacity: 0.8,
     marginTop: 2,
   },
 
@@ -117,7 +117,7 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: fonts.bold,
     color: colors.page.tulips,
-    backgroundColor: colors.page.tulips + '15',
+    backgroundColor: colors.page.tulips + '25',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 12,
@@ -126,7 +126,7 @@ export const styles = StyleSheet.create({
   },
 
   piecePrice: {
-    fontSize: 14,
+    fontSize: 16,
     fontFamily: fonts.bold,
     color: colors.black,
     textAlign: 'right',
@@ -134,11 +134,16 @@ export const styles = StyleSheet.create({
 
   closeButton: {
     backgroundColor: colors.page.dragonFruit,
-    borderRadius: 12,
+    borderRadius: 14,
     paddingVertical: 14,
     paddingHorizontal: 32,
     marginTop: 20,
     minWidth: 120,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 5, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
   },
 
   closeButtonText: {
