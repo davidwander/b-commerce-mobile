@@ -27,15 +27,18 @@ export default function Sales() {
       console.log('📋 Carregando vendas...');
       setError(null);
       
+      // Buscar vendas abertas (ambos os status)
       const result = await saleService.getSales({
-        status: 'open',
+        status: 'open', // Isso vai buscar tanto 'open-no-pieces' quanto 'open-awaiting-payment'
         page: 1,
         limit: 20
       });
 
       if (result.success && result.data) {
-        setSales(result.data);
-        console.log(`✅ ${result.data.length} vendas carregadas`);
+        // Filtrar apenas vendas que não estão fechadas
+        const openSales = result.data.filter(sale => sale.status !== 'closed');
+        setSales(openSales);
+        console.log(`✅ ${openSales.length} vendas abertas carregadas`);
       } else {
         console.log('⚠️ Nenhuma venda encontrada:', result.message);
         setSales([]);
@@ -78,7 +81,7 @@ export default function Sales() {
     setViewMode(prev => prev === 'list' ? 'select' : 'list');
   };
 
-  // Handler para selecionar uma venda (quando no modo lista normal)
+  // Handler para selecionar uma venda (quando no modo seleção)
   const handleSelectSale = (sale: Sale) => {
     if (viewMode === 'select') {
       // No modo seleção, navega direto para o estoque
@@ -107,6 +110,17 @@ export default function Sales() {
   const handleCloseModal = () => {
     setIsModalVisible(false);
     setSelectedSale(null);
+    // Recarregar a lista para atualizar possíveis mudanças
+    loadSales();
+  };
+
+  // Função para determinar a ação do card baseada no modo
+  const handleCardPress = (sale: Sale) => {
+    if (viewMode === 'select') {
+      handleSelectSale(sale);
+    } else {
+      handleViewDetails(sale);
+    }
   };
 
   // Renderizar item da lista
@@ -125,9 +139,8 @@ export default function Sales() {
       >
         <SaleCard
           sale={item}
-          onPress={() => handleViewDetails(item)}
+          onPress={() => handleCardPress(item)}
           showSelectButton={viewMode === 'select'}
-          statusColor={item.status === 'closed' ? '#4CAF50' : colors.page.tulips}
         />
       </Animated.View>
     );
@@ -145,7 +158,7 @@ export default function Sales() {
           <View style={styles.headerButtons}>
             {/* Botão para alternar modo */}
             <ActionButton
-              label={viewMode === 'select' ? undefined : undefined}
+              label={undefined}
               icon={viewMode === 'select' ? 'x' : 'shopping-cart'}
               onPress={toggleViewMode}
               color={viewMode === 'select' ? colors.page.dragonFruit : colors.page.tulips}

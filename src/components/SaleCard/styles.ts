@@ -15,106 +15,72 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
-  statusBadge: {
-    position: 'absolute',
-    top: 8,
-    right: 12,
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 12,
+  headerCard: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 8
   },
-  statusBadgeText: {
-    fontSize: 14,
-    fontFamily: fonts.bold,
-    color: colors.white,
-  },
-  buttonSelect: {
-    position: 'absolute',
-    top: 8,
-    left: 12,
-    backgroundColor: colors.page.clearSky,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 12,
-  },
-  buttonSelectText: {
-    fontSize: 14,
-    fontFamily: fonts.bold,
-    color: colors.white,
-  },
-  clientName: {
+  headerText: {
     fontSize: 20,
     fontFamily: fonts.bold,
     color: colors.black,
+    marginBottom: 4
   },
-  clientNameContainer: {
+  badgeText: {
+    fontSize: 14,
+    fontFamily: fonts.regular,
+    color: colors.white,
+  },
+  saleContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  phoneClientContainer: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
+    justifyContent: 'space-between',
     marginBottom: 8
   },
-  phoneClient: {
-    fontFamily: fonts.regular, 
-    fontSize: 16, 
-    color: colors.black
-  },
-  addressClientContainer: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    marginBottom: 8,
-  },
-  addressClient: {
-    fontFamily: fonts.regular, 
-    fontSize: 16, 
+  saleDate: {
+    fontSize: 16,
+    fontFamily: fonts.italic,
     color: colors.black,
-    flex: 1,
+    opacity: 0.8,
+    marginBottom: 2
   },
-  dateContainer: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    marginBottom: 8,
-  },
-  date: {
-    fontFamily: fonts.regular, 
-    fontSize: 16, 
+  saleDateContent: {
+    fontSize: 16,
+    fontFamily: fonts.regular,
     color: colors.black,
   },
-  newSectionContainer: {
-    borderRadius: 12,
-    padding: 14,
-    marginBottom: 14,
-    borderLeftWidth: 4,
-  },
-  quantityContent: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    marginBottom: 6,
-  },
-  quantityText: {
-    fontFamily: fonts.regular, 
-    fontSize: 16, 
-  },
-  totalValueContainer: {
-    flexDirection: 'row', 
-    alignItems: 'center',
-  },
-  totalValueText: {
-    fontFamily: fonts.bold, 
-    fontSize: 18, 
-  },
-  saleWithoutParts: {
+  pieces: {
     fontSize: 14,
-    color: '#6c757d',
-    fontStyle: 'italic',
-    marginTop: 4,
+    fontFamily: fonts.italic,
+    color: colors.black,
+    opacity: 0.7,
+    marginBottom: 2
   },
-  seeMore: {
-    position: 'absolute',
-    bottom: 8,
-    right: 12,
+  quantityPiece: {
+    fontSize: 16,
+    fontFamily: fonts.regular,
+    color: colors.black,
+  },
+  total: {
+    fontSize: 16,
+    color: colors.black,
+    opacity: 0.8,
+    marginBottom: 2
+  },
+  showSelectButton: {
+    marginTop: 12,
+    paddingTop: 12,
+    borderTopWidth: 1,
+    borderTopColor: colors.black + '50',
+  },
+  showSelectButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  showSelectButtonText: {
+    fontSize: 16,
+    fontFamily: fonts.italic,
+    color: colors.page.dragonFruit,
   },
 });

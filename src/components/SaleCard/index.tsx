@@ -6,28 +6,54 @@ import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
 import { Sale } from '@/services/saleService';
-import { router } from 'expo-router';
+
 interface SaleCardProps {
   sale: Sale;
-  onPress?: () => void;
+  onPress: () => void;
   showSelectButton?: boolean;
-  statusColor: string;
+  statusColor?: string;
 }
 
-export function SaleCard({ sale, onPress, showSelectButton = false, statusColor }: SaleCardProps) {
-  // Formatação da data
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardProps) {
+  // Função para determinar o status e cor baseado no estado da venda
+  const getStatusInfo = () => {
+    switch (sale.status) {
+      case 'open-no-pieces':
+        return {
+          text: 'Em Aberto',
+          color: colors.page.tulips,
+          icon: 'time-outline' as const
+        };
+      case 'open-awaiting-payment':
+        return {
+          text: 'Aguardando Pagamento',
+          color: colors.page.meadow,
+          icon: 'card-outline' as const
+        };
+      case 'closed':
+        return {
+          text: 'Fechada',
+          color: '#4CAF50',
+          icon: 'checkmark-circle-outline' as const
+        };
+      default:
+        // Para compatibilidade com status antigos
+        if (sale.totalPieces > 0) {
+          return {
+            text: 'Aguardando Pagamento',
+            color: colors.page.meadow,
+            icon: 'card-outline' as const
+          };
+        } else {
+          return {
+            text: 'Em Aberto',
+            color: colors.page.tulips,
+            icon: 'time-outline' as const
+          };
+        }
+    }
   };
 
-  // Formatação do valor
   const formatCurrency = (value: number) => {
     return value.toLocaleString('pt-BR', {
       style: 'currency',
@@ -35,164 +61,112 @@ export function SaleCard({ sale, onPress, showSelectButton = false, statusColor 
     });
   };
 
-  // Função para selecionar a venda e ir para o estoque
-  const handleSelectSale = () => {
-    router.push(`/inventory?saleId=${sale.id}`);
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
   };
 
-  const getStatusDisplay = (status: Sale['status']) => {
-    switch (status) {
-      case 'open-no-pieces':
-      case 'open': // Para compatibilidade com status antigos
-        return { text: 'Em Aberto', color: colors.page.tulips };
-      case 'open-awaiting-payment':
-        return { text: 'Aguardando Pagamento', color: colors.page.magnolia };
-      case 'closed':
-        return { text: 'Fechada', color: '#4CAF50' };
-      default:
-        return { text: 'Desconhecido', color: colors.black };
-    }
-  };
-
-  const { text: statusText, color: statusDisplayColor } = getStatusDisplay(sale.status);
+  const statusInfo = getStatusInfo();
 
   return (
-    <TouchableOpacity 
-      style={[styles.cardContainer, showSelectButton && { paddingTop: 40 } ]}
+    <TouchableOpacity
+      style={styles.cardContainer}
       onPress={onPress}
-      activeOpacity={0.7}
+      activeOpacity={0.8}
     >
-      {/* Status Badge */}
-      <View
-        style={[styles.statusBadge, { backgroundColor: statusDisplayColor } ]}
-      >
-        <Text style={styles.statusBadgeText}>
-          {statusText}
-        </Text>
-      </View>
-
-      {/* Botão de Selecionar Venda (se for para mostrar) */}
-      {showSelectButton && (sale.status === 'open-no-pieces' || sale.status === 'open-awaiting-payment' || sale.status === 'open') && (
-        <TouchableOpacity
-          style={styles.buttonSelect}
-          onPress={handleSelectSale}
-        >
-          <Text
-            style={styles.buttonSelectText}
-          >
-            🛒 Selecionar
+      {/* Header do Card */}
+      <View style={styles.headerCard}>
+        <View style={{ flex: 1 }}>
+          <Text style={styles.headerText}>
+            {sale.clientName}
           </Text>
-        </TouchableOpacity>
-      )}
+          
+          {sale.phone && (
+            <Text style={{
+              fontSize: 16,
+              color: colors.black,
+              opacity: 0.7
+            }}>
+              {sale.phone}
+            </Text>
+          )}
+        </View>
 
-      {/* Nome do Cliente */}
-      <View style={styles.clientNameContainer}>
-        <Ionicons 
-          name="person" 
-          size={18} 
-          color={colors.black} 
-          style={{ marginRight: 6 }}
-        />
-        <Text style={styles.clientName}>
-          {sale.clientName}
-        </Text>
-      </View>
-
-      {/* Telefone (se existir) */}
-      {sale.phone && (
-        <View style={styles.phoneClientContainer}>
+        {/* Badge de Status */}
+        <View style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          backgroundColor: statusInfo.color,
+          paddingHorizontal: 8,
+          paddingVertical: 4,
+          borderRadius: 12,
+        }}>
           <Ionicons 
-            name="call" 
-            size={18} 
-            color={colors.black} 
-            style={{ marginRight: 6 }}
+            name={statusInfo.icon} 
+            size={14} 
+            color={colors.white} 
+            style={{ marginRight: 4 }}
           />
-          <Text style={styles.phoneClient}>
-            {sale.phone}
+          <Text style={styles.badgeText}>
+            {statusInfo.text}
           </Text>
         </View>
-      )}
-
-      {/* Endereço (se existir) */}
-      {sale.address && (
-        <View style={styles.addressClientContainer}>
-          <Ionicons 
-            name="location" 
-            size={18} 
-            color={colors.black} 
-            style={{ marginRight: 6 }}
-          />
-          <Text style={styles.addressClient} 
-          numberOfLines={2}
-          >
-            {sale.address}
-          </Text>
-        </View>
-      )}
-
-      {/* Data de Criação */}
-      <View style={styles.dateContainer}>
-        <Ionicons 
-          name="calendar" 
-          size={18} 
-          color={colors.black} 
-          style={{ marginRight: 6 }}
-        />
-        <Text style={styles.date}>
-          {formatDate(sale.createdAt)}
-        </Text>
       </View>
 
-      {/* NOVA SEÇÃO: Resumo de Peças e Valores */}
-      <View style={{
-        ...styles.newSectionContainer,
-        backgroundColor: colors.white,
-        borderLeftColor: sale.totalPieces > 0 ? colors.page.tulips : '#6c757d',
-        elevation: 5,
-        shadowColor: '#000',
-        shadowOffset: { width: 5, height: 8 },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-      }}>
-        {/* Quantidade de Peças */}
-        <View style={styles.quantityContent}>
-          <Ionicons 
-            name="shirt" 
-            size={18} 
-            color={sale.totalPieces > 0 ? colors.page.tulips : '#6c757d'} 
-            style={{ marginRight: 6 }}
-          />
+      {/* Informações da Venda */}
+      <View style={styles.saleContainer}>
+        <View>
+          <Text style={styles.saleDate}>
+            Data
+          </Text>
+          <Text style={styles.saleDateContent}>
+            {formatDate(sale.createdAt)}
+          </Text>
+        </View>
+
+        <View style={{ alignItems: 'center' }}>
+          <Text style={styles.pieces}>
+            Peças
+          </Text>
+          <Text style={styles.quantityPiece}>
+            {sale.totalPieces || 0}
+          </Text>
+        </View>
+
+        <View style={{ alignItems: 'flex-end' }}>
+          <Text style={styles.total}>
+            Valor Total
+          </Text>
           <Text style={{
-            ...styles.quantityText,
-            color: sale.totalPieces > 0 ? colors.black : '#6c757d'
+            fontSize: 16,
+            fontFamily: fonts.bold,
+            color: statusInfo.color,
           }}>
-            {sale.totalPieces} {sale.totalPieces === 1 ? 'peça' : 'peças'}
+            {formatCurrency(sale.totalValue || 0)}
           </Text>
         </View>
-
-        {/* Valor Total */}
-        <View style={styles.totalValueContainer}>
-          <Ionicons 
-            name="cash" 
-            size={18} 
-            color={sale.totalValue > 0 ? '#4CAF50' : '#6c757d'} 
-            style={{ marginRight: 6 }}
-          />
-          <Text style={{
-            ...styles.totalValueText,
-            color: sale.totalValue > 0 ? '#4CAF50' : '#6c757d',
-          }}>
-            {formatCurrency(sale.totalValue)}
-          </Text>
-        </View>
-
-        {/* Mensagem para vendas sem peças */}
-        {sale.totalPieces === 0 && (
-          <Text style={styles.saleWithoutParts}>
-            Nenhuma peça adicionada ainda
-          </Text>
-        )}
       </View>
+
+      {/* Botão de Seleção (para modo de adicionar peças) */}
+      {showSelectButton && (
+        <View style={styles.showSelectButton}>
+          <View style={styles.showSelectButtonContent}>
+            <Ionicons 
+              name="add-circle-outline" 
+              size={20} 
+              color={colors.page.dragonFruit} 
+              style={{ marginRight: 6 }}
+            />
+            <Text style={styles.showSelectButtonText}>
+              Adicionar Peças a esta Venda
+            </Text>
+          </View>
+        </View>
+      )}
     </TouchableOpacity>
   );
 }
