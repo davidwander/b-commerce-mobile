@@ -42,7 +42,7 @@ export default function NewSale() {
       // Verificação rápida do token antes de enviar
       const hasValidToken = await quickTokenCheck();
       if (!hasValidToken) {
-        console.log('❌ Token inválido detectado antes da requisição');
+        console.log('⌐ Token inválido detectado antes da requisição');
         Alert.alert("Erro de Autenticação", "Token não encontrado ou expirado. Faça login novamente.");
         return;
       }
@@ -55,7 +55,7 @@ export default function NewSale() {
         Alert.alert("Sucesso!", result.message);
         console.log('✅ Venda criada com ID:', result.data.id);
       } else {
-        console.log('❌ Falha ao criar venda:', result.message);
+        console.log('⌐ Falha ao criar venda:', result.message);
         Alert.alert("Erro", result.message);
         
         // Se falhou, executar debug completo
@@ -63,7 +63,7 @@ export default function NewSale() {
         await debugAuthComplete();
       }
     } catch (error) {
-      console.error("❌ Erro inesperado ao criar venda:", error);
+      console.error("⌐ Erro inesperado ao criar venda:", error);
       Alert.alert("Erro", "Ocorreu um erro inesperado ao criar a venda.");
       
       // Executar debug em caso de erro
@@ -117,6 +117,7 @@ export default function NewSale() {
               onChangeText={onChange}
               error={errors.clientName?.message}
               editable={!loading && !isSaleSaved}
+              autoCapitalize="words"
             />
           )}
         />
@@ -124,17 +125,25 @@ export default function NewSale() {
         <Controller
           control={control}
           name="phone"
-          rules={{ required: "O telefone é obrigatório." }}
+          rules={{ 
+            required: "O telefone é obrigatório.",
+            minLength: {
+              value: 14, // (11) 99999-9999
+              message: "Telefone deve ter pelo menos 11 dígitos"
+            }
+          }}
           render={({ field: { onChange, onBlur, value } }) => (
             <CustomInput
               label="Telefone"
-              placeholder="Digite o telefone"
+              placeholder="(00) 00000-0000"
               keyboardType="phone-pad"
               value={value}
               onBlur={onBlur}
               onChangeText={onChange}
               error={errors.phone?.message}
               editable={!loading && !isSaleSaved}
+              maskType="phone"
+              autoCapitalize="none"
             />
           )}
         />
@@ -152,6 +161,7 @@ export default function NewSale() {
               onChangeText={onChange}
               error={errors.address?.message}
               editable={!loading && !isSaleSaved}
+              autoCapitalize="words"
             />
           )}
         />
