@@ -102,7 +102,10 @@ export default function NewSale() {
         Criar Nova Venda
       </Text>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 30 }}>
+      <ScrollView 
+        showsVerticalScrollIndicator={false} 
+        contentContainerStyle={{ paddingBottom: 30 }}
+      >
         {/* Formulário */}
         <Controller
           control={control}
@@ -111,7 +114,7 @@ export default function NewSale() {
           render={({ field: { onChange, onBlur, value } }) => (
             <CustomInput
               label="Cliente"
-              placeholder="Digite o nome do cliente"
+              placeholder="Digite o nome da cliente"
               value={value}
               onBlur={onBlur}
               onChangeText={onChange}
