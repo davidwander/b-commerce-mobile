@@ -30,6 +30,12 @@ export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardPr
           color: colors.page.meadow,
           icon: 'card-outline' as const
         };
+      case 'calculate-shipping': // Novo status
+        return {
+          text: 'Calcular Frete',
+          color: colors.page.olive, // Cor atualizada para o novo status
+          icon: 'car-outline' as const
+        };
       case 'closed':
         return {
           text: 'Fechada',

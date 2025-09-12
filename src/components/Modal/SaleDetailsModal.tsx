@@ -50,6 +50,13 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
           backgroundColor: colors.page.meadow + '28',
           icon: 'card-outline' as const
         };
+      case 'calculate-shipping': // Novo status
+        return {
+          text: 'Calcular Frete',
+          color: colors.page.olive, // Uma nova cor para este status
+          backgroundColor: colors.page.olive + '28',
+          icon: 'car-outline' as const // Ícone para frete
+        };
       case 'closed':
         return { 
           text: 'Fechada', 
@@ -310,19 +317,19 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
           </ScrollView>
 
           {/* Botões de Ação */}
-          {sale.status === 'open-awaiting-payment' && ( 
+          {(sale.status === 'open-awaiting-payment' || sale.status === 'calculate-shipping') && ( // Botão de Confirmar Pagamento aparece condicionalmente
             <TouchableOpacity
               style={[
-                styles.closeButton, 
+                styles.closeButton, // Reutilizando o estilo, mas você pode criar um novo para primário
                 {
-                  backgroundColor: colors.page.viridian, // Cor para "Confirmar Pagamento"
+                  backgroundColor: sale.status === 'open-awaiting-payment' ? colors.page.viridian : colors.page.olive, // Cores diferentes para cada status
                   marginBottom: 1, // Adiciona margem se houver outro botão abaixo
                 }
               ]}
               onPress={handleConfirmPayment}
             >
               <Text style={styles.closeButtonText}>
-                Confirmar Pagamento
+                {sale.status === 'open-awaiting-payment' ? 'Confirmar Pagamento' : 'Confirmar Frete'}
               </Text>
             </TouchableOpacity>
           )}
@@ -332,7 +339,7 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
             style={[
               styles.closeButton,
               {
-                backgroundColor: colors.black + 'CC', 
+                backgroundColor: colors.black + 'CC', // Uma cor neutra para fechar
               }
             ]}
             onPress={onClose}

@@ -27,18 +27,18 @@ export default function Sales() {
       console.log('📋 Carregando vendas...');
       setError(null);
       
-      // Buscar vendas abertas (ambos os status)
+      // Buscar vendas abertas (todos os status relevantes, incluindo o novo)
       const result = await saleService.getSales({
-        status: 'open', // Isso vai buscar tanto 'open-no-pieces' quanto 'open-awaiting-payment'
+        status: 'open', // Isso agora buscará 'open-no-pieces', 'open-awaiting-payment', 'calculate-shipping'
         page: 1,
         limit: 20
       });
 
       if (result.success && result.data) {
-        // Filtrar apenas vendas que não estão fechadas
+        // Filtrar apenas vendas que não estão fechadas (o 'open' já faz isso no backend, mas mantemos para clareza)
         const openSales = result.data.filter(sale => sale.status !== 'closed');
         setSales(openSales);
-        console.log(`✅ ${openSales.length} vendas abertas carregadas`);
+        console.log(`✅ ${openSales.length} vendas abertas (incluindo cálculo de frete) carregadas`);
       } else {
         console.log('⚠️ Nenhuma venda encontrada:', result.message);
         setSales([]);

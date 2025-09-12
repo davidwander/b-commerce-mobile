@@ -48,7 +48,7 @@ export interface Sale {
   updatedAt: string;
   totalPieces: number;
   totalValue: number;
-  status: 'open-no-pieces' | 'open-awaiting-payment' | 'closed';
+  status: 'open-no-pieces' | 'open-awaiting-payment' | 'closed' | 'calculate-shipping'; // Adicionado 'calculate-shipping'
   salePieces?: SalePiece[];
 }
 
@@ -166,7 +166,7 @@ export const saleService = {
 
   // NOVA FUNÇÃO: Listar vendas
   getSales: async (params?: { 
-    status?: 'open-no-pieces' | 'open-awaiting-payment' | 'closed' | 'open'; // Mantém 'open' para a lógica do frontend
+    status?: 'open-no-pieces' | 'open-awaiting-payment' | 'closed' | 'calculate-shipping' | 'open'; // Mantém 'open' para a lógica do frontend
     page?: number; 
     limit?: number 
   }): Promise<{ success: boolean; message: string; data?: Sale[]; pagination?: any }> => {
@@ -181,6 +181,7 @@ export const saleService = {
         if (params.status === 'open') {
           queryParams.append('status', 'open-no-pieces');
           queryParams.append('status', 'open-awaiting-payment');
+          queryParams.append('status', 'calculate-shipping'); // Adicionado
         } else {
           queryParams.append('status', params.status);
         }
