@@ -1,8 +1,8 @@
 import React from 'react';
-import { Modal, View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native'; // Adicionado Alert
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from './SaleDetailsModal.styles';
-import { Sale, SalePiece } from '@/services/saleService';
+import { Sale, SalePiece, saleService } from '@/services/saleService'; // Adicionado saleService
 import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
 
@@ -74,6 +74,23 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
             icon: 'time-outline' as const
           };
         }
+    }
+  };
+
+  const handleConfirmPayment = async () => {
+    if (!sale || !sale.id) return;
+
+    try {
+      const result = await saleService.confirmPayment(sale.id);
+      if (result.success) {
+        Alert.alert('Sucesso!', 'Pagamento confirmado com sucesso!'); // Usar Alert
+        onClose(); // Fechar o modal e forçar a atualização da lista
+      } else {
+        Alert.alert('Erro', result.message || 'Erro ao confirmar pagamento.'); // Usar Alert
+      }
+    } catch (error) {
+      console.error('Erro ao confirmar pagamento:', error);
+      Alert.alert('Erro', 'Ocorreu um erro ao confirmar o pagamento.'); // Usar Alert
     }
   };
 
@@ -292,22 +309,34 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
             )}
           </ScrollView>
 
-          {/* Botão de Fechar */}
+          {/* Botões de Ação */}
+          {sale.status === 'open-awaiting-payment' && ( 
+            <TouchableOpacity
+              style={[
+                styles.closeButton, 
+                {
+                  backgroundColor: colors.page.viridian, // Cor para "Confirmar Pagamento"
+                  marginBottom: 1, // Adiciona margem se houver outro botão abaixo
+                }
+              ]}
+              onPress={handleConfirmPayment}
+            >
+              <Text style={styles.closeButtonText}>
+                Confirmar Pagamento
+              </Text>
+            </TouchableOpacity>
+          )}
+
+          {/* Botão de Fechar (sempre visível) */}
           <TouchableOpacity
-            style={[styles.closeButton, {
-              backgroundColor: statusDisplay.color,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }]}
+            style={[
+              styles.closeButton,
+              {
+                backgroundColor: colors.black + 'CC', 
+              }
+            ]}
             onPress={onClose}
           >
-            <Ionicons 
-              name="close-outline" 
-              size={22} 
-              color={colors.white} 
-              style={{ marginRight: 6 }} 
-            />
             <Text style={styles.closeButtonText}>
               Fechar
             </Text>

@@ -267,4 +267,37 @@ export const saleService = {
       };
     }
   },
+
+  // NOVA FUNÇÃO: Confirmar pagamento de uma venda
+  confirmPayment: async (saleId: string): Promise<{ success: boolean; message: string; data?: Sale }> => {
+    try {
+      console.log('✅ Tentando confirmar pagamento da venda:', saleId);
+
+      const headers = await getAuthHeaders();
+      const response = await api.patch<GetSaleByIdResponse>(`/${saleId}/confirm-payment`, {}, { headers });
+      console.log('✅ Pagamento confirmado com sucesso:', response.data);
+
+      return {
+        success: true,
+        message: response.data.message,
+        data: response.data.data
+      };
+    } catch (error: any) {
+      console.error('❌ Erro completo ao confirmar pagamento:', error);
+
+      if (error.response) {
+        console.error('📄 Resposta do servidor:', error.response.data);
+        console.error('📊 Status:', error.response.status);
+      } else if (error.request) {
+        console.error('📡 Sem resposta do servidor:', error.request);
+      } else {
+        console.error('⚙️ Erro de configuração:', error.message);
+      }
+
+      return {
+        success: false,
+        message: error.response?.data?.error || error.message || 'Erro desconhecido ao confirmar pagamento.',
+      };
+    }
+  },
 };
