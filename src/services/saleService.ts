@@ -48,7 +48,7 @@ export interface Sale {
   updatedAt: string;
   totalPieces: number;
   totalValue: number;
-  status: 'open-no-pieces' | 'open-awaiting-payment' | 'closed' | 'calculate-shipping'; // Adicionado 'calculate-shipping'
+  status: 'open-no-pieces' | 'open-awaiting-payment' | 'closed' | 'calculate-shipping' | 'shipping-awaiting-payment' | 'shipping-date-pending'; // Adicionado 'shipping-date-pending'
   shippingValue?: number | null; // Adicionado o novo campo
   salePieces?: SalePiece[];
 }
@@ -183,6 +183,8 @@ export const saleService = {
           queryParams.append('status', 'open-no-pieces');
           queryParams.append('status', 'open-awaiting-payment');
           queryParams.append('status', 'calculate-shipping'); // Adicionado
+          queryParams.append('status', 'shipping-awaiting-payment'); // Adicionado
+          queryParams.append('status', 'shipping-date-pending'); // Adicionado
         } else {
           queryParams.append('status', params.status);
         }
@@ -332,6 +334,72 @@ export const saleService = {
       return {
         success: false,
         message: error.response?.data?.error || error.message || 'Erro desconhecido ao atualizar valor do frete.',
+      };
+    }
+  },
+
+  // NOVA FUNÇÃO: Confirmar pagamento do frete de uma venda
+  confirmShippingPayment: async (saleId: string): Promise<{ success: boolean; message: string; data?: Sale }> => {
+    try {
+      console.log('💰 Tentando confirmar pagamento do frete para venda:', saleId);
+
+      const headers = await getAuthHeaders();
+      const response = await api.patch<GetSaleByIdResponse>(`/${saleId}/confirm-shipping-payment`, {}, { headers });
+      console.log('✅ Pagamento do frete confirmado com sucesso:', response.data);
+
+      return {
+        success: true,
+        message: response.data.message,
+        data: response.data.data
+      };
+    } catch (error: any) {
+      console.error('❌ Erro completo ao confirmar pagamento do frete:', error);
+
+      if (error.response) {
+        console.error('📄 Resposta do servidor:', error.response.data);
+        console.error('📊 Status:', error.response.status);
+      } else if (error.request) {
+        console.error('📡 Sem resposta do servidor:', error.request);
+      } else {
+        console.error('⚙️ Erro de configuração:', error.message);
+      }
+
+      return {
+        success: false,
+        message: error.response?.data?.error || error.message || 'Erro desconhecido ao confirmar pagamento do frete.',
+      };
+    }
+  },
+
+  // NOVA FUNÇÃO: Confirmar data de envio de uma venda
+  confirmShippingDate: async (saleId: string): Promise<{ success: boolean; message: string; data?: Sale }> => {
+    try {
+      console.log('📦 Tentando confirmar data de envio para venda:', saleId);
+
+      const headers = await getAuthHeaders();
+      const response = await api.patch<GetSaleByIdResponse>(`/${saleId}/confirm-shipping-date`, {}, { headers });
+      console.log('✅ Data de envio confirmada com sucesso:', response.data);
+
+      return {
+        success: true,
+        message: response.data.message,
+        data: response.data.data
+      };
+    } catch (error: any) {
+      console.error('❌ Erro completo ao confirmar data de envio:', error);
+
+      if (error.response) {
+        console.error('📄 Resposta do servidor:', error.response.data);
+        console.error('📊 Status:', error.response.status);
+      } else if (error.request) {
+        console.error('📡 Sem resposta do servidor:', error.request);
+      } else {
+        console.error('⚙️ Erro de configuração:', error.message);
+      }
+
+      return {
+        success: false,
+        message: error.response?.data?.error || error.message || 'Erro desconhecido ao confirmar data de envio.',
       };
     }
   },

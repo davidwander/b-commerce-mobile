@@ -59,6 +59,20 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
           backgroundColor: colors.page.olive + '28',
           icon: 'car-outline' as const // Ícone para frete
         };
+      case 'shipping-awaiting-payment': // Novo status
+        return {
+          text: 'Frete em Aberto',
+          color: colors.page.orange,
+          backgroundColor: colors.page.orange + '28',
+          icon: 'cube-outline' as const
+        };
+      case 'shipping-date-pending': // Novo status
+        return {
+          text: 'Aguardando data de envio',
+          color: colors.page.purple,
+          backgroundColor: colors.page.purple + '28',
+          icon: 'calendar-outline' as const
+        };
       case 'closed':
         return { 
           text: 'Fechada', 
@@ -107,10 +121,26 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
 
         const result = await saleService.updateShippingValue(sale.id, parsedShippingValue);
         if (result.success) {
-          Alert.alert('Sucesso!', 'Valor do frete adicionado e venda fechada!');
+          Alert.alert('Sucesso!', 'Valor do frete adicionado! Agora confirme o pagamento do frete.');
           onClose();
         } else {
           Alert.alert('Erro', result.message || 'Erro ao adicionar valor do frete.');
+        }
+      } else if (sale.status === 'shipping-awaiting-payment') {
+        const result = await saleService.confirmShippingPayment(sale.id);
+        if (result.success) {
+          Alert.alert('Sucesso!', 'Pagamento do frete confirmado e venda fechada!');
+          onClose();
+        } else {
+          Alert.alert('Erro', result.message || 'Erro ao confirmar pagamento do frete.');
+        }
+      } else if (sale.status === 'shipping-date-pending') {
+        const result = await saleService.confirmShippingDate(sale.id);
+        if (result.success) {
+          Alert.alert('Sucesso!', 'Data de envio confirmada e venda fechada!');
+          onClose();
+        } else {
+          Alert.alert('Erro', result.message || 'Erro ao confirmar data de envio.');
         }
       }
     } catch (error) {
@@ -316,6 +346,36 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
               </View>
             )}
 
+            {/* Mensagem de frete em aberto */}
+            {sale.status === 'shipping-awaiting-payment' && (
+              <View style={[styles.section, { alignItems: 'center', paddingVertical: 20 }]}>
+                <Ionicons
+                  name="cash-outline"
+                  size={48}
+                  color={colors.page.orange}
+                  style={{ marginBottom: 12 }}
+                />
+                <Text style={{ textAlign: 'center', fontSize: 16, fontFamily: fonts.medium, color: colors.page.orange }}>
+                  Frete adicionado! Aguardando confirmação de pagamento.
+                </Text>
+              </View>
+            )}
+
+            {/* Mensagem de aguardando data de envio */}
+            {sale.status === 'shipping-date-pending' && (
+              <View style={[styles.section, { alignItems: 'center', paddingVertical: 20 }]}>
+                <Ionicons
+                  name="calendar-outline"
+                  size={48}
+                  color={colors.page.purple}
+                  style={{ marginBottom: 12 }}
+                />
+                <Text style={{ textAlign: 'center', fontSize: 16, fontFamily: fonts.medium, color: colors.page.purple }}>
+                  Pagamento do frete confirmado! Aguardando data de envio.
+                </Text>
+              </View>
+            )}
+
             {/* Lista de Peças */}
             {sale.salePieces && sale.salePieces.length > 0 && (
               <View style={styles.section}>
@@ -385,12 +445,23 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
           </ScrollView>
 
           {/* Botões de Ação */}
-          {(sale.status === 'open-awaiting-payment' || (sale.status === 'calculate-shipping' && sale.shippingValue === null)) && (
+          {['open-awaiting-payment', 'calculate-shipping', 'shipping-awaiting-payment', 'shipping-date-pending'].includes(sale.status) && (
             <ActionButton
-              label={sale.status === 'open-awaiting-payment' ? 'Confirmar Pagamento' : 'Adicionar Frete e Fechar Venda'}
+              label={
+                sale.status === 'open-awaiting-payment' ? 'Confirmar Pagamento' :
+                sale.status === 'calculate-shipping' ? 'Adicionar Frete' :
+                sale.status === 'shipping-awaiting-payment' ? 'Confirmar Pagamento do Frete' :
+                'Confirmar Data de Envio e Fechar Venda'
+              }
               onPress={handleConfirmPayment}
-              color={sale.status === 'open-awaiting-payment' ? colors.page.viridian : colors.page.olive}
+              color={
+                sale.status === 'open-awaiting-payment' ? colors.page.viridian :
+                sale.status === 'calculate-shipping' ? colors.page.olive :
+                sale.status === 'shipping-awaiting-payment' ? colors.page.orange :
+                colors.page.purple
+              }
               style={{ marginBottom: 10 }}
+              disabled={sale.status === 'calculate-shipping' && (isNaN(parseFloat(shippingValueInput.replace(',', '.'))) || parseFloat(shippingValueInput.replace(',', '.')) < 0)}
             />
           )}
 

@@ -31,18 +31,22 @@ export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardPr
           icon: 'card-outline' as const
         };
       case 'calculate-shipping': // Novo status
-        // Se o valor do frete já foi adicionado, considerá-la como fechada
-        if (sale.shippingValue !== undefined && sale.shippingValue !== null) {
-          return {
-            text: 'Fechada',
-            color: '#4CAF50', // Verde
-            icon: 'checkmark-circle-outline' as const
-          };
-        }
         return {
           text: 'Calcular Frete',
           color: colors.page.olive, // Cor atualizada para o novo status
           icon: 'car-outline' as const
+        };
+      case 'shipping-awaiting-payment': // Novo status
+        return {
+          text: 'Frete em Aberto',
+          color: colors.page.orange, // Definir uma cor para o status de frete em aberto
+          icon: 'cube-outline' as const // Ou outro ícone relevante
+        };
+      case 'shipping-date-pending': // Novo status
+        return {
+          text: 'Aguardando data de envio',
+          color: colors.page.purple, // Cor para o status de aguardando data de envio
+          icon: 'calendar-outline' as const
         };
       case 'closed':
         return {
@@ -118,9 +122,11 @@ export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardPr
           flexDirection: 'row',
           alignItems: 'center',
           backgroundColor: statusInfo.color,
-          paddingHorizontal: 8,
-          paddingVertical: 4,
+          paddingHorizontal: 12, // Aumentado
+          paddingVertical: 6, // Aumentado
           borderRadius: 12,
+          overflow: 'hidden', // Adicionado para garantir que o texto não seja cortado
+          zIndex: 1, // Adicionado para garantir que esteja acima de outros elementos
         }}>
           <Ionicons 
             name={statusInfo.icon} 
@@ -128,7 +134,12 @@ export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardPr
             color={colors.white} 
             style={{ marginRight: 4 }}
           />
-          <Text style={styles.badgeText}>
+          <Text style={{
+            fontSize: 14,
+            fontFamily: fonts.bold,
+            color: colors.white,
+            textAlign: 'center',
+          }}>
             {statusInfo.text}
           </Text>
         </View>

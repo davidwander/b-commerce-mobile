@@ -36,7 +36,9 @@ export default function Sales() {
 
       if (result.success && result.data) {
         // Filtrar apenas vendas que não estão fechadas (o 'open' já faz isso no backend, mas mantemos para clareza)
-        const openSales = result.data.filter(sale => sale.status !== 'closed');
+        const openSales = result.data.filter(sale => 
+          sale.status !== 'closed'
+        ); // Removido o filtro adicional aqui, pois o backend já deve fazer isso
         setSales(openSales);
         console.log(`✅ ${openSales.length} vendas abertas (incluindo cálculo de frete) carregadas`);
       } else {
