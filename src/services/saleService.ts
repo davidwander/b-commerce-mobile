@@ -49,6 +49,7 @@ export interface Sale {
   totalPieces: number;
   totalValue: number;
   status: 'open-no-pieces' | 'open-awaiting-payment' | 'closed' | 'calculate-shipping'; // Adicionado 'calculate-shipping'
+  shippingValue?: number | null; // Adicionado o novo campo
   salePieces?: SalePiece[];
 }
 
@@ -298,6 +299,39 @@ export const saleService = {
       return {
         success: false,
         message: error.response?.data?.error || error.message || 'Erro desconhecido ao confirmar pagamento.',
+      };
+    }
+  },
+
+  // NOVA FUNÇÃO: Adicionar valor do frete a uma venda
+  updateShippingValue: async (saleId: string, shippingValue: number): Promise<{ success: boolean; message: string; data?: Sale }> => {
+    try {
+      console.log('🚚 Tentando atualizar valor do frete para venda:', saleId, 'com valor:', shippingValue);
+
+      const headers = await getAuthHeaders();
+      const response = await api.patch<GetSaleByIdResponse>(`/${saleId}/shipping-value`, { shippingValue }, { headers });
+      console.log('✅ Valor do frete atualizado com sucesso:', response.data);
+
+      return {
+        success: true,
+        message: response.data.message,
+        data: response.data.data
+      };
+    } catch (error: any) {
+      console.error('❌ Erro completo ao atualizar valor do frete:', error);
+
+      if (error.response) {
+        console.error('📄 Resposta do servidor:', error.response.data);
+        console.error('📊 Status:', error.response.status);
+      } else if (error.request) {
+        console.error('📡 Sem resposta do servidor:', error.request);
+      } else {
+        console.error('⚙️ Erro de configuração:', error.message);
+      }
+
+      return {
+        success: false,
+        message: error.response?.data?.error || error.message || 'Erro desconhecido ao atualizar valor do frete.',
       };
     }
   },

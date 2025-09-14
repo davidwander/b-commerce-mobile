@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native'; // Adicionado Alert
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from './SaleDetailsModal.styles';
 import { Sale, SalePiece, saleService } from '@/services/saleService'; // Adicionado saleService
 import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
+import { CustomInput } from '@/components/CustomInput'; // Importar CustomInput
+import { ActionButton } from '@/components/ActionButton'; // Importar ActionButton
 
 interface SaleDetailsModalProps {
   isVisible: boolean;
@@ -88,20 +90,39 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
     if (!sale || !sale.id) return;
 
     try {
-      const result = await saleService.confirmPayment(sale.id);
-      if (result.success) {
-        Alert.alert('Sucesso!', 'Pagamento confirmado com sucesso!'); // Usar Alert
-        onClose(); // Fechar o modal e forçar a atualização da lista
-      } else {
-        Alert.alert('Erro', result.message || 'Erro ao confirmar pagamento.'); // Usar Alert
+      if (sale.status === 'open-awaiting-payment') {
+        const result = await saleService.confirmPayment(sale.id);
+        if (result.success) {
+          Alert.alert('Sucesso!', 'Pagamento confirmado com sucesso! Agora adicione o frete.');
+          onClose();
+        } else {
+          Alert.alert('Erro', result.message || 'Erro ao confirmar pagamento.');
+        }
+      } else if (sale.status === 'calculate-shipping') {
+        const parsedShippingValue = parseFloat(shippingValueInput.replace(',', '.'));
+        if (isNaN(parsedShippingValue) || parsedShippingValue < 0) {
+          Alert.alert('Erro', 'Por favor, insira um valor de frete válido e não negativo.');
+          return;
+        }
+
+        const result = await saleService.updateShippingValue(sale.id, parsedShippingValue);
+        if (result.success) {
+          Alert.alert('Sucesso!', 'Valor do frete adicionado e venda fechada!');
+          onClose();
+        } else {
+          Alert.alert('Erro', result.message || 'Erro ao adicionar valor do frete.');
+        }
       }
     } catch (error) {
-      console.error('Erro ao confirmar pagamento:', error);
-      Alert.alert('Erro', 'Ocorreu um erro ao confirmar o pagamento.'); // Usar Alert
+      console.error('Erro na ação da venda:', error);
+      Alert.alert('Erro', 'Ocorreu um erro inesperado na ação da venda.');
     }
   };
 
   const statusDisplay = getStatusDisplay(sale.status);
+
+  const [shippingValueInput, setShippingValueInput] = useState<string>(sale.shippingValue?.toString() || '');
+  const finalTotalValue = (sale.totalValue || 0) + (sale.shippingValue || 0);
 
   return (
     <Modal
@@ -246,7 +267,54 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
                   {formatCurrency(sale.totalValue)}
                 </Text>
               </View>
+
+              {sale.shippingValue !== undefined && sale.shippingValue !== null && (
+                <View style={styles.detailRow}>
+                  <Ionicons
+                    name="car-outline"
+                    size={16}
+                    color={colors.black}
+                    style={{ marginRight: 8 }}
+                  />
+                  <Text style={styles.detailLabel}>Frete:</Text>
+                  <Text style={[styles.detailValue, { fontFamily: fonts.bold, fontSize: 16 }]}>
+                    {formatCurrency(sale.shippingValue)}
+                  </Text>
+                </View>
+              )}
+
+              <View style={styles.detailRow}>
+                <Ionicons
+                  name="wallet-outline"
+                  size={16}
+                  color={colors.black}
+                  style={{ marginRight: 8 }}
+                />
+                <Text style={styles.detailLabel}>Total Final:</Text>
+                <Text style={[styles.detailValue, { 
+                  fontFamily: fonts.bold, 
+                  fontSize: 18, 
+                  color: colors.page.dragonFruit 
+                }]}>
+                  {formatCurrency(finalTotalValue)}
+                </Text>
+              </View>
             </View>
+
+            {/* Input para o Frete (visível apenas quando o status é 'calculate-shipping') */}
+            {sale.status === 'calculate-shipping' && sale.shippingValue === null && (
+              <View style={styles.section}>
+                <Text style={styles.sectionTitle}>Adicionar Valor do Frete</Text>
+                <CustomInput
+                  label="Valor do Frete"
+                  placeholder="Ex: 15,50"
+                  keyboardType="numeric"
+                  value={shippingValueInput}
+                  onChangeText={setShippingValueInput}
+                  maskType="money"
+                />
+              </View>
+            )}
 
             {/* Lista de Peças */}
             {sale.salePieces && sale.salePieces.length > 0 && (
@@ -317,37 +385,21 @@ export function SaleDetailsModal({ isVisible, sale, onClose }: SaleDetailsModalP
           </ScrollView>
 
           {/* Botões de Ação */}
-          {(sale.status === 'open-awaiting-payment' || sale.status === 'calculate-shipping') && ( // Botão de Confirmar Pagamento aparece condicionalmente
-            <TouchableOpacity
-              style={[
-                styles.closeButton, // Reutilizando o estilo, mas você pode criar um novo para primário
-                {
-                  backgroundColor: sale.status === 'open-awaiting-payment' ? colors.page.viridian : colors.page.olive, // Cores diferentes para cada status
-                  marginBottom: 1, // Adiciona margem se houver outro botão abaixo
-                }
-              ]}
+          {(sale.status === 'open-awaiting-payment' || (sale.status === 'calculate-shipping' && sale.shippingValue === null)) && (
+            <ActionButton
+              label={sale.status === 'open-awaiting-payment' ? 'Confirmar Pagamento' : 'Adicionar Frete e Fechar Venda'}
               onPress={handleConfirmPayment}
-            >
-              <Text style={styles.closeButtonText}>
-                {sale.status === 'open-awaiting-payment' ? 'Confirmar Pagamento' : 'Confirmar Frete'}
-              </Text>
-            </TouchableOpacity>
+              color={sale.status === 'open-awaiting-payment' ? colors.page.viridian : colors.page.olive}
+              style={{ marginBottom: 10 }}
+            />
           )}
 
           {/* Botão de Fechar (sempre visível) */}
-          <TouchableOpacity
-            style={[
-              styles.closeButton,
-              {
-                backgroundColor: colors.black + 'CC', // Uma cor neutra para fechar
-              }
-            ]}
+          <ActionButton
+            label="Fechar"
             onPress={onClose}
-          >
-            <Text style={styles.closeButtonText}>
-              Fechar
-            </Text>
-          </TouchableOpacity>
+            color={colors.black + 'CC'}
+          />
         </View>
       </View>
     </Modal>

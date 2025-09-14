@@ -31,6 +31,14 @@ export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardPr
           icon: 'card-outline' as const
         };
       case 'calculate-shipping': // Novo status
+        // Se o valor do frete já foi adicionado, considerá-la como fechada
+        if (sale.shippingValue !== undefined && sale.shippingValue !== null) {
+          return {
+            text: 'Fechada',
+            color: '#4CAF50', // Verde
+            icon: 'checkmark-circle-outline' as const
+          };
+        }
         return {
           text: 'Calcular Frete',
           color: colors.page.olive, // Cor atualizada para o novo status
@@ -77,6 +85,9 @@ export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardPr
   };
 
   const statusInfo = getStatusInfo();
+
+  // Calcular o valor total incluindo o frete
+  const finalTotalValue = (sale.totalValue || 0) + (sale.shippingValue || 0);
 
   return (
     <TouchableOpacity
@@ -144,6 +155,16 @@ export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardPr
         </View>
 
         <View style={{ alignItems: 'flex-end' }}>
+          {sale.shippingValue !== undefined && sale.shippingValue !== null && sale.shippingValue > 0 && (
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 2 }}>
+              <Text style={{ fontSize: 13, fontFamily: fonts.medium, color: colors.black, opacity: 0.6 }}>
+                Frete:
+              </Text>
+              <Text style={{ fontSize: 13, fontFamily: fonts.medium, color: colors.black, opacity: 0.8, marginLeft: 5 }}>
+                {formatCurrency(sale.shippingValue)}
+              </Text>
+            </View>
+          )}
           <Text style={styles.total}>
             Valor Total
           </Text>
@@ -152,7 +173,7 @@ export function SaleCard({ sale, onPress, showSelectButton = false }: SaleCardPr
             fontFamily: fonts.bold,
             color: statusInfo.color,
           }}>
-            {formatCurrency(sale.totalValue || 0)}
+            {formatCurrency(finalTotalValue)}
           </Text>
         </View>
       </View>
