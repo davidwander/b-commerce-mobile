@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, Alert } from "react-native";
-import { styles } from './styles';
+import { styles } from './_styles';
 
 import { Header } from '@/components/Header';
 import { CustomInput } from '@/components/CustomInput';

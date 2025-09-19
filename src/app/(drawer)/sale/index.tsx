@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { View, Text, FlatList, Animated, Alert, RefreshControl } from 'react-native';
 import { router } from 'expo-router';
-import { styles } from './styles';
+import { styles } from './_styles';
 
 import { Header } from '@/components/Header';
 import { ActionButton } from '@/components/ActionButton';
@@ -150,7 +150,7 @@ export default function Sales() {
 
   return (
     <View style={styles.container}>
-      <Header />
+
       <View style={styles.containerContent}>
         <View style={styles.headerContainer}>
           <Text style={styles.header}>

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { requestNotificationPermissions, scheduleNotification } from '@/utils/notifications';
-import { styles } from './styles';
+import { styles } from './_styles';
 
 import { Header } from '@/components/Header';
 
@@ -56,7 +56,7 @@ export default function Notifications() {
 
   return (
     <View style={styles.container}>
-      <Header />
+
       <View style={styles.containerContent}>
         {/* Botão de teste de notificação */}
         <TouchableOpacity

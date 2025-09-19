@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-import { styles } from './styles';
+import { styles } from './_styles';
 import { Header } from '@/components/Header';
 import { colors } from '@/styles/colors';
 import { useRouter } from 'expo-router';

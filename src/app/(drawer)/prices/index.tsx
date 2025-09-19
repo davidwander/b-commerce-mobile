@@ -12,7 +12,7 @@ import {
   KeyboardAvoidingView,
   Alert,
 } from 'react-native';
-import { styles } from './styles';
+import { styles } from './_styles';
 
 import { useForm, Controller } from 'react-hook-form';
 
@@ -134,7 +134,7 @@ export default function Prices() {
 
   return (
     <View style={styles.container}>
-      <Header />
+
       <View style={styles.containerContent}>
         {isLoading ? (
           <View style={styles.loadingContainer}>

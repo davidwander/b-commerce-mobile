@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { styles } from './styles';
+import { styles } from './_styles';
 
 import  Feather  from '@expo/vector-icons/Feather';
 import { colors } from '@/styles/colors';

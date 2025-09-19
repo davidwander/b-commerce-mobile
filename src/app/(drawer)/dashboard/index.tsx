@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ScrollView, Dimensions, Text } from 'react-native';
-import { styles } from './styles';
+import { styles } from './_styles';
 
 import { Header } from '@/components/Header';
 import { SemiCircleProgress } from '@/components/SemiCircleProgress';
@@ -35,7 +35,7 @@ function SemiCirclesRow({ lucro, gastos }: { lucro: number; gastos: number }) {
 export default function Dashboard() {
   return (
     <View style={styles.container}>
-      <Header />
+
 
       <ScrollView
         contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 40, paddingTop: 16 }}
