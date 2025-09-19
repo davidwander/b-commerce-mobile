@@ -1,0 +1,114 @@
+[33mf5e062d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m SDK and Packages update
+[33mc1c6816[m Updating dependency
+[33m9f04bc7[m Clearing code
+[33m5b184d3[m creating new statuses
+[33m7bbc7ac[m Creating status calculate shipping
+[33m281066c[m Creating button to calculate freight
+[33m4a28564[m Adding payment button
+[33m7dcdbe3[m Fixing function to add new sale
+[33m74243be[m Customizing component input
+[33m87c2064[m Customizing component input
+[33m7620a9a[m Customizing modal
+[33m93c7c83[m Using dynamic status function, customizing card
+[33mc81c77d[m Creating function to modify sale status
+[33m68f0800[m Customizing
+[33md2a5ceb[m Creating modal of sale details
+[33m8017959[m Customizing card
+[33m8ad14b4[m Customizations
+[33mf5b45ff[m Fixing logic to add parts to sales
+[33ma477955[m Creating function to add parts in a sale
+[33m75f53ae[m Creating sales, saving to database and returning data to user
+[33m136d4ed[m Creating logic to create and save sale
+[33m8dccba3[m Renaming screen create new sale
+[33mf7fc9a9[m Organizing sales folder
+[33m5ecbe57[m Fixing authentication and token error
+[33mb22aadb[m Fixing error
+[33m257ee8b[m Fixing button
+[33mc62d54e[m Creating function to add sales
+[33m56aefb9[m Adding disabled property
+[33mdb2456a[m Clearing code
+[33m4dd69ad[m Customizing interfaces
+[33mb7f36fa[m Customizing sales interface
+[33m72dc350[m Creating routes for configuration
+[33m7eb84d2[m Fixing category registration
+[33m504cf4a[m Deleting card after completing the calculation
+[33m8230be8[m Capturing and displaying profit margin
+[33mb429d66[m Creating function to price
+[33mc4e2e8e[m Fixing parts upgrade in pricing interface
+[33md267dc2[m Adding parts to the pricing list
+[33m8989b74[m fixing Error when adding part to stock
+[33m14338b3[m Customizing modal
+[33m9bdba96[m Adding cards in the Register prices interface
+[33md1b08ac[m Customizing card and adding check box
+[33mdf8769b[m Customizing
+[33m31aa342[m Customizing card and modal
+[33mdefb653[m clearing code
+[33m993de91[m Customizing
+[33m8c6c702[m Fixing cancel button function
+[33mdfd015e[m Fixing gender filter
+[33mc23b06e[m Fixing gender filter
+[33m9746886[m Fixing gender filter
+[33mfb5385d[m Customizing modal
+[33m128bca4[m Showing filtered parts from database in stock list
+[33mc9040f6[m Add the part to the stock (Database)
+[33m378d33b[m Fixing error when adding part
+[33m9defe13[m Creating function to add parts in stock (database)
+[33m2fc7ce6[m Integrating authentication routes with api
+[33m1bde3ea[m Adding colors
+[33mfc5bb3e[m Clearing code
+[33m20ae072[m Configuring AuthContext
+[33mfbd39bb[m Customizing
+[33md74b331[m customizing signIn/signUp interfaces
+[33m250db23[m Fixing signIn/signUp navigation
+[33m003df73[m Fixing signIn/signUp navigation
+[33m388e5a7[m Clearing code
+[33m488f6a3[m Creating authentication routes, creating signIn/signUp interfaces, configuring navigation
+[33m238792f[m Customizing settings interface
+[33m1ae3861[m Fixing conflict with navigation for route settings
+[33m07d32c4[m Customizing Drawer
+[33m887ddcd[m Customizing Drawer
+[33m4a20d4b[m Customizing Drawer
+[33ma1ff5f6[m Creating settings interface
+[33m3ce30b9[m Creating settings interface
+[33m738e6a6[m Organizing calendar
+[33m1cec6cf[m Creating button to close pricing modal
+[33m69014d5[m Configuring translated calendar
+[33m8254f79[m New Drawer structure
+[33m105c5a2[m New Drawer structure
+[33mb6f373f[m New Drawer structure
+[33mb419fe2[m Customizing card
+[33mdeb9601[m Customizations
+[33mdbdfce6[m Creating pricing interface
+[33mff4fd6b[m Creating and customizing AnimatedLineChart component
+[33m41bda46[m Customizing SemiCircleProgress Component
+[33mf47dbb2[m Modifying interface prices
+[33m8d2a235[m Customizing calendar interface
+[33m622f402[m Creating calendar interface
+[33md9be183[m Using Action button
+[33ma47a0dd[m customizing expense item
+[33mf9b9d17[m Customizing ListEmpty Component
+[33ma64e1a5[m Customizing ListEmpty Component
+[33m4fcf840[m Creating other spending interface, customizing error message
+[33m1e2bf1e[m Stylizing drawer
+[33m2ad851c[m Stylizing Modal
+[33m0d8cc6f[m Stylizing modal
+[33m4a28046[m Crining modal to select categories and add parts to stock
+[33m3fd1ff3[m Creating ActionButton component
+[33mc6345b9[m Creating button to add pieces
+[33m8591b86[m Creating and styling category list
+[33meb0a0cc[m creating inventory interface, creating categories and scrap cards
+[33m4e0424f[m Creating new sale interface, validating form
+[33ma73420e[m Creating sales interface
+[33mdf77c7b[m styling dashboard interface
+[33mf643f78[m Stylizing dashboard interface, creating Floating card component
+[33m25da124[m Utilizing overlay color
+[33mca5ea0b[m using Header component
+[33m03eb5db[m Configuring source
+[33mc08a6f8[m Setting background colors
+[33m5b4189b[m Separating component stylization
+[33mf1a5c4f[m Reorganizing interfaces and drawer
+[33m80ad458[m Stylizing Drawer Structure
+[33m3a2f65e[m structuring drawer
+[33mab43eb2[m using Drawer navigation
+[33m29b722f[m Initial commit
+[33mcc4dbd2[m Initial commit
